@@ -1,7 +1,6 @@
 Here are coding projects that I have made for 3 video games. Most of the
 codes are using ChatGPT to form a structure that gets troubleshooted when it
-fails. I think it's efficient to use ChatGPT for coding due to the amount of
-time that it saves, but it's still important to know what the code does.
+fails.
 
 Magic the Gathering Arena:
 
@@ -27,6 +26,48 @@ for each card column it's checked if the column has won value 1 or 0, and the
 average win rate is calculated by summing all the 1s divided by the amount of
 matches where that card was included.
 
+Card win rates for each archetype is gathered in cardwinsArchetype.py. Archetypes
+are defined based on what colour of lands they are using. A deck with 3 or more
+red lands and 3 or more blue lands is considered to be archetype "RU". Cards
+can be good in 1 archetype and bad in another so this can be important data
+sometimes. The archetype assignment for each draft deck happens in addcolors.py.
+
+In Magic the gathering, 2 drops are considered to be creatures with converted
+mana cost of exactly 2. Usually this means being able to play them on turn 2.
+These creatures are an important part of a draft deck.
+The amount of 2 drops compared to deck win rate is compared in 2dropcomparison.py.
+Surprisingly, decks have similar win rates between 2 and 12 2 drops. Only after
+the deck has 13 2 drops or more, it starts being a detriment but there is
+almost no sample size for those amounts. Overall it seems like there is a slight
+trend that having more of them is better until 8 2 drops.
+
+Next, I compared whether it's better to add a bad card to the draft deck or play
+with 18 lands (as the data website's name suggests, playing 17 lands is considered
+optimal usually). The data analysis is done in the script
+compare18landsvs17withbardcard.py.
+Of course the comparison needs to be done in decks that could
+include the bad card so there's no bias, so in this case I made sure the 18 land
+deck has lands of the chosen bad card's colour.
+Based on looking at data including card "Stampeding Elk Herd", it seems
+like it's a better idea to play with 18 lands than to include this bad card in
+the deck. A good card like Courier's Briefcase breaks even with a 18 lands deck.
+Because green colour is known for being better with more lands than other colours,
+I checked black colour too with cards Baleful Eidolon (a bad card) and Gurmag
+Angler (a decent card). The results were similar, so playing with 18 lands
+seemed more beneficial than adding a bad card to the deck.
+I had some trouble finding decks with exactly 17 land cards because cards like
+Bala Ged Recovery are not part of the source csv because their name doesn't
+match exactly due to being a dual faced card. But I tried my best to fix the
+problem.
+
+
+
+
+todo: 2 drop vs slightly better card when amount of 2 drops is low vs high
+
+
+
+
 Path of Exile:
 
 In Path of Exile, there is quite a lot of math involved and economy is an
@@ -48,8 +89,8 @@ one gives you more offered options on every merchant. Based on the economy,
 where the starting items are priced, most of the
 players believe that getting more choices is better even if you don't get any
 cost reduction but with the script calcsanc.py I simulated that it's not the
-case. Balancing cost reductions and increasing merchant's offered options is a better
-option than only increasing merchant's offered options.
+case. Balancing cost reductions and increasing merchants' offered options is a better
+option than only increasing merchants' offered options.
 
 Scarab calculations:
 Scarabs are one of the most important resources in Path of Exile. Some scarabs
