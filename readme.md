@@ -12,7 +12,8 @@ has won out of all the games where that card has been played. A card that is
 more likely to win matches is often a better pick in draft.
 
 17lands has a lot of data and even data analysis regarding these cards that is
-publicly available.
+publicly available. Link here: https://www.17lands.com/public_datasets . I used
+draft data from set PIO PremierDraft.
 
 To calculate the win probability of a card, first the massive input csv from
 17lands is trimmed to only the relevant columns, which are the columns that
@@ -60,6 +61,19 @@ Bala Ged Recovery are not part of the source csv because their name doesn't
 match exactly due to being a dual faced card. But I tried my best to fix the
 problem.
 
+It is also considered important to have creatures in the deck because most of
+the time in draft you win by attacking the opponent with them. That's why I
+checked the data for how many creatures you should have in the deck at minimum
+for it to not lower your win rate. The comparison is done in
+comparecreatureother.py.
+It seems like having at least 6 creatures is necessary,
+the win rates between 6-13 creatures are pretty similar and after that the win
+rate starts dropping slightly. The most surprising thing is that the creature
+heavy decks are a bit worse like the ones with 14+ creatures, even though they
+are commonly played in draft. A lot of instant/sorcery spells have good win
+rates in draft even though they aren't considered that good because players
+consider creatures to be very important, even though the win rate data shows that
+low creature decks actually perform better.
 
 
 
@@ -122,3 +136,11 @@ for the outcome if the prices of all the outcomes and inputs are known.
 The outcomes have 2 different layers in the randomness, basically you can get
 lucky twice for example, or lucky once and unlucky once.
 That's why the simulation is necessary.
+
+Teamfight Tactics:
+
+There is a calculator for outdated version of guinsoo's rageblade. The item used
+to give faster actions taken after every action that is taken, which can be
+simulated for an average increase. The calculations are done in calctftrandom.py.
+
+Todo: AI project
