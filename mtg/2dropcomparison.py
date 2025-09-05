@@ -1,6 +1,12 @@
 import pandas as pd
 import re
 
+# Results:
+#Surprisingly, decks have similar win rates between 2 and 12 2 drops. Only after
+#the deck has 13 2 drops or more, it starts being a detriment but there is
+#almost no sample size for those amounts. Overall it seems like there is a slight
+#trend that having more of them is better until 8 2 drops.
+
 # ---------- CONFIG ----------
 TRIMMED_DECK = "mtg/datafiles/trimmed_deck.csv"        # one row per deck, deck_* columns = counts
 ALL_CARDS     = "mtg/datafiles/all_mtg_cards.csv"       # your card DB with columns incl. 'name','cmc','type'
@@ -28,6 +34,29 @@ def canon(name: str) -> str:
 # ---------- LOAD ----------
 df = pd.read_csv(TRIMMED_DECK)
 cards = pd.read_csv(ALL_CARDS)
+
+#add win rate column
+# Identify card columns (all except 'draft_id' and 'won')
+card_columns = [col for col in df.columns if col not in ['draft_id', 'won']]
+
+# Dictionary to hold per-card win rates
+card_win_rates = {}
+
+for card in card_columns:
+    included = df[df[card] >= 1]
+    if not included.empty:
+        card_win_rates[card] = included['won'].mean()
+    else:
+        card_win_rates[card] = None
+
+# Convert to a DataFrame with same row index as df
+wr_df = pd.DataFrame(
+    {f"{card}_win_rate": card_win_rates[card] for card in card_columns},
+    index=df.index
+)
+
+# Join all at once
+df = pd.concat([df, wr_df], axis=1)
 
 # Identify deck_* columns
 deck_cols = [c for c in df.columns if c.startswith("deck_")]

@@ -1,6 +1,19 @@
 import pandas as pd
 import matplotlib.pyplot as plt # for debugging
 
+#Results:
+#Based on looking at data including card "Stampeding Elk Herd", it seems
+#like it's a better idea to play with 18 lands than to include this bad card in
+#the deck. A good card like Courier's Briefcase breaks even with a 18 lands deck.
+#Because green colour is known for being better with more lands than other colours,
+#I checked black colour too with cards Baleful Eidolon (a bad card) and Gurmag
+#Angler (a decent card). The results were similar, so playing with 18 lands
+#seemed more beneficial than adding a bad card to the deck.
+#I had some trouble finding decks with exactly 17 land cards because cards like
+#Bala Ged Recovery are not part of the source csv because their name doesn't
+#match exactly due to being a dual faced card. But I tried my best to fix the
+#problem.
+
 # Load datasets
 df = pd.read_csv("mtg/datafiles/updated_trimmed_deck2.csv")
 all_cards = pd.read_csv("mtg/datafiles/all_mtg_cards.csv")

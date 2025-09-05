@@ -1,5 +1,16 @@
 import pandas as pd
 
+#Results:
+#It seems like having at least 6 creatures is necessary,
+#the win rates between 6-13 creatures are pretty similar and after that the win
+#rate starts dropping slightly. The most surprising thing is that the creature
+#heavy decks are a bit worse like the ones with 14+ creatures, even though they
+#are commonly played in draft. A lot of instant/sorcery spells have good win
+#rates in draft even though they aren't considered that good because players
+#consider creatures to be very important, even though the win rate data shows that
+#low creature decks actually perform better.
+
+
 # --- Paths ---
 DECKS = "mtg/datafiles/updated_trimmed_deck2.csv"     # deck_* columns + won (+ maybe deck_colors)
 CARDS = "mtg/datafiles/all_mtg_cards.csv"             # card DB with 'name' and 'type'

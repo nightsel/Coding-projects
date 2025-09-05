@@ -3,6 +3,21 @@ import numpy as np
 import random as rd
 import math
 
+#The most complicated strategy collects coins and purchases items during the
+#game from merchants. The goal is to buy as many items called "relics" from the
+#shop as possible by the 4th merchant. Some relics are much better than others,
+#such as one that gives a discount to every other purchase, which is why you
+#have to be picky in the beginning.
+
+#The items that sanctum is started with make it easier for you to be able to
+#purchase everything. Particularly one makes all of your purchases cheaper, and
+#one gives you more offered options on every merchant. Based on the economy,
+#where the starting items are priced, most of the
+#players believe that getting more choices is better even if you don't get any
+#cost reduction but with the script calcsanc.py I simulated that it's not the
+#case. Balancing cost reductions and increasing merchants' offered options is a better
+#option than only increasing merchants' offered options.
+
 #Takeaways: Best balance at 8 choices 28% reduction. Better than 7 choices and 35% reduction. 5% reduction 1 merchant is bettter than 2 merchant choices.
 
 lengt = 32 # total boons is 32, maybe reduce by 1 if assuming 1 from pacts

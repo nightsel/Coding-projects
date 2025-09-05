@@ -2,18 +2,19 @@ Here are coding projects that I have made for 3 video games. Most of the
 codes are using ChatGPT to form a structure that gets troubleshooted when it
 fails.
 
+Results from scripts are written inside the script code to not waste space here.
+
 Magic the Gathering Arena:
 
+I wrote scripts to improve decisions in one of the game modes, draft. All of the
+scripts in mtg folder are for this purpose, and they are explained below.
 In this game, there is a draft mode where players are able to select cards to their deck.
 By using data analysis from games that are played online, it is possible to
 know which cards are better to choose.
-For example one relevant statistic is how many times a deck with a specific card
-has won out of all the games where that card has been played. A card that is
-more likely to win matches is often a better pick in draft.
 
 17lands has a lot of data and even data analysis regarding these cards that is
 publicly available. Link here: https://www.17lands.com/public_datasets . I used
-draft data from set PIO PremierDraft.
+draft data from the set PIO PremierDraft.
 
 To calculate the win probability of a card, first the massive input csv from
 17lands is trimmed to only the relevant columns, which are the columns that
@@ -37,10 +38,7 @@ In Magic the gathering, 2 drops are considered to be creatures with converted
 mana cost of exactly 2. Usually this means being able to play them on turn 2.
 These creatures are an important part of a draft deck.
 The amount of 2 drops compared to deck win rate is compared in 2dropcomparison.py.
-Surprisingly, decks have similar win rates between 2 and 12 2 drops. Only after
-the deck has 13 2 drops or more, it starts being a detriment but there is
-almost no sample size for those amounts. Overall it seems like there is a slight
-trend that having more of them is better until 8 2 drops.
+
 
 Next, I compared whether it's better to add a bad card to the draft deck or play
 with 18 lands (as the data website's name suggests, playing 17 lands is considered
@@ -49,35 +47,18 @@ compare18landsvs17withbardcard.py.
 Of course the comparison needs to be done in decks that could
 include the bad card so there's no bias, so in this case I made sure the 18 land
 deck has lands of the chosen bad card's colour.
-Based on looking at data including card "Stampeding Elk Herd", it seems
-like it's a better idea to play with 18 lands than to include this bad card in
-the deck. A good card like Courier's Briefcase breaks even with a 18 lands deck.
-Because green colour is known for being better with more lands than other colours,
-I checked black colour too with cards Baleful Eidolon (a bad card) and Gurmag
-Angler (a decent card). The results were similar, so playing with 18 lands
-seemed more beneficial than adding a bad card to the deck.
-I had some trouble finding decks with exactly 17 land cards because cards like
-Bala Ged Recovery are not part of the source csv because their name doesn't
-match exactly due to being a dual faced card. But I tried my best to fix the
-problem.
 
 It is also considered important to have creatures in the deck because most of
 the time in draft you win by attacking the opponent with them. That's why I
 checked the data for how many creatures you should have in the deck at minimum
 for it to not lower your win rate. The comparison is done in
 comparecreatureother.py.
-It seems like having at least 6 creatures is necessary,
-the win rates between 6-13 creatures are pretty similar and after that the win
-rate starts dropping slightly. The most surprising thing is that the creature
-heavy decks are a bit worse like the ones with 14+ creatures, even though they
-are commonly played in draft. A lot of instant/sorcery spells have good win
-rates in draft even though they aren't considered that good because players
-consider creatures to be very important, even though the win rate data shows that
-low creature decks actually perform better.
 
 
 
-todo: 2 drop vs slightly better card when amount of 2 drops is low vs high
+todo1: 2 drop vs slightly better card when amount of 2 drops is low vs high
+
+todo3: ai project
 
 
 
@@ -87,26 +68,8 @@ Path of Exile:
 In Path of Exile, there is quite a lot of math involved and economy is an
 important aspect.
 
-There is a game mode called sanctum where you start a game with items that
-modify the game mode. These items improve the rewards that you get from
-finishing the game. So it's important to know what items give the most benefit.
-
-The most complicated strategy collects coins and purchases items during the
-game from merchants. The goal is to buy as many items called "relics" from the
-shop as possible by the 4th merchant. Some relics are much better than others,
-such as one that gives a discount to every other purchase, which is why you
-have to be picky in the beginning.
-
-The items that sanctum is started with make it easier for you to be able to
-purchase everything. Particularly one makes all of your purchases cheaper, and
-one gives you more offered options on every merchant. Based on the economy,
-where the starting items are priced, most of the
-players believe that getting more choices is better even if you don't get any
-cost reduction but with the script calcsanc.py I simulated that it's not the
-case. Balancing cost reductions and increasing merchants' offered options is a better
-option than only increasing merchants' offered options.
-
-Scarab calculations:
+First I will explain scripts scarab_weights.py, scarabs.py, combine_scarab_csvs.py
+and scarabcalcs.py .
 Scarabs are one of the most important resources in Path of Exile. Some scarabs
 are more rare than others and rarity is determined by their weight. Every
 scarab's weight is known or at least well estimated, and they can be found
@@ -120,14 +83,22 @@ Then the script scarabs.py finds the price for each scarab from poe.ninja's api
 https://poe.ninja/api/data/itemoverview?league=Mercenaries&type=Scarab and
 complies them into a csv. And finally, combine_scarab_csvs.py combines every
 scarab's name, weight and value to a single csv. This allows calculation of
-the average scarab which is done in scarabcalcs.py. This is a useful tool
+the average scarab value which is done in scarabcalcs.py. This is a useful tool
 in the economy, because a lot of scarabs are useless and 3 of a bad scarab can be exchanged
 for a random scarab. If the 3 bad scarabs are less valuable than the
 average, then this trade is worth it.
 
-teardropcalc.py calculates how many "Tainted Divine Teardrops" are required to
-reach the best outcome on average. There isn't much math involved here, it's
-just a simple simulation and assumes getting lucky and unlucky are both 50%.
+
+Secondly about the script calcsanc.py, which is related to sanctum.
+There is a game mode called sanctum where you start a game with items that
+modify the game mode. These items improve the rewards that you get from
+finishing the game. So it's important to know what items give the most benefit.
+In this script I simulate what happens with different types of items.
+
+
+And lastly, teardropcalc.py calculates how many "Tainted Divine Teardrops" are
+required to reach the best outcome on average. There isn't much math involved
+here, it's just a simple simulation and assumes getting lucky and unlucky are both 50%.
 
 
 tanglecalc.py is for Path of Exile 2 where it's possible to use an item
@@ -143,4 +114,4 @@ There is a calculator for outdated version of guinsoo's rageblade. The item used
 to give faster actions taken after every action that is taken, which can be
 simulated for an average increase. The calculations are done in calctftrandom.py.
 
-Todo: AI project
+todo2: AI project
