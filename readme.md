@@ -115,7 +115,15 @@ There is a calculator for outdated version of guinsoo's rageblade. The item used
 to give faster actions taken after every action that is taken, which can be
 simulated for an average increase. The calculations are done in calctftrandom.py.
 
-todo1: AI project
-
-First, a csv with all the characters in the game needs to be found. It can be
+First, a data file with all the characters in the game needs to be found. It can be
 downloaded from https://raw.communitydragon.org/latest/cdragon/tft/en_us.json .
+The goal is to create an AI that buys correct characters from the shop with
+limited gold. In this case correct characters are defined to be the ones that
+give the most traits to the board. All supportive functions are written in tft_utils.py
+
+A simple AI model is written in rollingAI.py. This AI simply buys the character
+that generates the most synergies for the current board without considering
+future boards. It is only able to buy one character per shop out of the 5 choices.
+
+Next AI should be able to buy multiple characters per shop, maybe even sell
+characters. And the purchase algorithm could be modified to be more complicated.

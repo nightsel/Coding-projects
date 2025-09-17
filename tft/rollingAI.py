@@ -41,32 +41,20 @@ synergy_thresholds = {
 # Reroll probability manually from https://blitz.gg/tft/guides/reroll
 reroll_probability_8 = [.17, .24, .32, .24, .03]
 
-
-
-
-
-#for trait in traits_data:
-    #min_units = min(effect["minUnits"] for effect in trait["effects"])
-    #synergy_thresholds[trait["name"]] = min_units
-#print(synergy_thresholds)
-
-#print(count_synergies(df.head(20), synergy_thresholds))
-
-#print(diagnose_synergies(df, synergy_thresholds))
-
 currentgold = 20
 stop_loop = 0
 total_gold_spent = 0
 board = pd.DataFrame(columns=["name", "cost", "traits"])
 
-while stop_loop != 5:
+while stop_loop != 7:
     active_synergies_count = count_synergies(board, synergy_thresholds)
     shop = generate_shop(champions_by_cost, reroll_probability_8)
-    champ_to_buy = pick_best_champion(board, shop, synergy_thresholds)
+    champ_to_buy = pick_best_champion(board, shop, synergy_thresholds, currentgold)
     print(f"AI buys: {champ_to_buy['name']} ({champ_to_buy['traits']})")
     board = pd.concat([board, pd.DataFrame([champ_to_buy])], ignore_index=True)
     currentgold -= champ_to_buy["cost"]
     total_gold_spent += champ_to_buy["cost"]
+
     print(count_synergies(board, synergy_thresholds))
     #reward = len(active_synergies_count) * 10 - total_gold_spent
     stop_loop += 1

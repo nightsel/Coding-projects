@@ -100,9 +100,19 @@ def count_synergies(df, thresholds):
     active_synergies = []
     for trait, count in trait_counts.items():
         if trait in thresholds:
-            for threshold in thresholds[trait]:
-                if count >= threshold:
-                    active_synergies.append((trait, threshold))
+            if trait == "Mentor":
+                if count == 1 or count == 4:
+                    active_synergies.append((trait, count))
+                continue
+            # normal handling for other traits
+            trait_thresholds = sorted(thresholds[trait])
+            active_threshold = None
+
+            for i, th in enumerate(trait_thresholds):
+                if count >= th and (i == len(trait_thresholds)-1 or count < trait_thresholds[i+1]):
+                    active_threshold = th
+            if active_threshold is not None:
+                active_synergies.append((trait, active_threshold))
 
     return active_synergies
 
@@ -124,7 +134,7 @@ def generate_shop(champions_by_cost, probabilities, shop_size=5):
 
     return shop
 
-def pick_best_champion(board, shop, thresholds):
+def pick_best_champion(board, shop, thresholds, gold):
     """
     board: list of champion dicts already on board
     shop: list of champion dicts available this turn
@@ -142,8 +152,7 @@ def pick_best_champion(board, shop, thresholds):
 
         # calculate how many new synergies this champion would give
         gain = len(new_synergies) - len(current_synergies)
-
-        if gain > best_synergy_gain:
+        if (gain > best_synergy_gain) & (champ['cost'] <= gold):
             best_synergy_gain = gain
             best_champ = champ
 
