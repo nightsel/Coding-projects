@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from collections import Counter
+import random
 
 def create_champ_df(filepath, set_number=15):
     """
@@ -63,8 +64,11 @@ def create_champ_df(filepath, set_number=15):
         elif isinstance(setdata, dict):
             all_champions = setdata.get("champions", [])
 
-    # Filter by set number in 'characterName'
-    set_champs = [c for c in all_champions if f"TFT{set_number}_" in c["characterName"]]
+    # Filter by set number in 'characterName' and remove champions with no traits
+    set_champs = [
+        c for c in all_champions
+        if f"TFT{set_number}_" in c["characterName"] and c.get("traits")
+    ]
 
     # Build DataFrame
     all_champs = []
@@ -109,6 +113,7 @@ def generate_shop(champions_by_cost, probabilities, shop_size=5):
     """
     shop = []
     costs = [1, 2, 3, 4, 5]
+    # Reroll probability manually from https://blitz.gg/tft/guides/reroll
 
     for _ in range(shop_size):
         # pick a cost according to probabilities
@@ -118,3 +123,29 @@ def generate_shop(champions_by_cost, probabilities, shop_size=5):
         shop.append(champ)
 
     return shop
+
+def pick_best_champion(board, shop, thresholds):
+    """
+    board: list of champion dicts already on board
+    shop: list of champion dicts available this turn
+    thresholds: synergy thresholds dict
+    """
+    best_champ = None
+    best_synergy_gain = -1
+
+    for champ in shop:
+        # after AI picks champ_to_buy
+        new_board = pd.concat([board, pd.DataFrame([champ])], ignore_index=True)
+
+        new_synergies = count_synergies(new_board, thresholds)
+        current_synergies = count_synergies(board, thresholds)
+
+        # calculate how many new synergies this champion would give
+        gain = len(new_synergies) - len(current_synergies)
+
+        if gain > best_synergy_gain:
+            best_synergy_gain = gain
+            best_champ = champ
+
+
+    return best_champ
