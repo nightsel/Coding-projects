@@ -111,9 +111,7 @@ That's why the simulation is necessary.
 
 Teamfight Tactics:
 
-There is a calculator for outdated version of guinsoo's rageblade. The item used
-to give faster actions taken after every action that is taken, which can be
-simulated for an average increase. The calculations are done in calctftrandom.py.
+AI project:
 
 First, a data file with all the characters in the game needs to be found. It can be
 downloaded from https://raw.communitydragon.org/latest/cdragon/tft/en_us.json .
