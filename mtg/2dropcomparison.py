@@ -7,8 +7,19 @@ import re
 #almost no sample size for those amounts. Overall it seems like there is a slight
 #trend that having more of them is better until 8 2 drops.
 
+# For decks with more than 6 two-drops, there's a slightlty smaller win rate
+# decrease from adding a bad blue two-drop (Tah-Crop Skirmisher) to the deck.
+# For a bad red two-drop (Boundary Lands Ranger), the numbers are a bit strange.
+# Seems like the card is actually better in decks with a lot of 2-drops,
+# possibly due to the aggressive style in the deck. Adding the card to a deck
+# with a low amount of 2-drops however decreases the win rate of the deck.
+
+checked_card = "Boundary Lands Ranger"
+checked_color = 'R'
+
+
 # ---------- CONFIG ----------
-TRIMMED_DECK = "mtg/datafiles/trimmed_deck.csv"        # one row per deck, deck_* columns = counts
+TRIMMED_DECK = "mtg/datafiles/updated_trimmed_deck2.csv"        # one row per deck, deck_* columns = counts
 ALL_CARDS     = "mtg/datafiles/all_mtg_cards.csv"       # your card DB with columns incl. 'name','cmc','type'
 OUT_SUMMARY   = "mtg/datafiles/two_drop_winrates.csv"
 OUT_DEBUG_11  = "mtg/datafiles/decks_with_11_two_drops_full.csv"
@@ -35,31 +46,37 @@ def canon(name: str) -> str:
 df = pd.read_csv(TRIMMED_DECK)
 cards = pd.read_csv(ALL_CARDS)
 
-#add win rate column
-# Identify card columns (all except 'draft_id' and 'won')
-card_columns = [col for col in df.columns if col not in ['draft_id', 'won']]
-
-# Dictionary to hold per-card win rates
-card_win_rates = {}
-
-for card in card_columns:
-    included = df[df[card] >= 1]
-    if not included.empty:
-        card_win_rates[card] = included['won'].mean()
-    else:
-        card_win_rates[card] = None
-
-# Convert to a DataFrame with same row index as df
-wr_df = pd.DataFrame(
-    {f"{card}_win_rate": card_win_rates[card] for card in card_columns},
-    index=df.index
-)
-
-# Join all at once
-df = pd.concat([df, wr_df], axis=1)
 
 # Identify deck_* columns
-deck_cols = [c for c in df.columns if c.startswith("deck_")]
+deck_cols = [c for c in df.columns if (c.startswith("deck_") and c != 'deck_colors')]
+
+#add win rate column
+# Identify card columns (all except 'draft_id' and 'won')
+card_columns = [col for col in df.columns if col not in ['draft_id', 'won', 'deck_colors']]
+
+print(df[deck_cols].head())
+
+
+# Dictionary to hold per-card win rates
+#card_win_rates = {}
+
+#for card in card_columns:
+#    included = df[df[card] >= 1]
+#    if not included.empty:
+#        card_win_rates[card] = included['won'].mean()
+#    else:
+#        card_win_rates[card] = None
+
+# Convert to a DataFrame with same row index as df
+#wr_df = pd.DataFrame(
+#    {f"{card}_win_rate": card_win_rates[card] for card in card_columns},
+#    index=df.index
+#)
+
+# Join all at once
+#df = pd.concat([df, wr_df], axis=1)
+
+#print(df.head(10))  # first 10 rows
 
 # Optional: filter to exactly 40-card decks (sum of deck_* columns)
 if DECK_SIZE_FILTER is not None:
@@ -85,6 +102,9 @@ two_drop_cols = [c for c in deck_cols if col_to_canon[c] in two_drop_names]
 
 # ---------- COUNT TWO-DROPS PER DECK ----------
 df["two_drop_count"] = df[two_drop_cols].sum(axis=1)
+
+#trim df so it has colour column
+df = df[(df["deck_colors"].str.contains(checked_color,na=False))]
 
 # ---------- SUMMARY: WIN RATE + FREQUENCY ----------
 # We assume 'won' is 0/1 per match-row or per deck outcome; your original code averaged 'won' per deck row.
@@ -120,6 +140,57 @@ if debug_mask.any():
     deck_long = deck_long[["draft_id", "two_drop_count", "card_name", "count"]]
     deck_long.to_csv(OUT_DEBUG_11, index=False)
     print(f"Dumped full decklists for 11 two-drops to {OUT_DEBUG_11}")
+
+col_name = "deck_"+checked_card
+# high 2 drop amount
+group1_mask = (df["two_drop_count"] >= 6)  & (df[col_name] >= 1)
+
+group1 = df[group1_mask]
+
+# --- Group 2: low 2 drop amount
+group2_mask = (df["two_drop_count"] < 6) & (df[col_name] >= 1)
+group2 = df[group2_mask]
+
+# Results
+results = {
+    "Low 2 drops + bad two-drop": {
+        "deck_count": len(group2),
+        "win_rate": group2["won"].mean() if len(group2) > 0 else None
+    },
+    "High 2 drops + bad two-drop": {
+        "deck_count": len(group1),
+        "win_rate": group1["won"].mean() if len(group1) > 0 else None
+    }
+}
+
+print(results)
+
+df= pd.DataFrame(summary)
+
+# Filter rows with less than 6 two-drops
+subset = df[df['two_drop_count'] < 6]
+#print((subset.head()))
+# Compute weighted average
+weighted_avg_win_rate = (subset['win_rate'] * subset['deck_count']).sum() / subset['deck_count'].sum()
+
+print("win rate for decks with less than 6 two-drops: ", weighted_avg_win_rate)
+
+#weighted_avg_win_rate = subset['deck_count'].sum()   #debug message to check amount of decks
+
+#print(weighted_avg_win_rate)
+
+# Filter rows with more than 6 two-drops
+subset = df[df['two_drop_count'] >= 6]
+
+# Compute weighted average
+weighted_avg_win_rate = (subset['win_rate'] * subset['deck_count']).sum() / subset['deck_count'].sum()
+
+print("win rate for decks with more than 6 two-drops: ", weighted_avg_win_rate)
+
+#weighted_avg_win_rate = subset['deck_count'].sum()
+
+#print(weighted_avg_win_rate)
+
 
 # ---------- SANITY CHECKS ----------
 #print("\nSanity checks:")

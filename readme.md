@@ -54,11 +54,12 @@ checked the data for how many creatures you should have in the deck at minimum
 for it to not lower your win rate. The comparison is done in
 comparecreatureother.py.
 
+I also checked if it's better to add mediocre two-drops to the deck when the
+deck has a low amount of two-drops to balance it. This is done in 2dropcomparison.py
+Lands are included this time to be able to compare a blue/red deck excluding a bad
+blue/red two-drop vs a deck that's including the two-drop.
 
-
-todo1: 2 drop vs slightly better card when amount of 2 drops is low vs high
-
-todo3: ai project
+todo2: ai project
 
 
 
@@ -114,4 +115,7 @@ There is a calculator for outdated version of guinsoo's rageblade. The item used
 to give faster actions taken after every action that is taken, which can be
 simulated for an average increase. The calculations are done in calctftrandom.py.
 
-todo2: AI project
+todo1: AI project
+
+First, a csv with all the characters in the game needs to be found. It can be
+downloaded from https://raw.communitydragon.org/latest/cdragon/tft/en_us.json .
