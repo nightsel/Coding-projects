@@ -52,6 +52,7 @@
   background-color: #ecf0f1;
 }
 </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -78,6 +79,7 @@
   <h3>Sliding Puzzle</h3>
   <div id="puzzle"></div>
   <button id="resetPuzzleBtn">Reset Puzzle</button>
+  <button id="hintPuzzleBtn">Hint</button> <!-- Hint button -->
   <p id="puzzleMessage"></p>
 
   <h3>Sudoku Generator</h3>
@@ -89,7 +91,7 @@
     </select>
   </label>
   <button id="generateBtn">Generate Sudoku</button>
-  <table id="sudokuGrid" style="border-collapse: collapse; margin-top: 10px;"></table>
+  <table id="sudokuGrid" class="sudoku" style="border-collapse: collapse; margin-top: 10px;"></table>
   <p id="sudokuMessage" style="color: green; font-weight: bold;"></p>
 </div>
 
@@ -102,7 +104,7 @@
 
 <!-- end of all tab content -->
 
-<script src="slidingpuzzle.js"></script>
+<script src="slidingpuzzle3.js"></script>
 <script src="sudokugenerator.js"></script>
 <script>
   function openTab(evt, tabName) {
