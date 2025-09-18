@@ -1,3 +1,81 @@
 <! -- testfile -->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tabbed Website</title>
+<style>
+/* Tab buttons */
+.tab {
+  overflow: hidden;
+  border-bottom: 2px solid #ccc;
+}
+
+.tab button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tab button.active {
+  border-bottom: 2px solid #007bff;
+  font-weight: bold;
+}
+
+/* Tab content */
+.tabcontent {
+  display: none;
+  padding: 20px;
+  border-top: none;
+}
+</style>
+</head>
+<body>
+
+<h2>My Website with Tabs</h2>
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'Home')">Home</button>
+  <button class="tablinks" onclick="openTab(event, 'About')">About</button>
+  <button class="tablinks" onclick="openTab(event, 'Projects')">Projects</button>
+</div>
+
+<div id="Home" class="tabcontent">
+  <h3>Home</h3>
+  <p>Welcome to the home page!</p>
+</div>
+
+<div id="About" class="tabcontent">
+  <h3>About</h3>
+  <p>This is the about section.</p>
+</div>
+
+<div id="Projects" class="tabcontent">
+  <h3>Projects</h3>
+  <p>Check out my projects here.</p>
+</div>
+
+<script>
+function openTab(evt, tabName) {
+  const tabcontent = document.querySelectorAll(".tabcontent");
+  tabcontent.forEach(tc => tc.style.display = "none");
+
+  const tablinks = document.querySelectorAll(".tablinks");
+  tablinks.forEach(tl => tl.classList.remove("active"));
+
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.classList.add("active");
+}
+
+// Open the first tab by default
+document.querySelector(".tablinks").click();
+</script>
+
+</body>
+</html>
+
 <p>Link to GitHub here: <a href="https://github.com/nightsel/coding-projects" target="_blank">My GitHub Repository</a></p>
