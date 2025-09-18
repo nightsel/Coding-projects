@@ -78,8 +78,27 @@ function initSlidingPuzzle() {
 
     if (!puzzle) return;
 
-    // Your sliding puzzle code here
-    // e.g., generate tiles, handle clicks, etc.
+    // Clear old puzzle
+    puzzle.innerHTML = "";
+
+    // Example 4x4 puzzle
+    const size = 4;
+    const tiles = [];
+    for (let i = 1; i < size*size; i++) tiles.push(i);
+    tiles.push(""); // empty tile
+    tiles.sort(() => Math.random() - 0.5);
+
+    // Render tiles
+    tiles.forEach((num, idx) => {
+        const div = document.createElement("div");
+        div.className = num === "" ? "tile empty" : "tile";
+        div.textContent = num;
+        puzzle.appendChild(div);
+    });
+
+    // TODO: add click logic here
+
+    resetBtn.onclick = initSlidingPuzzle; // reset button
 }
 
 document.getElementById("resetBtn").addEventListener("click", initPuzzle);

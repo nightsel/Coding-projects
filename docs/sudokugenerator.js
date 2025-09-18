@@ -67,28 +67,33 @@ function removeNumbers(board, difficulty) {
 
 // Render the Sudoku grid
 function renderSudoku(board) {
+    const sudokuGrid = document.getElementById("sudokuGrid");
     sudokuGrid.innerHTML = "";
-    for (let i = 0; i < gridSize; i++) {
+
+    for (let i = 0; i < board.length; i++) {
         const tr = document.createElement("tr");
-        for (let j = 0; j < gridSize; j++) {
+        for (let j = 0; j < board[i].length; j++) {
             const td = document.createElement("td");
             td.style.border = "1px solid black";
             td.style.width = "40px";
             td.style.height = "40px";
             td.style.textAlign = "center";
-            td.style.fontSize = "20px";
+
             if (board[i][j] !== 0) {
-              td.textContent = board[i][j]; // prefilled numbers
+                // Pre-filled number
+                td.textContent = board[i][j];
             } else {
-              const input = document.createElement("input");
-              input.type = "text";
-              input.maxLength = 1;
-              input.style.width = "100%";
-              input.style.height = "100%";
-              input.style.textAlign = "center";
-              input.style.fontSize = "20px";
-              td.appendChild(input);
+                // Empty cell, allow user input
+                const input = document.createElement("input");
+                input.type = "text";
+                input.maxLength = 1;
+                input.style.width = "100%";
+                input.style.height = "100%";
+                input.style.fontSize = "20px";
+                input.style.textAlign = "center";
+                td.appendChild(input);
             }
+
             tr.appendChild(td);
         }
         sudokuGrid.appendChild(tr);
