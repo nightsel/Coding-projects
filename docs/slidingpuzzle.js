@@ -1,11 +1,3 @@
-<div id="Puzzles" class="tabcontent">
-  <h3>Sliding Puzzle</h3>
-  <div id="puzzle"></div>
-  <button id="resetBtn">Reset Puzzle</button>
-  <p id="message" style="color: green; font-weight: bold;"></p>
-</div>
-
-<script>
 const puzzleSize = 4;
 let tiles = [];
 let emptyIndex;
