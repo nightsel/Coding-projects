@@ -95,6 +95,17 @@ function renderSudoku(board) {
     }
 }
 
+function initSudoku() {
+    const generateBtn = document.getElementById("generateBtn");
+    if (!generateBtn) return;
+
+    generateBtn.addEventListener("click", () => {
+        const difficulty = document.getElementById("difficulty").value;
+        // Your sudoku generation and rendering code
+        document.getElementById("sudokuMessage").textContent = `Sudoku (${difficulty}) generated!`;
+    });
+}
+
 // Generate Sudoku
 document.getElementById("generateBtn").addEventListener("click", () => {
     let board = createEmptyGrid();

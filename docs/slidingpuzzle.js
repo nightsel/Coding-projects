@@ -71,6 +71,17 @@ function checkWin() {
     return true;
 }
 
+function initSlidingPuzzle() {
+    const puzzle = document.getElementById("puzzle");
+    const resetBtn = document.getElementById("resetPuzzleBtn");
+    const msg = document.getElementById("puzzleMessage");
+
+    if (!puzzle) return;
+
+    // Your sliding puzzle code here
+    // e.g., generate tiles, handle clicks, etc.
+}
+
 document.getElementById("resetBtn").addEventListener("click", initPuzzle);
 
 // Initialize on tab load

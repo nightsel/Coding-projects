@@ -99,21 +99,6 @@
   <p>Link to GitHub here: <a href="https://github.com/nightsel/coding-projects" target="_blank">My GitHub Repository</a></p>
 </div>
 
-<script>
-function openTab(evt, tabName) {
-  const tabcontent = document.querySelectorAll(".tabcontent");
-  tabcontent.forEach(tc => tc.style.display = "none");
-
-  const tablinks = document.querySelectorAll(".tablinks");
-  tablinks.forEach(tl => tl.classList.remove("active"));
-
-  document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.classList.add("active");
-}
-
-// Open the first tab by default
-document.querySelector(".tablinks").click();
-</script>
 
 <!-- end of all tab content -->
 
@@ -127,8 +112,15 @@ function openTab(evt, tabName) {
   const tablinks = document.querySelectorAll(".tablinks");
   tablinks.forEach(tl => tl.classList.remove("active"));
 
-  document.getElementById(tabName).style.display = "block";
+  const currentTab = document.getElementById(tabName);
+  currentTab.style.display = "block";
   evt.currentTarget.classList.add("active");
+
+  // Initialize puzzles when tab opens
+  if (tabName === "Puzzles") {
+      if (typeof initSlidingPuzzle === "function") initSlidingPuzzle();
+      if (typeof initSudoku === "function") initSudoku();
+  }
 }
 
 // Open the first tab by default
