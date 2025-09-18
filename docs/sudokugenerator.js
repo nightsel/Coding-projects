@@ -80,10 +80,8 @@ function renderSudoku(board) {
             td.style.textAlign = "center";
 
             if (board[i][j] !== 0) {
-                // Pre-filled number
                 td.textContent = board[i][j];
             } else {
-                // Empty cell, allow user input
                 const input = document.createElement("input");
                 input.type = "text";
                 input.maxLength = 1;
@@ -91,6 +89,9 @@ function renderSudoku(board) {
                 input.style.height = "100%";
                 input.style.fontSize = "20px";
                 input.style.textAlign = "center";
+
+                input.addEventListener("input", () => checkSudokuCompletion(board));
+
                 td.appendChild(input);
             }
 
@@ -98,6 +99,22 @@ function renderSudoku(board) {
         }
         sudokuGrid.appendChild(tr);
     }
+}
+
+function checkSudokuCompletion(board) {
+    const cells = document.querySelectorAll("#sudokuGrid input");
+    let completed = true;
+
+    cells.forEach((input, idx) => {
+        const row = Math.floor(idx / 9);
+        const col = idx % 9;
+        const val = parseInt(input.value);
+        if (val !== board[row][col]) completed = false;
+    });
+
+    const msg = document.getElementById("sudokuMessage");
+    if (completed) msg.textContent = "Congratulations! Sudoku completed!";
+    else msg.textContent = "";
 }
 
 function initSudoku() {

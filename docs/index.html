@@ -105,23 +105,18 @@
 <script src="slidingpuzzle.js"></script>
 <script src="sudokugenerator.js"></script>
 <script>
-function openTab(evt, tabName) {
-  const tabcontent = document.querySelectorAll(".tabcontent");
-  tabcontent.forEach(tc => tc.style.display = "none");
+  function openTab(evt, tabName) {
+    const tabcontent = document.querySelectorAll(".tabcontent");
+    tabcontent.forEach(tc => tc.style.display = "none");
 
-  const tablinks = document.querySelectorAll(".tablinks");
-  tablinks.forEach(tl => tl.classList.remove("active"));
+    const tablinks = document.querySelectorAll(".tablinks");
+    tablinks.forEach(tl => tl.classList.remove("active"));
 
-  const currentTab = document.getElementById(tabName);
-  currentTab.style.display = "block";
-  evt.currentTarget.classList.add("active");
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.classList.add("active");
 
-  // Initialize puzzles when tab opens
-  if (tabName === "Puzzles") {
-      if (typeof initSlidingPuzzle === "function") initSlidingPuzzle();
-      if (typeof initSudoku === "function") initSudoku();
+    if (tabName === "Puzzles") initSlidingPuzzle();
   }
-}
 
 // Open the first tab by default
 document.querySelector(".tablinks").click();

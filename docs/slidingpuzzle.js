@@ -78,25 +78,23 @@ function initSlidingPuzzle() {
 
     if (!puzzle) return;
 
-    // Clear old puzzle
+    // Clear previous puzzle
     puzzle.innerHTML = "";
 
-    // Example 4x4 puzzle
+    // Create tiles 1-15 + empty
     const size = 4;
-    const tiles = [];
-    for (let i = 1; i < size*size; i++) tiles.push(i);
+    const tiles = [...Array(size*size).keys()].slice(1); // 1..15
     tiles.push(""); // empty tile
     tiles.sort(() => Math.random() - 0.5);
 
-    // Render tiles
-    tiles.forEach((num, idx) => {
+    tiles.forEach(num => {
         const div = document.createElement("div");
         div.className = num === "" ? "tile empty" : "tile";
         div.textContent = num;
         puzzle.appendChild(div);
-    });
 
-    // TODO: add click logic here
+        // TODO: add click event to move tiles
+    });
 
     resetBtn.onclick = initSlidingPuzzle; // reset button
 }
