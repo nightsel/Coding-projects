@@ -77,7 +77,18 @@ function renderSudoku(board) {
             td.style.height = "40px";
             td.style.textAlign = "center";
             td.style.fontSize = "20px";
-            td.textContent = board[i][j] || "";
+            if (board[i][j] !== 0) {
+              td.textContent = board[i][j]; // prefilled numbers
+            } else {
+              const input = document.createElement("input");
+              input.type = "text";
+              input.maxLength = 1;
+              input.style.width = "100%";
+              input.style.height = "100%";
+              input.style.textAlign = "center";
+              input.style.fontSize = "20px";
+              td.appendChild(input);
+            }
             tr.appendChild(td);
         }
         sudokuGrid.appendChild(tr);
