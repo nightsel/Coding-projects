@@ -1,37 +1,85 @@
-// Example JavaScript for a 4x4 sliding puzzle
-        const puzzle = document.getElementById('puzzle');
-        let tiles = Array.from({length: 15}, (_, i) => i + 1);
-        tiles.push(null); // empty tile
+<div id="Puzzles" class="tabcontent">
+  <h3>Sliding Puzzle</h3>
+  <div id="puzzle"></div>
+  <button id="resetBtn">Reset Puzzle</button>
+  <p id="message" style="color: green; font-weight: bold;"></p>
+</div>
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
+<script>
+const puzzleSize = 4;
+let tiles = [];
+let emptyIndex;
 
-        function render() {
-            puzzle.innerHTML = '';
-            tiles.forEach((num, idx) => {
-                const div = document.createElement('div');
-                div.className = 'tile';
-                if (num === null) div.classList.add('empty');
-                else div.textContent = num;
-                div.addEventListener('click', () => move(idx));
-                puzzle.appendChild(div);
-            });
-        }
+function initPuzzle() {
+    tiles = [];
+    const puzzle = document.getElementById("puzzle");
+    puzzle.innerHTML = "";
 
-        function move(idx) {
-            const emptyIdx = tiles.indexOf(null);
-            const row = Math.floor(idx / 4), col = idx % 4;
-            const emptyRow = Math.floor(emptyIdx / 4), emptyCol = emptyIdx % 4;
-            if ((row === emptyRow && Math.abs(col - emptyCol) === 1) ||
-                (col === emptyCol && Math.abs(row - emptyRow) === 1)) {
-                [tiles[idx], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[idx]];
-                render();
-            }
-        }
+    // Create tiles 1-15
+    for (let i = 1; i < puzzleSize * puzzleSize; i++) {
+        tiles.push(i);
+    }
+    tiles.push(null); // empty tile
+    shuffle(tiles);
 
-        shuffle(tiles);
-        render();
+    emptyIndex = tiles.indexOf(null);
+
+    // Render tiles
+    tiles.forEach((num, idx) => {
+        const div = document.createElement("div");
+        div.className = num ? "tile" : "tile empty";
+        div.textContent = num ? num : "";
+        div.addEventListener("click", () => moveTile(idx));
+        puzzle.appendChild(div);
+    });
+
+    document.getElementById("message").textContent = "";
+}
+
+// Fisher-Yates shuffle
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// Move tile if next to empty
+function moveTile(idx) {
+    const rowEmpty = Math.floor(emptyIndex / puzzleSize);
+    const colEmpty = emptyIndex % puzzleSize;
+    const rowTile = Math.floor(idx / puzzleSize);
+    const colTile = idx % puzzleSize;
+
+    const isAdjacent = (Math.abs(rowEmpty - rowTile) + Math.abs(colEmpty - colTile)) === 1;
+    if (!isAdjacent) return;
+
+    // Swap
+    [tiles[emptyIndex], tiles[idx]] = [tiles[idx], tiles[emptyIndex]];
+    emptyIndex = idx;
+    renderTiles();
+
+    if (checkWin()) {
+        document.getElementById("message").textContent = "🎉 Puzzle Completed!";
+    }
+}
+
+function renderTiles() {
+    const puzzle = document.getElementById("puzzle");
+    Array.from(puzzle.children).forEach((div, idx) => {
+        div.textContent = tiles[idx] ? tiles[idx] : "";
+        div.className = tiles[idx] ? "tile" : "tile empty";
+    });
+}
+
+function checkWin() {
+    for (let i = 0; i < tiles.length - 1; i++) {
+        if (tiles[i] !== i + 1) return false;
+    }
+    return true;
+}
+
+document.getElementById("resetBtn").addEventListener("click", initPuzzle);
+
+// Initialize on tab load
+initPuzzle();
