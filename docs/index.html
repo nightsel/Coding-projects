@@ -79,7 +79,6 @@
   <div id="puzzle"></div>
   <button id="resetPuzzleBtn">Reset Puzzle</button>
   <p id="puzzleMessage"></p>
-  <script src="slidingpuzzle.js"></script>
 
   <h3>Sudoku Generator</h3>
   <label>Difficulty:
@@ -92,7 +91,6 @@
   <button id="generateBtn">Generate Sudoku</button>
   <table id="sudokuGrid" style="border-collapse: collapse; margin-top: 10px;"></table>
   <p id="sudokuMessage" style="color: green; font-weight: bold;"></p>
-  <script src="sudokugenerator.js"></script>
 </div>
 
 <div id="Projects" class="tabcontent">
@@ -117,5 +115,24 @@ function openTab(evt, tabName) {
 document.querySelector(".tablinks").click();
 </script>
 
+<!-- end of all tab content -->
+
+<script src="slidingpuzzle.js"></script>
+<script src="sudokugenerator.js"></script>
+<script>
+function openTab(evt, tabName) {
+  const tabcontent = document.querySelectorAll(".tabcontent");
+  tabcontent.forEach(tc => tc.style.display = "none");
+
+  const tablinks = document.querySelectorAll(".tablinks");
+  tablinks.forEach(tl => tl.classList.remove("active"));
+
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.classList.add("active");
+}
+
+// Open the first tab by default
+document.querySelector(".tablinks").click();
+</script>
 </body>
 </html>
