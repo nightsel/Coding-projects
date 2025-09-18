@@ -115,9 +115,10 @@ def top_synergy_team(df, thresholds, max_units=8):
     chosen = pd.DataFrame(columns=df.columns)
     remaining = df.copy()
 
+    remaining = remaining.reset_index(drop=True)
     while len(chosen) < max_units and not remaining.empty:
         best_unit = None
-        best_gain = -1
+        best_gain = -2
 
         for i, row in remaining.iterrows():
             trial = pd.concat([chosen, pd.DataFrame([row])], ignore_index=True)
@@ -125,13 +126,82 @@ def top_synergy_team(df, thresholds, max_units=8):
             if gain > best_gain:
                 best_gain = gain
                 best_unit = i
+        if best_unit is not None:
+            # Add the best unit to chosen
+            chosen = pd.concat([chosen, pd.DataFrame([remaining.iloc[best_unit]])], ignore_index=True)
 
-        # Add the best unit and remove it from pool
-        chosen = pd.concat([chosen, pd.DataFrame([remaining.loc[best_unit]])], ignore_index=True)
-        remaining = remaining.drop(best_unit)
+            # Drop the same row from remaining safely
+            remaining = remaining.drop(best_unit).reset_index(drop=True)
 
     return chosen
 
+def monte_carlo_shop_turn(df, shop, gold, thresholds, champions_by_cost, probabilities, trials=100):
+    """
+    Decide which champions to buy/sell using Monte Carlo simulations.
+    Returns updated df, gold, bought, sold.
+    """
+    best_action = None
+    best_score = -1
+
+    # Define candidate actions: buy any champ in shop or reroll
+    actions = []
+    for champ in shop:
+        if champ["cost"] <= gold:
+            actions.append(("buy", champ))
+    actions.append(("reroll", None))  # optional reroll action
+
+    # Evaluate each action
+    for action, champ in actions:
+        scores = []
+
+        for _ in range(trials):
+            df_copy = df.copy()
+            gold_copy = gold
+            if action == "buy":
+                df_copy = pd.concat([df_copy, pd.DataFrame([champ])], ignore_index=True)
+                gold_copy -= champ["cost"]
+            elif action == "reroll":
+                # simulate rerolled shop
+                shop_copy = generate_shop(champions_by_cost, probabilities)
+                # optionally pick a random champion to buy in this simulation
+                if shop_copy:
+                    sim_champ = random.choice(shop_copy)
+                    df_copy = pd.concat([df_copy, pd.DataFrame([sim_champ])], ignore_index=True)
+                    gold_copy -= sim_champ["cost"]
+
+            # simulate buying random units until gold runs out
+            while gold_copy > 0:
+                costs = [1, 2, 3, 4, 5]
+
+                # pick cost correctly
+                chosen_cost = random.choices(costs, weights=probabilities, k=1)[0]  # returns int 1..5
+
+                # now pick a champion from that cost
+                champ_to_buy = random.choice(champions_by_cost[chosen_cost])
+                df_copy = pd.concat([df_copy, pd.DataFrame([champ_to_buy])], ignore_index=True)
+                gold_copy -= champ_to_buy["cost"]
+
+            # calculate synergy for top 8 champions
+            top_team = top_synergy_team(df_copy, thresholds, 8)
+            synergies = count_synergies(top_team, thresholds)
+            scores.append(len(synergies))
+
+        avg_score = sum(scores) / len(scores)
+        if avg_score > best_score:
+            best_score = avg_score
+            best_action = (action, champ)
+
+    # Execute the chosen action
+    bought, sold = [], []
+    if best_action[0] == "buy":
+        df = pd.concat([df, pd.DataFrame([best_action[1]])], ignore_index=True)
+        gold -= best_action[1]["cost"]
+        bought.append(best_action[1]["name"])
+    elif best_action[0] == "reroll":
+        # implement reroll logic here
+        pass
+
+    return df, gold, bought, sold
 
 
 def count_synergies(df, thresholds):
@@ -162,7 +232,7 @@ def count_synergies(df, thresholds):
                     active_synergies.append((trait, threshold))
 
     return active_synergies
-    
+
 def generate_shop(champions_by_cost, probabilities, shop_size=5):
     """
     Generate a random shop of champions according to cost probabilities.

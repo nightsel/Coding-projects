@@ -43,29 +43,33 @@ synergy_thresholds = {
 # Reroll probability manually from https://blitz.gg/tft/guides/reroll
 reroll_probability_8 = [.17, .24, .32, .24, .03]
 
-currentgold = 20
-stop_loop = 0
-total_gold_spent = 0
-board = pd.DataFrame(columns=["name", "cost", "traits"])
-
 # The Crew synergy is bugged within data file, so it needs to be input manually
 synergy_thresholds["The Crew"] = [2, 3, 4, 5]
+iterations_of_algorithm = 10
+synergies_found_total = 0
+for i in range(iterations_of_algorithm):
+    currentgold = 20
+    stop_loop = 0
+    total_gold_spent = 0
+    board = pd.DataFrame(columns=["name", "cost", "traits"])
+    while stop_loop != 10:
+        #active_synergies_count = count_synergies(board, synergy_thresholds)
+        shop = generate_shop(champions_by_cost, reroll_probability_8)
+        #champ_to_buy = pick_best_champion(board, shop, synergy_thresholds, currentgold)
+        #print(f"AI buys: {champ_to_buy['name']} ({champ_to_buy['traits']})")
+        #board = pd.concat([board, pd.DataFrame([champ_to_buy])], ignore_index=True)
+        board, currentgold, b, sold = simulate_shop_turn(board,shop,currentgold,synergy_thresholds)
+        #currentgold -= champ_to_buy["cost"]
+        #total_gold_spent += champ_to_buy["cost"]
+        #print(count_synergies(df_limited, synergy_thresholds))
+        #reward = len(active_synergies_count) * 10 - total_gold_spent
+        stop_loop += 1
 
 
-while stop_loop != 10:
-    #active_synergies_count = count_synergies(board, synergy_thresholds)
-    shop = generate_shop(champions_by_cost, reroll_probability_8)
-    #champ_to_buy = pick_best_champion(board, shop, synergy_thresholds, currentgold)
-    #print(f"AI buys: {champ_to_buy['name']} ({champ_to_buy['traits']})")
-    #board = pd.concat([board, pd.DataFrame([champ_to_buy])], ignore_index=True)
-    board, currentgold, b, sold = simulate_shop_turn(board,shop,currentgold,synergy_thresholds)
-    #currentgold -= champ_to_buy["cost"]
-    #total_gold_spent += champ_to_buy["cost"]
     df_limited = top_synergy_team(board, synergy_thresholds, max_units=8)
-    #print(count_synergies(df_limited, synergy_thresholds))
-    #reward = len(active_synergies_count) * 10 - total_gold_spent
-    stop_loop += 1
+    synergies_found_total = synergies_found_total + len(count_synergies(df_limited, synergy_thresholds))
 
-print(board)
-df_limited = top_synergy_team(board, synergy_thresholds, max_units=8)
-print(count_synergies(df_limited, synergy_thresholds))
+# Average amount of synergies found per iteration step.
+print(synergies_found_total/iterations_of_algorithm)
+
+# ~6.5 synergies on average
