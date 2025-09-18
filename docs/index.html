@@ -53,6 +53,37 @@
   <h3>About</h3>
   <p>This is the about section.</p>
 </div>
+<head>
+<div id="Puzzles" class="tabcontent">
+  <meta charset="UTF-8">
+   <title>Sliding Puzzle</title>
+   <style>
+       /* Example styling */
+       #puzzle {
+           display: grid;
+           grid-template-columns: repeat(4, 100px);
+           grid-gap: 5px;
+       }
+       .tile {
+           width: 100px;
+           height: 100px;
+           background-color: #3498db;
+           color: white;
+           font-size: 2em;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           cursor: pointer;
+       }
+       .empty {
+           background-color: #ecf0f1;
+       }
+   </style>
+</head>
+<body>
+   <h1>Sliding Puzzle</h1>
+   <div id="puzzle"></div>
+
 
 <div id="Projects" class="tabcontent">
   <h3>Projects</h3>
