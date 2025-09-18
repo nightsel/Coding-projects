@@ -4,6 +4,8 @@ from tft_utils import create_champ_df
 from tft_utils import count_synergies
 from tft_utils import generate_shop
 from tft_utils import pick_best_champion
+from tft_utils import simulate_shop_turn
+from tft_utils import top_synergy_team
 
 
 # Create a dataframe out of tft champion data, including champion name, cost
@@ -46,15 +48,24 @@ stop_loop = 0
 total_gold_spent = 0
 board = pd.DataFrame(columns=["name", "cost", "traits"])
 
-while stop_loop != 7:
-    active_synergies_count = count_synergies(board, synergy_thresholds)
-    shop = generate_shop(champions_by_cost, reroll_probability_8)
-    champ_to_buy = pick_best_champion(board, shop, synergy_thresholds, currentgold)
-    print(f"AI buys: {champ_to_buy['name']} ({champ_to_buy['traits']})")
-    board = pd.concat([board, pd.DataFrame([champ_to_buy])], ignore_index=True)
-    currentgold -= champ_to_buy["cost"]
-    total_gold_spent += champ_to_buy["cost"]
+# The Crew synergy is bugged within data file, so it needs to be input manually
+synergy_thresholds["The Crew"] = [2, 3, 4, 5]
 
-    print(count_synergies(board, synergy_thresholds))
+
+while stop_loop != 10:
+    #active_synergies_count = count_synergies(board, synergy_thresholds)
+    shop = generate_shop(champions_by_cost, reroll_probability_8)
+    #champ_to_buy = pick_best_champion(board, shop, synergy_thresholds, currentgold)
+    #print(f"AI buys: {champ_to_buy['name']} ({champ_to_buy['traits']})")
+    #board = pd.concat([board, pd.DataFrame([champ_to_buy])], ignore_index=True)
+    board, currentgold, b, sold = simulate_shop_turn(board,shop,currentgold,synergy_thresholds)
+    #currentgold -= champ_to_buy["cost"]
+    #total_gold_spent += champ_to_buy["cost"]
+    df_limited = top_synergy_team(board, synergy_thresholds, max_units=8)
+    #print(count_synergies(df_limited, synergy_thresholds))
     #reward = len(active_synergies_count) * 10 - total_gold_spent
     stop_loop += 1
+
+print(board)
+df_limited = top_synergy_team(board, synergy_thresholds, max_units=8)
+print(count_synergies(df_limited, synergy_thresholds))

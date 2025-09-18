@@ -48,7 +48,8 @@ stop_loop = 0
 total_gold_spent = 0
 board = pd.DataFrame(columns=["name", "cost", "traits"])
 
-
+# The Crew synergy is bugged within data file, so it needs to be input manually
+synergy_thresholds["The Crew"] = [2, 3, 4, 5]
 
 
 while stop_loop != 10:
