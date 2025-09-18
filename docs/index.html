@@ -77,24 +77,20 @@
 <div id="Puzzles" class="tabcontent">
   <h3>Sliding Puzzle</h3>
   <div id="puzzle"></div>
-  <script src="slidingpuzzle.js"></script>
+  <button id="resetPuzzleBtn">Reset Puzzle</button>
+  <p id="puzzleMessage"></p>
 
-  <div id="Sudoku" class="tabcontent">
-    <h3>Sudoku Generator</h3>
-    <label>Difficulty:
-      <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
-    </label>
-    <button id="generateBtn">Generate Sudoku</button>
-    <table id="sudokuGrid" style="border-collapse: collapse; margin-top: 10px;"></table>
-    <p id="sudokuMessage" style="color: green; font-weight: bold;"></p>
-  </div>
-
-  <script src="sudokugenerator.js"> </script>
-
+  <h3>Sudoku Generator</h3>
+  <label>Difficulty:
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </label>
+  <button id="generateBtn">Generate Sudoku</button>
+  <table id="sudokuGrid" style="border-collapse: collapse; margin-top: 10px;"></table>
+  <p id="sudokuMessage" style="color: green; font-weight: bold;"></p>
 </div>
 
 <div id="Projects" class="tabcontent">
