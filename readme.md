@@ -1,5 +1,5 @@
 Here are coding projects that I have made for 3 video games. Most of the
-codes are using ChatGPT to form a structure that gets troubleshooted when it
+codes are using ChatGPT to form a structure that gets debugged when it
 fails.
 
 Results from scripts are written inside the script code to not waste space here.
