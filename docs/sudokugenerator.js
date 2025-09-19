@@ -40,36 +40,35 @@ function fillBoard(board) {
     return true;
 }
 
-function giveHint(board, solutionBoard) {
-    // Find all empty cells
+function giveHint() {
+    // collect all truly empty cells
     const emptyCells = [];
+
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (board[i][j] === 0) {
-                emptyCells.push({ i, j });
+            const cell = document.querySelector(`#sudokuGrid tr:nth-child(${i + 1}) td:nth-child(${j + 1})`);
+            const input = cell.querySelector("input");
+
+            // only consider if it's an <input> and it's empty
+            if (input && input.value.trim() === "") {
+                emptyCells.push({ i, j, input });
             }
         }
     }
 
     if (emptyCells.length === 0) {
-        alert("No empty cells left!");
+        alert("No empty cells left for hints!");
         return;
     }
 
-    // Pick a random empty cell
-    const { i, j } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    // pick a random empty cell
+    const { i, j, input } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
 
-    // Fill it with the correct solution number
-    board[i][j] = solutionBoard[i][j];
+    // fill with correct value from solutionBoard
+    input.value = solutionBoard[i][j];
+    input.disabled = true; // make it uneditable so player knows it's a hint
+    checkSudokuCompletion();
 
-    // Update the HTML cell
-    const table = document.getElementById("sudokuGrid");
-
-    const cell = table.rows[i].cells[j];
-
-    // Clear any input box and show the fixed number
-    cell.innerHTML = solutionBoard[i][j];
-    cell.classList.add("hint"); // style differently if you want
 }
 
 // Shuffle helper
@@ -99,6 +98,22 @@ function removeNumbers(board, difficulty) {
     return board;
 }
 
+function generateSudoku(difficulty = "easy") {
+    board = createEmptyGrid();
+    fillBoard(board);
+
+    // Save solution
+    solutionBoard = board.map(row => [...row]);
+
+    // Remove numbers based on difficulty
+    board = removeNumbers(board, difficulty);
+
+    // Render
+    renderSudoku(board);
+
+    document.getElementById("sudokuMessage").textContent = `Sudoku (${difficulty}) generated!`;
+}
+
 // Render the Sudoku grid
 function renderSudoku(board) {
     const sudokuGrid = document.getElementById("sudokuGrid");
@@ -124,7 +139,7 @@ function renderSudoku(board) {
                 input.style.fontSize = "20px";
                 input.style.textAlign = "center";
 
-                input.addEventListener("input", () => checkSudokuCompletion());
+                input.addEventListener("input", checkSudokuCompletion());
                 // Check mistakes on input
                 input.addEventListener("input", () => checkMistakes(i, j, input));
                 td.appendChild(input);
@@ -137,15 +152,29 @@ function renderSudoku(board) {
 }
 
 function checkSudokuCompletion() {
-    const inputs = document.querySelectorAll("#sudokuGrid input");
+    const table = document.getElementById("sudokuGrid");
+    if (!table || !table.rows.length) return; // table not ready yet
+
     let complete = true;
 
-    inputs.forEach((input, idx) => {
-        const row = Math.floor(idx / 9);
-        const col = idx % 9;
-        const val = parseInt(input.value);
-        if (val !== solutionBoard[row][col]) complete = false;
-    });
+    for (let row = 0; row < 9; row++) {
+        const tr = table.rows[row];
+        if (!tr) { complete = false; break; }
+
+        for (let col = 0; col < 9; col++) {
+            const cell = tr.cells[col];
+            if (!cell) { complete = false; break; }
+
+            const input = cell.querySelector("input");
+            if (input) {
+                const val = parseInt(input.value);
+                if (val !== solutionBoard[row][col]) complete = false;
+            } else {
+                const val = parseInt(cell.textContent);
+                if (val !== solutionBoard[row][col]) complete = false;
+            }
+        }
+    }
 
     const msg = document.getElementById("sudokuMessage");
     if (complete) msg.textContent = "🎉 Congratulations! Sudoku completed!";
@@ -181,12 +210,10 @@ function initSudoku() {
 
 // Generate Sudoku
 document.getElementById("generateBtn").addEventListener("click", () => {
-    board = createEmptyGrid();
-    fillBoard(board);
-
-    solutionBoard = board.map(row => [...row]);
     const difficulty = document.getElementById("difficulty").value;
-    board = removeNumbers(board, difficulty);
-    renderSudoku(board);
-    document.getElementById("sudokuMessage").textContent = `Sudoku (${difficulty}) generated!`;
+    generateSudoku(difficulty);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    generateSudoku("easy");
 });

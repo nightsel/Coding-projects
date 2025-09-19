@@ -334,12 +334,14 @@ function stepHint() {
         tiles = currentPlan.shift();
 
         renderPuzzle();
+        checkWin();
     }
 
     if (areTilesInPlace(tiles, tilesToMove)) {
         nextHintTile += tilesToMove.length;
         currentPlan = [];
         iterationCount = 0;
+        checkWin();
     }
 }
 
