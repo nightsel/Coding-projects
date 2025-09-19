@@ -96,7 +96,16 @@
   <p id="sudokuMessage" style="color: green; font-weight: bold;"></p>
   <button onclick="giveHint(board, solutionBoard)">Give Hint</button>
   <text><br> The hint fills one of the unfilled squares </text>
+
+  <h3>Hangman</h3>
+  <div id="wordDisplay">Loading...</div>
+  <div id="letters"></div>
+  <p id="hint"></p>
+  <p id="message"></p>
+  <button onclick="startGame()">🔄 New Game</button>
+
 </div>
+
 
 <div id="Projects" class="tabcontent">
   <h3>Projects</h3>
@@ -109,6 +118,7 @@
 
 <script src="slidingpuzzle3.js"></script>
 <script src="sudokugenerator.js"></script>
+<script src="hangman.js"></script>
 <script>
   function openTab(evt, tabName) {
     const tabcontent = document.querySelectorAll(".tabcontent");
