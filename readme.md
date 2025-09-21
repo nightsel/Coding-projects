@@ -132,3 +132,10 @@ rollingAI2.py is a more complicated version. It can sell buy more than 1 charact
 from the shop and sell characters when they aren't useful for the current team.
 It also uses more complicated logic to determine which characters are the best to
 buy by considering the next shops, not just the current shop.
+
+The results are that rollingAI2 performs better in every way and the difference
+becomes more noticeable with more time given to calculate.
+
+The next AI version would probably use neural networks but the training time
+is likely not worth it compared to spending it on the rollingAI2 and this problem
+isn't complicated for neural networks to be useful.
