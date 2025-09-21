@@ -1,6 +1,11 @@
-Here are coding projects that I have made for 3 video games. Most of the
-codes are using ChatGPT to form a structure that gets debugged when it
-fails.
+Folder docs contains the code for the website https://nightsel.github.io/Coding-projects/ .
+Folder leetcode contains the codes I made for practice in leetcode.com .
+
+
+
+The rest of the code folders were made for 3 video games to practice data analysis,
+data processing, calculations and AI. Most of the
+codes are using ChatGPT to form a structure that gets debugged when it fails.
 
 Results from scripts are written inside the script code to not waste space here.
 
