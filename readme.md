@@ -1,5 +1,5 @@
 Folder docs contains the code for the website https://nightsel.github.io/Coding-projects/ .
-Folder leetcode contains the codes I made for practice in https://leetcode.com .
+Folder leetcode contains the codes I made for practice in https://leetcode.com/problemset/ .
 
 
 
