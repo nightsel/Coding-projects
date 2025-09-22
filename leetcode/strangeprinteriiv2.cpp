@@ -1,4 +1,5 @@
-// This doe not work fully accurately but it's close.
+// had to use chatgpt for the graph cycle recursion becaue I wasn't sure how to
+// implement it even though I got the idea.
 class Solution {
 public:
 
@@ -27,12 +28,12 @@ public:
 
 
         // find smallest square containing all squares colored
-        // easiest way is to check rows starting from top and bottom, then check columns starting from left and right.
+        // easiest way is to check rows starting from top, then check columns starting from left.
         // do it for each color. store in a vector.
-        cout << "colors \n";
+        /*cout << "colors \n";
         for (int i = 0; i < colors.size(); i++) {
             cout << colors[i] << "\n";
-        }
+        }*/
         vector<vector<int>> colorsizes(colors.size(), vector<int>(4));
         int j;
         int k;
@@ -108,24 +109,22 @@ public:
                     }
             }
         }
+        /*
         cout << "listproblems\n";
         for (int i = 0; i < problems.size(); i++) {
             for (int j = 0;j < problems[i].size(); j++ ) {
                 cout << i << j << problems[i][j] << "\n";
             }
-        }
+        }*/
         for (int i = 0; i < problems.size(); i++) {
             for (int j = 0; j < problems[i].size(); j++) {
                 if (problems[i][j] != -1) {
-                    int probcolor = problems[i][j];
-                    return findproblem(problems, probcolor, i, j, colors);
+                    return findproblem(problems);
                 }
             }
         }
 
         return true;
-
-
     }
 
         vector<int> ontopcolors(vector<vector<int>> colorsizes, int color, vector<int> colors) {
@@ -151,24 +150,35 @@ public:
             }
             return ontopc;
         }
-        void solve(vector<vector<int>>problems, int probcolor, int i, int j, vector<int>colors, int& currentcolor, vector<int>& problemloop, int& error) {
-            if (std::find(problems[probcolor].begin(),problems[probcolor].end(), i) != problems[probcolor].end()) {
-                cout <<"problem found \n"<< colors[problems[i][j]] <<"\n" << i;
-                int currentcolor = problems[i][j];
 
-                error = 1;
+        bool dfsCycle(const vector<vector<int>>& problems, int node, vector<int>& visited, vector<int>& instack) {
+            visited[node] = 1;
+            instack[node] = 1;
+
+            for (int n : problems[node]){
+                if (!visited[n]) {
+                    if ( dfsCycle(problems,n, visited, instack)) {
+                        return true;
+                    }
+                }
+                else if ( instack[n]) {
+                    return true;
+                }
             }
+            instack[node] = 0;
+            return false;
         }
-        bool findproblem(vector<vector<int>>problems, int probcolor, int i, int j, vector<int>colors) {
-            vector<int>problemloop = {probcolor};
-            int error = 0;
-            int currentcolor = probcolor;
-            solve(problems,probcolor,i,j,colors,currentcolor,problemloop, error);
-            if (error == 1) {
-                return false;
-            }
 
+
+        bool findproblem(vector<vector<int>>&problems) {
+            int n = problems.size();
+            vector<int> visited(n, 0), inStack(n, 0);
+
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && dfsCycle(problems, i, visited, inStack)) {
+                    return false;
+                }
+            }
             return true;
         }
-
 };
