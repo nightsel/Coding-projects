@@ -1,7 +1,6 @@
 class Solution {
 public:
     int maxTaskAssign(vector<int>& tasks, vector<int>& workers, int pills, int strength) {
-        // This doesn't work properly yet for most cases but maybe there is the right idea.
         // if sorting worker and tasks, it's at least possible to get the highest strength worker on the highest strength task that they can handle. This would maximize the amount of tasks that workers can do if not taking into account strength pills.
         // However this doesn't take into account strength pills at all. A simple method would be to give strength pills to workers that barely couldn't complete a task.
 
@@ -15,11 +14,25 @@ public:
         // if there's less tasks than workers, then strongest workers do strongest tasks. if there's less workers than tasks, then the least strong workers start doing tasks based on what is the least strength requiring.
         // If there's more workers than tasks it gets more complicated. Only the strongest workers should be included in calculations, everyone else are useless. Start from the end of the vector.
         // if there's too many impossible tasks for workers to complete, then the workers should be cut even more.
-        std::sort(tasks.begin(),tasks.end(),std::greater<>());
+        std::sort(tasks.begin(),tasks.end());
         std::sort(workers.begin(),workers.end(),std::greater<>());
-        if (tasks.size() < workers.size()) {
-            workers.resize(tasks.size());
+        int workercount = 0;
+        for (int i = 0; i < workers.size() ; i++) {
+            if (i < tasks.size()) {
+                if (workers[i] >= tasks[i]) workercount++;
+            }
         }
+        workers.resize(workercount+pills);
+        if (workers.size() >= tasks.size()) workers.resize(tasks.size());
+        else tasks.resize(workers.size());
+
+        std::sort(tasks.begin(),tasks.end(),std::greater<>());
+
+        /*for (int i = 0 ; i < tasks.size() ; i++) {
+            cout << "workers" << workers[i] << "\n";
+            cout << "tasks" << tasks[i] << "\n";
+        }*/
+
         int tasksdone = 0;
         for (int i =0; i< tasks.size() ; i++) {
 
