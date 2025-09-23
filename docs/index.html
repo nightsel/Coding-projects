@@ -144,8 +144,38 @@ in the link in Projects tab.</p>
   <input type="text" id="urlInput" placeholder="Enter website URL">
   <button id="searchBtn">Search</button>
   <div id="results"></div> -->
+  <h5>Weather reporter</h5>
+  <input id="city" placeholder="Enter city">
+  <button onclick="fetchWeather()">Get Weather</button>
+  <div id="output"></div>
 
-  <p>My other projects are here. There's leetcode scripts that I published here,
+  <script>
+  async function fetchWeather() {
+    const city = document.getElementById("city").value;
+    try {
+      const response = await fetch(
+        `https://coding-projects-jh1hong4k-nightsels-projects.vercel.app/api/weather?q=${encodeURIComponent(city)}`
+      );
+      const data = await response.json();
+      if (data.error) {
+        document.getElementById("output").innerText = data.error.message || data.error;
+      } else {
+        document.getElementById("output").innerText =
+          `${data.location.name}: ${data.current.temp_c} °C, ${data.current.condition.text}`;
+      }
+    } catch (err) {
+      document.getElementById("output").innerText = err.message;
+    }
+  }
+  </script>
+
+  <br><br>
+
+  This uses weather API from <a href="https://www.weatherapi.com" target="_blank"> weatherapi.com </a> . I have the api key stored on cloud which is why the functions
+  are on cloud. But I also show my codes in the github repository folder my-app .
+
+
+  <p>My other projects are in the github repository link. There's leetcode scripts that I published here,
     I did them to practice programming so I didn't use ChatGPT other than for
     questions.
   Other projects that use ChatGPT are related to data analysis, data processing
