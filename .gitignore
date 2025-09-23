@@ -6,4 +6,4 @@
 *package*
 *package-lock*
 *.env
-my-app
+hello.js
