@@ -7,6 +7,7 @@ export default function Sudoku() {
   const [solutionBoard, setSolutionBoard] = useState([]);
   const [difficulty, setDifficulty] = useState("easy");
   const [message, setMessage] = useState("");
+  const [puzzleBoard, setPuzzleBoard] = useState([]); // the puzzle, zeros = empty
 
   // Initialize empty grid
   const createEmptyGrid = () => Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
@@ -66,12 +67,62 @@ export default function Sudoku() {
     return b;
   };
 
+  // Recursive solver that counts number of solutions up to 2
+  const countSolutions = (b) => {
+    let count = 0;
+
+    const solve = (board) => {
+      if (count > 1) return; // already more than 1 solution
+      for (let r = 0; r < gridSize; r++) {
+        for (let c = 0; c < gridSize; c++) {
+          if (board[r][c] === 0) {
+            for (let n = 1; n <= 9; n++) {
+              if (isSafe(board, r, c, n)) {
+                board[r][c] = n;
+                solve(board);
+                board[r][c] = 0;
+              }
+            }
+            return;
+          }
+        }
+      }
+      count++;
+    };
+
+    const copyBoard = b.map((row) => [...row]);
+    solve(copyBoard);
+    return count;
+  };
+
+  const removeNumbersUnique = (b, difficulty) => {
+    let attempts = difficulty === "easy" ? 30 : difficulty === "medium" ? 40 : 50;
+    while (attempts > 0) {
+      const row = Math.floor(Math.random() * 9);
+      const col = Math.floor(Math.random() * 9);
+      if (b[row][col] !== 0) {
+        const backup = b[row][col];
+        b[row][col] = 0;
+
+        // Only keep removal if puzzle still has exactly 1 solution
+        if (countSolutions(b) !== 1) {
+          b[row][col] = backup; // revert
+        } else {
+          attempts--;
+        }
+      }
+    }
+    return b;
+  };
+
+
   const generateSudoku = (diff = "easy") => {
     const newBoard = createEmptyGrid();
     fillBoard(newBoard);
-    setSolutionBoard(newBoard.map((row) => [...row])); // save solution
-    const puzzleBoard = removeNumbers(newBoard.map((row) => [...row]), diff);
-    setBoard(puzzleBoard);
+    setSolutionBoard(newBoard.map(row => [...row]));
+    const puzzle = removeNumbers(newBoard.map(row => [...row]), diff);
+    setBoard(puzzle);
+    setPuzzleBoard(puzzle); // save the puzzle
     setMessage(`Sudoku (${diff}) generated!`);
   };
 
@@ -146,39 +197,46 @@ export default function Sudoku() {
           {board.map((row, rIdx) => (
             <tr key={rIdx}>
               {row.map((cell, cIdx) => {
-                const isPrefilled = solutionBoard[rIdx][cIdx] === cell && cell !== 0;
-                const isCorrect = cell === solutionBoard[rIdx][cIdx];
-                const color = cell === 0 ? "black" : isPrefilled ? "black" : isCorrect ? "green" : "red";
-                return (
-                  <td
-                    key={cIdx}
-                    style={{
-                      border: "1px solid black",
-                      width: "40px",
-                      height: "40px",
-                      textAlign: "center",
-                    }}
-                  >
-                    {isPrefilled ? (
-                      cell
-                    ) : (
-                      <input
-                        type="text"
-                        maxLength="1"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          fontSize: "20px",
-                          textAlign: "center",
-                          color,
-                        }}
-                        value={cell === 0 ? "" : cell}
-                        onChange={(e) => handleInputChange(rIdx, cIdx, e.target.value)}
-                      />
-                    )}
-                  </td>
-                );
-              })}
+  // A cell is prefilled if the original puzzle had a number (not zero)
+  const isPrefilled = puzzleBoard[rIdx][cIdx] !== 0;
+  const isUserInput = !isPrefilled;
+  const isCorrect = isUserInput && cell === solutionBoard[rIdx][cIdx];
+  const color = isPrefilled ? "black" : cell === 0 ? "black" : isCorrect ? "green" : "red";
+
+  return (
+    <td
+      key={cIdx}
+      style={{
+        borderTop: rIdx % 3 === 0 ? "3px solid black" : "1px solid black",
+        borderLeft: cIdx % 3 === 0 ? "3px solid black" : "1px solid black",
+        borderBottom: rIdx === 8 ? "3px solid black" : "1px solid black",
+        borderRight: cIdx === 8 ? "3px solid black" : "1px solid black",
+        width: "40px",
+        height: "40px",
+        textAlign: "center",
+      }}
+    >
+      <input
+        type="text"
+        maxLength="1"
+        style={{
+          width: "100%",
+          height: "100%",
+          fontSize: "20px",
+          textAlign: "center",
+          color,
+          border: "none",     // remove default input border
+          padding: 0,         // remove default padding
+          margin: 0,
+          boxSizing: "border-box",
+        }}
+        value={cell === 0 ? "" : cell}
+        disabled={isPrefilled}
+        onChange={(e) => handleInputChange(rIdx, cIdx, e.target.value)}
+      />
+    </td>
+  );
+})}
             </tr>
           ))}
         </tbody>
