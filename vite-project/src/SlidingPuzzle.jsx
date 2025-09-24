@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   puzzleSize,
   astarMultipleTilesDebug,
@@ -19,11 +19,26 @@ export default function SlidingPuzzle() {
   const [currentPlan, setCurrentPlan] = useState([]);
   const [winMessage, setWinMessage] = useState("");
 
+  // --- Timer state ---
+  const [seconds, setSeconds] = useState(() => {
+    const saved = localStorage.getItem("slidingTime");
+    return saved ? parseInt(saved) : 0;
+  });
+  const timerRef = useRef(null);
+
+  // --- Timer logic ---
+  useEffect(() => {
+    if (winMessage) return; // stop timer if solved
+    timerRef.current = setInterval(() => setSeconds(prev => prev + 1), 1000);
+    return () => clearInterval(timerRef.current);
+  }, [winMessage]);
+
   // --- Save progress whenever tiles or hint state changes ---
   useEffect(() => {
     localStorage.setItem("slidingTiles", JSON.stringify(tiles));
     localStorage.setItem("slidingNextHintTile", JSON.stringify(nextHintTile));
-  }, [tiles, nextHintTile]);
+    localStorage.setItem("slidingTime", seconds.toString());
+  }, [tiles, nextHintTile, seconds]);
 
   function shuffleSolvable() {
     let arr = [...Array(puzzleSize * puzzleSize).keys()].slice(1);
@@ -65,10 +80,7 @@ export default function SlidingPuzzle() {
     setNextHintTile(1);
     setCurrentPlan([]);
     setWinMessage("");
-
-    // Clear storage too
-    localStorage.setItem("slidingTiles", JSON.stringify(arr));
-    localStorage.setItem("slidingNextHintTile", "1");
+    setSeconds(0); // reset timer
   };
 
   // Move tile manually
@@ -86,7 +98,7 @@ export default function SlidingPuzzle() {
       const newTiles = [...tiles];
       [newTiles[emptyIndex], newTiles[index]] = [newTiles[index], newTiles[emptyIndex]];
       setTiles(newTiles);
-      setCurrentPlan([]); // discard old path if user moves manually
+      setCurrentPlan([]);
       checkWin(newTiles);
     }
   };
@@ -95,9 +107,8 @@ export default function SlidingPuzzle() {
   const checkWin = (state = tiles) => {
     if (state.slice(0, -1).every((val, i) => val === i + 1)) {
       setWinMessage("🎉 You solved the puzzle!");
-    } else {
-      setWinMessage("");
-    }
+      clearInterval(timerRef.current); // stop timer
+    } else setWinMessage("");
   };
 
   // Hint logic
@@ -135,29 +146,18 @@ export default function SlidingPuzzle() {
 
   return (
     <div>
-      <button onClick={resetPuzzle} style={{ marginBottom: "10px" }}>
-        Reset Puzzle
-      </button>
-      <button onClick={stepHint} style={{ marginBottom: "10px", marginLeft: "10px" }}>
-        Hint
-      </button>
-      <div style={{ marginTop: "10px", fontWeight: "bold", color: "green" }}>
-        {winMessage}
-      </div>
-
-      <div
-        id="puzzle"
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${puzzleSize}, 60px)`,
-          gap: "5px",
-          marginTop: "10px",
-        }}
-      >
+      <button onClick={resetPuzzle}>Reset Puzzle</button>
+      <button onClick={stepHint} style={{ marginLeft: "10px" }}>Hint</button>
+      <div style={{ marginTop: "10px" }}>Time: {seconds}s</div>
+      <div style={{ color: "green", fontWeight: "bold" }}>{winMessage}</div>
+      <div id="puzzle" style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${puzzleSize}, 60px)`,
+        gap: "5px",
+        marginTop: "10px"
+      }}>
         {tiles.map((t, i) => (
-          <div
-            key={i}
-            className={t === "" ? "tile empty" : "tile"}
+          <div key={i} onClick={() => moveTile(i)}
             style={{
               width: "60px",
               height: "60px",
@@ -168,9 +168,7 @@ export default function SlidingPuzzle() {
               border: "1px solid #999",
               fontWeight: "bold",
               cursor: t === "" ? "default" : "pointer",
-            }}
-            onClick={() => moveTile(i)}
-          >
+            }}>
             {t}
           </div>
         ))}
