@@ -13,4 +13,8 @@ data processing, calculations and AI. Most of the
 codes are using ChatGPT to form a structure that gets debugged when it fails.
 **There is more information about these projects in each folder.**
 
+- **MTG Scripts:** see [docs/mtg/README.md](docs/mtg/README.md) for more analysis.
+- **Path of Exile Scripts:** see [docs/poe/README.md](docs/poe/README.md)
+- **TFT AI Project:** see [docs/tft/README.md](docs/tft/README.md)
+
 Results from scripts are written inside the script code to not waste space here.
