@@ -84,7 +84,15 @@ function App() {
           <div className="tabcontent" style={{ display: activeTab === "Puzzles" ? "block" : "none" }}>
             <SlidingPuzzle />
             {/* Pass board & setter to SudokuGenerator */}
-            <SudokuGenerator board={sudokuBoard} setBoard={setSudokuBoard} />
+            <SudokuGenerator/>
+
+            {/*<SudokuGenerator/>
+              board={sudokuBoard}
+              setBoard={setSudokuBoard}
+              secondsElapsed={secondsElapsed}
+              setSecondsElapsed={setSecondsElapsed}
+            />
+            <Timer secondsElapsed={secondsElapsed} />*/}
             <Hangman />
           </div>
         );

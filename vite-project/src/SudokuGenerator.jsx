@@ -22,6 +22,12 @@ const [board, setBoard] = useState(() => {
   return savedBoard || createEmptyGrid(); // user board starts empty
 });
 
+const [secondsElapsed, setSecondsElapsed] = useState(() => {
+  const saved = localStorage.getItem("sudokuSecondsElapsed");
+  return saved ? parseInt(saved, 10) : 0;
+});
+const [timerActive, setTimerActive] = useState(true);
+
 
   // Initialize empty grid
 
@@ -146,6 +152,9 @@ const [board, setBoard] = useState(() => {
     localStorage.setItem("sudokuPuzzle", JSON.stringify(puzzle));
     localStorage.setItem("sudokuSolution", JSON.stringify(newSolution));
     localStorage.setItem("sudokuBoard", JSON.stringify(puzzle));
+    setSecondsElapsed(0);
+  setTimerActive(true);
+
   };
 
 
@@ -153,6 +162,18 @@ const [board, setBoard] = useState(() => {
   useEffect(() => {
     checkCompletion(board);
   }, [board]);
+
+  useEffect(() => {
+  if (!timerActive) return;
+  const interval = setInterval(() => {
+    setSecondsElapsed(prev => prev + 1);
+  }, 1000);
+  return () => clearInterval(interval);
+}, [timerActive]);
+
+useEffect(() => {
+  localStorage.setItem("sudokuSecondsElapsed", secondsElapsed);
+}, [secondsElapsed]);
 
 
 useEffect(() => {
@@ -165,6 +186,7 @@ useEffect(() => {
   const savedPuzzle = JSON.parse(localStorage.getItem("sudokuPuzzle"));
   const savedSolution = JSON.parse(localStorage.getItem("sudokuSolution"));
   const savedBoard = JSON.parse(localStorage.getItem("sudokuBoard"));
+
 
   if (!savedPuzzle || !savedSolution || !savedBoard) {
     const newSolution = createEmptyGrid();
@@ -220,6 +242,7 @@ useEffect(() => {
       }
     }
     setMessage("🎉 Congratulations! Sudoku completed!");
+    setTimerActive(false); // stop timer
   };
 
   const giveHint = () => {
@@ -241,6 +264,14 @@ if (!loaded) return <p>Loading Sudoku...</p>;
   return (
     <div>
       <h3>Sudoku Generator</h3>
+      <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+        <div>
+          {/* Sudoku table */}
+        </div>
+        <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+          Time: {Math.floor(secondsElapsed / 60)}:{String(secondsElapsed % 60).padStart(2,'0')}
+        </div>
+      </div>
       <label>
         Difficulty:
         <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
