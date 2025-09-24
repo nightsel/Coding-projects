@@ -2,7 +2,7 @@ Folder docs contains the code for the website https://nightsel.github.io/Coding-
 
 Folder leetcode contains the codes I made for practice in https://leetcode.com/problemset/ .
 
-Folder my-app has code for vercel cloud service where I had to put my codes on cloud to secure my private API key and they
+Folder my-app has code for [Vercel](https://vercel.com/) cloud service where I had to put my codes on cloud to secure my private API key and they
 are called from my github webpage to get the weather report. Files index.html, api/weather.js and
 App.jsx have the most relevant code.
 
