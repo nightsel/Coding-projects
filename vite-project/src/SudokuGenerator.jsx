@@ -4,17 +4,29 @@ const gridSize = 9;
 
 export const createEmptyGrid = () => Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
 
-export default function Sudoku({ board, setBoard }) {
-  const [solutionBoard, setSolutionBoard] = useState([]);
+export default function Sudoku() {
   const [difficulty, setDifficulty] = useState("easy");
   const [message, setMessage] = useState("");
-  const [puzzleBoard, setPuzzleBoard] = useState([]); // original puzzle: prefilled numbers
+  const [puzzleBoard, setPuzzleBoard] = useState(() => {
+  const savedPuzzle = JSON.parse(localStorage.getItem("sudokuPuzzle"));
+  return savedPuzzle || createEmptyGrid(); // don't fill numbers yet
+});
+
+const [solutionBoard, setSolutionBoard] = useState(() => {
+  const savedSolution = JSON.parse(localStorage.getItem("sudokuSolution"));
+  return savedSolution || createEmptyGrid(); // empty initially
+});
+
+const [board, setBoard] = useState(() => {
+  const savedBoard = JSON.parse(localStorage.getItem("sudokuBoard"));
+  return savedBoard || createEmptyGrid(); // user board starts empty
+});
 
 
   // Initialize empty grid
 
   // Shuffle helper
-  const shuffle = (array) => {
+  function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -23,7 +35,7 @@ export default function Sudoku({ board, setBoard }) {
   };
 
   // Check if number can be placed
-  const isSafe = (b, row, col, num) => {
+  function isSafe(b, row, col, num) {
     for (let x = 0; x < gridSize; x++) {
       if (b[row][x] === num || b[x][col] === num) return false;
     }
@@ -35,11 +47,11 @@ export default function Sudoku({ board, setBoard }) {
   };
 
   // Backtracking solver
-  const fillBoard = (b) => {
+  function fillBoard(b) {
     for (let row = 0; row < gridSize; row++) {
       for (let col = 0; col < gridSize; col++) {
         if (b[row][col] === 0) {
-          const numbers = shuffle([...Array(9).keys()].map((n) => n + 1));
+          const numbers = shuffle([...Array(9).keys()].map(n => n + 1));
           for (const num of numbers) {
             if (isSafe(b, row, col, num)) {
               b[row][col] = num;
@@ -52,10 +64,10 @@ export default function Sudoku({ board, setBoard }) {
       }
     }
     return true;
-  };
+  }
 
   // Remove numbers for difficulty
-  const removeNumbers = (b, difficulty) => {
+  function removeNumbers(b, difficulty) {
     let attempts = difficulty === "easy" ? 30 : difficulty === "medium" ? 40 : 50;
     while (attempts > 0) {
       const row = Math.floor(Math.random() * 9);
@@ -120,42 +132,62 @@ export default function Sudoku({ board, setBoard }) {
   const generateSudoku = (diff = "easy") => {
     const newBoard = createEmptyGrid();
     fillBoard(newBoard);
-    setSolutionBoard(prev => (prev && prev.length ? prev : newBoard.map(row => [...row])));
+
+    const newSolution = newBoard.map(row => [...row]);
+    setSolutionBoard(newSolution);
+
     const puzzle = removeNumbers(newBoard.map(row => [...row]), diff);
-    setBoard(puzzle);
     setPuzzleBoard(puzzle);
+    setBoard(puzzle.map(row => [...row]));
+
     setMessage(`Sudoku (${diff}) generated!`);
+
+    // 🔑 persist everything
+    localStorage.setItem("sudokuPuzzle", JSON.stringify(puzzle));
+    localStorage.setItem("sudokuSolution", JSON.stringify(newSolution));
+    localStorage.setItem("sudokuBoard", JSON.stringify(puzzle));
   };
+
+
 
   useEffect(() => {
     checkCompletion(board);
   }, [board]);
 
-  useEffect(() => {
-    if (!board || board.length === 0 || board.every(row => row.every(cell => cell === 0))) {
-      const puzzle = generateSudoku(); // returns puzzle array
-      setPuzzleBoard(puzzle);
-      setBoard(puzzle.map(row => [...row])); // initialize user board
-    } else {
-      setPuzzleBoard(board.map(row => [...row])); // already persisted board
-    }
-  }, []);
 
 useEffect(() => {
   localStorage.setItem("sudokuBoard", JSON.stringify(board));
 }, [board]);
 
+const [loaded, setLoaded] = useState(false);
+
 useEffect(() => {
   const savedPuzzle = JSON.parse(localStorage.getItem("sudokuPuzzle"));
+  const savedSolution = JSON.parse(localStorage.getItem("sudokuSolution"));
   const savedBoard = JSON.parse(localStorage.getItem("sudokuBoard"));
 
-  if (savedPuzzle && savedBoard) {
-    setPuzzleBoard(savedPuzzle);
-    setBoard(savedBoard);
+  if (!savedPuzzle || !savedSolution || !savedBoard) {
+    const newSolution = createEmptyGrid();
+    fillBoard(newSolution);
+    const puzzle = removeNumbers(newSolution.map(r => [...r]), difficulty);
+
+    setSolutionBoard(newSolution.map(r => [...r]));
+    setPuzzleBoard(puzzle.map(r => [...r]));
+    setBoard(puzzle.map(r => [...r]));
+
+    localStorage.setItem("sudokuPuzzle", JSON.stringify(puzzle));
+    localStorage.setItem("sudokuSolution", JSON.stringify(newSolution));
+    localStorage.setItem("sudokuBoard", JSON.stringify(puzzle));
   } else {
-    generateSudoku(difficulty); // first time
+    setPuzzleBoard(savedPuzzle);
+    setSolutionBoard(savedSolution);
+    setBoard(savedBoard);
   }
+
+  setLoaded(true); // everything initialized
 }, []);
+
+
 
 
 
@@ -204,6 +236,8 @@ useEffect(() => {
   checkCompletion(newBoard); // pass updated board
 };
 
+if (!loaded) return <p>Loading Sudoku...</p>;
+
   return (
     <div>
       <h3>Sudoku Generator</h3>
@@ -224,8 +258,16 @@ useEffect(() => {
   <tr key={rIdx}>
     {row.map((cell, cIdx) => {
       const isPrefilled = puzzleBoard[rIdx]?.[cIdx] !== 0;
-      const color =
-        isPrefilled ? "black" : cell === 0 ? "black" : cell === solutionBoard[rIdx][cIdx] ? "green" : "red";
+      const isUserInput = !isPrefilled;
+      const isCorrect = isUserInput && cell === solutionBoard[rIdx][cIdx];
+
+      const color = isPrefilled
+        ? "black"
+        : cell === 0
+        ? "black"
+        : isCorrect
+        ? "green"
+        : "red";
 
 
       return (
