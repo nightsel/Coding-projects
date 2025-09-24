@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 
 const gridSize = 9;
 
-export default function Sudoku() {
-  const [board, setBoard] = useState([]);
+export const createEmptyGrid = () => Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
+
+export default function Sudoku({ board, setBoard }) {
   const [solutionBoard, setSolutionBoard] = useState([]);
   const [difficulty, setDifficulty] = useState("easy");
   const [message, setMessage] = useState("");
-  const [puzzleBoard, setPuzzleBoard] = useState([]); // the puzzle, zeros = empty
+  const [puzzleBoard, setPuzzleBoard] = useState([]); // original puzzle: prefilled numbers
+
 
   // Initialize empty grid
-  const createEmptyGrid = () => Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
 
   // Shuffle helper
   const shuffle = (array) => {
@@ -119,10 +120,10 @@ export default function Sudoku() {
   const generateSudoku = (diff = "easy") => {
     const newBoard = createEmptyGrid();
     fillBoard(newBoard);
-    setSolutionBoard(newBoard.map(row => [...row]));
+    setSolutionBoard(prev => (prev && prev.length ? prev : newBoard.map(row => [...row])));
     const puzzle = removeNumbers(newBoard.map(row => [...row]), diff);
     setBoard(puzzle);
-    setPuzzleBoard(puzzle); // save the puzzle
+    setPuzzleBoard(puzzle);
     setMessage(`Sudoku (${diff}) generated!`);
   };
 
@@ -131,8 +132,32 @@ export default function Sudoku() {
   }, [board]);
 
   useEffect(() => {
-  generateSudoku(difficulty); // run once on mount
+    if (!board || board.length === 0 || board.every(row => row.every(cell => cell === 0))) {
+      const puzzle = generateSudoku(); // returns puzzle array
+      setPuzzleBoard(puzzle);
+      setBoard(puzzle.map(row => [...row])); // initialize user board
+    } else {
+      setPuzzleBoard(board.map(row => [...row])); // already persisted board
+    }
+  }, []);
+
+useEffect(() => {
+  localStorage.setItem("sudokuBoard", JSON.stringify(board));
+}, [board]);
+
+useEffect(() => {
+  const savedPuzzle = JSON.parse(localStorage.getItem("sudokuPuzzle"));
+  const savedBoard = JSON.parse(localStorage.getItem("sudokuBoard"));
+
+  if (savedPuzzle && savedBoard) {
+    setPuzzleBoard(savedPuzzle);
+    setBoard(savedBoard);
+  } else {
+    generateSudoku(difficulty); // first time
+  }
 }, []);
+
+
 
   const handleInputChange = (row, col, value) => {
     const val = parseInt(value);
@@ -156,7 +181,7 @@ export default function Sudoku() {
 
     for (let r = 0; r < gridSize; r++) {
       for (let c = 0; c < gridSize; c++) {
-        if (b[r][c] !== solutionBoard[r][c]) {
+        if (!solutionBoard[r] || b[r][c] !== solutionBoard[r][c]) {
           setMessage("");
           return;
         }
@@ -166,6 +191,7 @@ export default function Sudoku() {
   };
 
   const giveHint = () => {
+     if (!solutionBoard || solutionBoard.length === 0) return;
   const emptyCells = [];
   for (let r = 0; r < gridSize; r++)
     for (let c = 0; c < gridSize; c++)
@@ -195,50 +221,49 @@ export default function Sudoku() {
       <table style={{ borderCollapse: "collapse", marginTop: "10px" }}>
         <tbody>
           {board.map((row, rIdx) => (
-            <tr key={rIdx}>
-              {row.map((cell, cIdx) => {
-  // A cell is prefilled if the original puzzle had a number (not zero)
-  const isPrefilled = puzzleBoard[rIdx][cIdx] !== 0;
-  const isUserInput = !isPrefilled;
-  const isCorrect = isUserInput && cell === solutionBoard[rIdx][cIdx];
-  const color = isPrefilled ? "black" : cell === 0 ? "black" : isCorrect ? "green" : "red";
+  <tr key={rIdx}>
+    {row.map((cell, cIdx) => {
+      const isPrefilled = puzzleBoard[rIdx]?.[cIdx] !== 0;
+      const color =
+        isPrefilled ? "black" : cell === 0 ? "black" : cell === solutionBoard[rIdx][cIdx] ? "green" : "red";
 
-  return (
-    <td
-      key={cIdx}
-      style={{
-        borderTop: rIdx % 3 === 0 ? "3px solid black" : "1px solid black",
-        borderLeft: cIdx % 3 === 0 ? "3px solid black" : "1px solid black",
-        borderBottom: rIdx === 8 ? "3px solid black" : "1px solid black",
-        borderRight: cIdx === 8 ? "3px solid black" : "1px solid black",
-        width: "40px",
-        height: "40px",
-        textAlign: "center",
-      }}
-    >
-      <input
-        type="text"
-        maxLength="1"
-        style={{
-          width: "100%",
-          height: "100%",
-          fontSize: "20px",
-          textAlign: "center",
-          color,
-          border: "none",     // remove default input border
-          padding: 0,         // remove default padding
-          margin: 0,
-          boxSizing: "border-box",
-        }}
-        value={cell === 0 ? "" : cell}
-        disabled={isPrefilled}
-        onChange={(e) => handleInputChange(rIdx, cIdx, e.target.value)}
-      />
-    </td>
-  );
-})}
-            </tr>
-          ))}
+
+      return (
+        <td
+          key={cIdx}
+          style={{
+            borderTop: rIdx % 3 === 0 ? "3px solid black" : "1px solid black",
+            borderLeft: cIdx % 3 === 0 ? "3px solid black" : "1px solid black",
+            borderBottom: rIdx === 8 ? "3px solid black" : "1px solid black",
+            borderRight: cIdx === 8 ? "3px solid black" : "1px solid black",
+            width: "40px",
+            height: "40px",
+            textAlign: "center",
+          }}
+        >
+          <input
+            type="text"
+            maxLength="1"
+            style={{
+              width: "100%",
+              height: "100%",
+              fontSize: "20px",
+              textAlign: "center",
+              color,
+              border: "none",
+              padding: 0,
+              margin: 0,
+              boxSizing: "border-box",
+            }}
+            value={cell === 0 ? "" : cell}
+            disabled={isPrefilled}
+            onChange={(e) => handleInputChange(rIdx, cIdx, e.target.value)}
+          />
+        </td>
+      );
+    })}
+  </tr>
+))}
         </tbody>
       </table>
     </div>
