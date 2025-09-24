@@ -76,8 +76,12 @@ export default function Sudoku() {
   };
 
   useEffect(() => {
-    generateSudoku("easy");
-  }, []);
+    checkCompletion(board);
+  }, [board]);
+
+  useEffect(() => {
+  generateSudoku(difficulty); // run once on mount
+}, []);
 
   const handleInputChange = (row, col, value) => {
     const val = parseInt(value);
@@ -96,28 +100,32 @@ export default function Sudoku() {
     checkCompletion();
   };
 
-  const checkCompletion = () => {
-    for (let r = 0; r < gridSize; r++)
-      for (let c = 0; c < gridSize; c++)
-        if (board[r][c] !== solutionBoard[r][c]) {
+  const checkCompletion = (b = board) => {
+    if (!b || b.length === 0) return; // safety check
+
+    for (let r = 0; r < gridSize; r++) {
+      for (let c = 0; c < gridSize; c++) {
+        if (b[r][c] !== solutionBoard[r][c]) {
           setMessage("");
           return;
         }
+      }
+    }
     setMessage("🎉 Congratulations! Sudoku completed!");
   };
 
   const giveHint = () => {
-    const emptyCells = [];
-    for (let r = 0; r < gridSize; r++)
-      for (let c = 0; c < gridSize; c++)
-        if (board[r][c] === 0) emptyCells.push([r, c]);
-    if (emptyCells.length === 0) return;
-    const [r, c] = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    const newBoard = board.map((row) => [...row]);
-    newBoard[r][c] = solutionBoard[r][c];
-    setBoard(newBoard);
-    checkCompletion();
-  };
+  const emptyCells = [];
+  for (let r = 0; r < gridSize; r++)
+    for (let c = 0; c < gridSize; c++)
+      if (board[r][c] === 0) emptyCells.push([r, c]);
+  if (emptyCells.length === 0) return;
+  const [r, c] = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  const newBoard = board.map((row) => [...row]);
+  newBoard[r][c] = solutionBoard[r][c];
+  setBoard(newBoard);
+  checkCompletion(newBoard); // pass updated board
+};
 
   return (
     <div>
