@@ -12,7 +12,7 @@ function Hangman() {
 
   useEffect(() => {
     // Load words.json
-    fetch('/datafiles/words.json')
+    fetch(`${import.meta.env.BASE_URL}datafiles/words.json`)
       .then((res) => res.json())
       .then((data) => setWordList(data))
       .catch((err) => console.error("Failed to load words.json:", err));
