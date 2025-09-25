@@ -112,6 +112,99 @@ function App() {
     are in the cloud. This setup allowed me to practice building and deploying a serverless architecture.
     I also show my code in the GitHub repository folder <code>my-app</code>.
   </p>
+
+  <h5>Vote & Leave Feedback</h5>
+<p style={{ maxWidth: '600px' }}>
+  Pick your favorite feature of this website and optionally leave a comment.
+  Your votes are stored in a PostgreSQL database via the Express backend.
+</p>
+
+<form
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const option = e.target.elements.option.value;
+    const feedback = e.target.elements.feedback.value;
+    if (!option) return;
+
+    const res = await fetch('https://expressproject-al0i.onrender.com/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ option, feedback })
+    });
+    if (res.ok) alert('Vote submitted!');
+    e.target.reset();
+  }}
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    maxWidth: '400px',
+    marginBottom: '20px'
+  }}
+>
+  <label style={{ display: 'flex', flexDirection: 'column' }}>
+    Choose your favorite feature:
+    <select name="option" required style={{ padding: '5px', marginTop: '5px' }}>
+      <option value="">Select...</option>
+      <option value="Sliding Puzzle">Sliding Puzzle</option>
+      <option value="Sudoku Generator">Sudoku Generator</option>
+      <option value="Hangman">Hangman</option>
+      <option value="Weather Reporter">Weather Reporter</option>
+      <option value="Full-Stack Poll">Full-Stack Poll</option>
+    </select>
+  </label>
+
+  <label style={{ display: 'flex', flexDirection: 'column' }}>
+    Optional feedback:
+    <input
+      name="feedback"
+      type="text"
+      placeholder="Your comments..."
+      style={{ padding: '5px', marginTop: '5px' }}
+    />
+  </label>
+
+  <button
+    type="submit"
+    style={{
+      padding: '8px 12px',
+      backgroundColor: '#007bff',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      width: 'fit-content'
+    }}
+  >
+    Submit
+  </button>
+</form>
+
+<button
+  onClick={async () => {
+    const res = await fetch('https://expressproject-al0i.onrender.com/results');
+    const data = await res.json();
+    alert(JSON.stringify(data, null, 2));
+  }}
+  style={{
+    padding: '6px 10px',
+    backgroundColor: '#6c757d',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    width: 'fit-content'
+  }}
+>
+  Show current votes
+</button>
+
+
+<br/>
+<br/>
+<br/>
+
+  <h5>Other projects</h5>
   <p>
     My other projects, and this website's entire code, are in the <a href="https://github.com/nightsel/coding-projects" target="_blank"> GitHub repository </a>and the <span
       style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
@@ -121,6 +214,8 @@ function App() {
     Other projects that use ChatGPT are related to data analysis, data processing,
     and AI in some video game-related scripts.
   </p>
+
+
           </div>
         );
       default:

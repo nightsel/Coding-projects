@@ -1,8 +1,8 @@
-Folder docs contains the code for the website https://nightsel.github.io/Coding-projects/ .
+Folder `docs` contains the code for the website https://nightsel.github.io/Coding-projects/ .
 
-Folder leetcode contains the codes I made for practice in https://leetcode.com/problemset/ .
+Folder `leetcode` contains the codes I made for practice on https://leetcode.com/problemset/ .
 
-Folder my-app has code for [Vercel](https://vercel.com/) cloud service. The code uses a secure private API key (stored in the cloud) and is called from my GitHub webpage to fetch the weather report. The most relevant files are`index.html`, `api/weather.js` and
+Folder `my-app` has code for [Vercel](https://vercel.com/) cloud service. The code uses a secure private API key (stored in the cloud) and is called from my GitHub webpage to fetch the weather report. The most relevant files are`index.html`, `api/weather.js` and
 `App.jsx`.
 
 
