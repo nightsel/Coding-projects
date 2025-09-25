@@ -81,6 +81,8 @@ function App() {
       case 'Puzzles':
         return (
 
+          // could add a status message to the page. like "Moved piece 1 up".
+
           <div className="tabcontent" style={{ display: activeTab === "Puzzles" ? "block" : "none" }}>
             <SlidingPuzzle />
             {/* Pass board & setter to SudokuGenerator */}
