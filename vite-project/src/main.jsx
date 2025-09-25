@@ -23,6 +23,13 @@ function App() {
     localStorage.setItem("sudokuBoard", JSON.stringify(sudokuBoard));
   }, [sudokuBoard]);
 
+  useEffect(() => {
+  // Replace URL with your Render backend endpoint
+  fetch('https://expressproject-al0i.onrender.com/ping')
+    .then(() => console.log('Pinged backend'))
+    .catch(() => console.log('Backend ping failed'));
+}, []); // empty dependency array → runs once on page load
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Home':
@@ -53,7 +60,7 @@ function App() {
         return (
           <div className="tabcontent" style={{ display: activeTab === "About" ? "block" : "none" }}>
             <h3>About</h3>
-            <p>
+
               <p>Hello,
             I am Max. I learnt to program after starting my university studies because of
           not knowing about it before. So my degree in applied mathematics isn't the
@@ -75,7 +82,7 @@ function App() {
               information about other projects.
 
       </p>
-            </p>
+
           </div>
         );
       case 'Puzzles':
@@ -115,8 +122,9 @@ function App() {
 
   <h5>Vote & Leave Feedback</h5>
 <p style={{ maxWidth: '600px' }}>
-  Pick your favorite feature of this website and optionally leave a comment.
-  Your votes are stored in a PostgreSQL database via the Express backend.
+  Pick your favorite feature of this website, leave a comment, or both.
+  Your vote and comment are stored in a <strong>private PostgreSQL database </strong>
+   that I can access securely via the Express backend.
 </p>
 
 <form
