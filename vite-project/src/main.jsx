@@ -1,7 +1,6 @@
 /* TODO list
 
 For Sudoku, show the coordinates of the hint or highlight the hinted cell briefly
-Animations / CSS Transitions - add small animations to the sliding puzzle when tiles move.
 
 */
 

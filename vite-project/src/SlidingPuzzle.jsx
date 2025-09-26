@@ -144,39 +144,76 @@ export default function SlidingPuzzle() {
     checkWin(nextStep);
   };
 
-  return (
-  <div>
-    <h3>Sliding Puzzle</h3>
-    <button onClick={resetPuzzle} className="puzzle-button">Reset Puzzle</button>
-    <button onClick={stepHint} className="puzzle-button">Hint</button>
-    <div style={{ marginTop: "10px" }}>Time: {seconds}s</div>
-    <div style={{ color: "green", fontWeight: "bold" }}>{winMessage}</div>
-    <div id="puzzle" style={{
-      display: "grid",
-      gridTemplateColumns: `repeat(${puzzleSize}, 60px)`,
-      gap: "5px",
-      marginTop: "10px"
-    }}>
-      {tiles.map((t, i) => (
-        <div key={i} onClick={() => moveTile(i)}
-          style={{
-            width: "60px",
-            height: "60px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: t === "" ? "#eee" : "#ccc",
-            border: "1px solid #999",
-            fontWeight: "bold",
-            cursor: t === "" ? "default" : "pointer",
-          }}>
-          {t}
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  //
+  // ---------- ANIMATION: stable render order + transform transition ----------
+  //
+  const TILE_SIZE = 60;
+  const GAP = 5;
+  const STEP = TILE_SIZE + GAP;
+  // stable order of tile identities: 1..(N-1) then empty string
+  const tileOrder = [...Array(puzzleSize * puzzleSize).keys()].map((i) =>
+    i === puzzleSize * puzzleSize - 1 ? "" : i + 1
+  );
+  // map each tile value to its current index (position)
+  const positions = {};
+  tiles.forEach((tileValue, idx) => {
+    positions[tileValue] = idx;
+  });
 
+  return (
+    <div>
+      <h3>Sliding Puzzle</h3>
+      <button onClick={resetPuzzle} className="puzzle-button">Reset Puzzle</button>
+      <button onClick={stepHint} className="puzzle-button">Hint</button>
+      <div style={{ marginTop: "10px" }}>Time: {seconds}s</div>
+      <div style={{ color: "green", fontWeight: "bold" }}>{winMessage}</div>
+
+      <div
+        id="puzzle"
+        style={{
+          position: "relative",
+          width: `${puzzleSize * STEP - GAP}px`,
+          height: `${puzzleSize * STEP - GAP}px`,
+          marginTop: "10px",
+        }}
+      >
+        {tileOrder.map((tileId) => {
+          const pos = positions[tileId];
+          const row = Math.floor(pos / puzzleSize);
+          const col = pos % puzzleSize;
+
+          return (
+            <div
+              key={tileId === "" ? "empty" : tileId}
+              onClick={() => tileId !== "" && moveTile(positions[tileId])}
+              style={{
+                position: "absolute",
+                left: 0, // keep at origin, placement is via transform
+                top: 0,
+                width: `${TILE_SIZE}px`,
+                height: `${TILE_SIZE}px`,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: tileId === "" ? "transparent" : "#ccc",
+                border: tileId === "" ? "none" : "1px solid #999",
+                fontWeight: "bold",
+                cursor: tileId === "" ? "default" : "pointer",
+
+                // THE crucial bit for animation:
+                transition: "transform 240ms cubic-bezier(.25,.8,.25,1)",
+                transform: `translate(${col * STEP}px, ${row * STEP}px)`,
+                willChange: "transform",
+                userSelect: "none",
+              }}
+            >
+              {tileId}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 // Helper to check solvable
