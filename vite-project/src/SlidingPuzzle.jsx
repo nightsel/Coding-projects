@@ -145,36 +145,38 @@ export default function SlidingPuzzle() {
   };
 
   return (
-    <div>
-      <button onClick={resetPuzzle}>Reset Puzzle</button>
-      <button onClick={stepHint} style={{ marginLeft: "10px" }}>Hint</button>
-      <div style={{ marginTop: "10px" }}>Time: {seconds}s</div>
-      <div style={{ color: "green", fontWeight: "bold" }}>{winMessage}</div>
-      <div id="puzzle" style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${puzzleSize}, 60px)`,
-        gap: "5px",
-        marginTop: "10px"
-      }}>
-        {tiles.map((t, i) => (
-          <div key={i} onClick={() => moveTile(i)}
-            style={{
-              width: "60px",
-              height: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: t === "" ? "#eee" : "#ccc",
-              border: "1px solid #999",
-              fontWeight: "bold",
-              cursor: t === "" ? "default" : "pointer",
-            }}>
-            {t}
-          </div>
-        ))}
-      </div>
+  <div>
+    <h3>Sliding Puzzle</h3>
+    <button onClick={resetPuzzle} className="puzzle-button">Reset Puzzle</button>
+    <button onClick={stepHint} className="puzzle-button">Hint</button>
+    <div style={{ marginTop: "10px" }}>Time: {seconds}s</div>
+    <div style={{ color: "green", fontWeight: "bold" }}>{winMessage}</div>
+    <div id="puzzle" style={{
+      display: "grid",
+      gridTemplateColumns: `repeat(${puzzleSize}, 60px)`,
+      gap: "5px",
+      marginTop: "10px"
+    }}>
+      {tiles.map((t, i) => (
+        <div key={i} onClick={() => moveTile(i)}
+          style={{
+            width: "60px",
+            height: "60px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: t === "" ? "#eee" : "#ccc",
+            border: "1px solid #999",
+            fontWeight: "bold",
+            cursor: t === "" ? "default" : "pointer",
+          }}>
+          {t}
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
+
 }
 
 // Helper to check solvable

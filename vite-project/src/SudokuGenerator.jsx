@@ -280,8 +280,8 @@ if (!loaded) return <p>Loading Sudoku...</p>;
           <option value="hard">Hard</option>
         </select>
       </label>
-      <button onClick={() => generateSudoku(difficulty)}>Generate Sudoku</button>{" "}
-      <button onClick={giveHint}>Give Hint</button>
+      <button onClick={() => generateSudoku(difficulty)} className="puzzle-button">Generate Sudoku</button>{" "}
+      <button onClick={giveHint} className="puzzle-button">Give Hint</button>
       <p>{message}</p>
       <table style={{ borderCollapse: "collapse", marginTop: "10px" }}>
         <tbody>

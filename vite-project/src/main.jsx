@@ -78,25 +78,18 @@ useEffect(() => {
             <h3>About</h3>
 
               <p>Hello,
-            I am Max. I learnt to program after starting my university studies because of
-          not knowing about it before. So my degree in applied mathematics isn't the
-          best fit even though I took a lot of studies in the side subject of
-          software engineering.
+            Hi, I'm Max. I discovered programming during my university studies in applied mathematics and quickly realized it's what I enjoy most. I've focused on software engineering through side studies and personal projects, and I'm eager to start a career in this field.
           <br /><br />
-          However I like programming. It would be great to start a career in this field
-          for that reason. I am always interested in learning more. My skills at least in
-          theory are good, but I lack work experience.
+          I like diving into new technologies on my own and experimenting until I understand them fully. I find solving algorithmic puzzles exciting and enjoy figuring out creative solutions.
+          I enjoy building projects that are both practical and meaningful. Instead of creating random functions, I focused on features that make sense on this site while still showcasing my skills.
           <br /><br />
+          The
           <span
             style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-            onClick={() => setActiveTab("Puzzles")}> Puzzles tab</span> contains some puzzles
-            and their solvers. Sliding puzzle's solver was not very easy to make
-            but it should work reasonably fast and reliably.
-            <span
+            onClick={() => setActiveTab("Puzzles")}> Puzzles tab</span> showcases some of the challenges I’ve built and solved, like a sliding puzzle solver, which runs efficiently and reliably.
+            The <span
               style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-              onClick={() => setActiveTab("Projects")}>Projects tab</span> contains
-              information about other projects.
-
+              onClick={() => setActiveTab("Projects")}>Projects tab</span> contains other projects I’ve worked on, highlighting my skills and approach to programming.
       </p>
 
           </div>
@@ -106,20 +99,16 @@ useEffect(() => {
 
           // could add a status message to the page. like "Moved piece 1 up".
 
-          <div className="tabcontent" style={{ display: activeTab === "Puzzles" ? "block" : "none" }}>
-            <SlidingPuzzle />
-            {/* Pass board & setter to SudokuGenerator */}
-            <SudokuGenerator/>
-
-            {/*<SudokuGenerator/>
-              board={sudokuBoard}
-              setBoard={setSudokuBoard}
-              secondsElapsed={secondsElapsed}
-              setSecondsElapsed={setSecondsElapsed}
-            />
-            <Timer secondsElapsed={secondsElapsed} />*/}
-            <Hangman />
-          </div>
+          <div
+      className="tabcontent" 
+      style={{ display: activeTab === "Puzzles" ? "block" : "none", padding: '10px', maxWidth: '800px', margin: '0 auto' }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        <SlidingPuzzle />
+        <SudokuGenerator />
+        <Hangman />
+      </div>
+    </div>
         );
       case 'Projects':
         return (
