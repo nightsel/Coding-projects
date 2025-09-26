@@ -90,6 +90,7 @@ useEffect(() => {
             The <span
               style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
               onClick={() => setActiveTab("Projects")}>Projects tab</span> contains other projects I’ve worked on, highlighting my skills and approach to programming.
+              It also contains links to repositories which have the code for this website and the relevant system architecture.
       </p>
 
           </div>
@@ -100,7 +101,7 @@ useEffect(() => {
           // could add a status message to the page. like "Moved piece 1 up".
 
           <div
-      className="tabcontent" 
+      className="tabcontent"
       style={{ display: activeTab === "Puzzles" ? "block" : "none", padding: '10px', maxWidth: '800px', margin: '0 auto' }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
