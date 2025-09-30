@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import WeatherReporter from "./WeatherReporter";
 
-export default function Projects({ section }) {
+export default function Projects({ section, forceHighlight }) {
   const [submitting, setSubmitting] = useState(false);
 
   const weatherRef = useRef(null);
@@ -28,12 +28,12 @@ export default function Projects({ section }) {
     if (section === "weather") scrollTo(weatherRef);
     if (section === "poll") scrollTo(pollRef);
     if (section === "other") scrollTo(otherRef);
-  }, [section]);
+  }, [section, forceHighlight]);
 
   return (
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
       <div ref={weatherRef} className="highlight-section">
-        <h5>Weather Reporter</h5>
+        <h3>Weather Reporter</h3>
         <WeatherReporter />
       <p>
         This uses the <a href="https://www.weatherapi.com" target="_blank">WeatherAPI</a> service
@@ -51,7 +51,7 @@ export default function Projects({ section }) {
 
 
       <div ref={pollRef}>
-        <h5>Vote & Leave Feedback</h5>
+        <h3>Vote & Leave Feedback</h3>
         <ul style={{ maxWidth:'600px', lineHeight: '1.5' }}>
           <li>Pick your favorite feature of this website and optionally leave a comment.</li>
           <li>Your vote and comment are stored in a private PostgreSQL database on <a href='https://render.com/' target='_blank'>Render</a>.</li>
@@ -126,7 +126,7 @@ export default function Projects({ section }) {
       <div className="section-divider"></div>
 
       <div ref={otherRef}>
-        <h5>Other projects</h5>
+        <h3>Other projects</h3>
         <p>The repositories for my projects are organized as follows:</p>
         <ul>
           <li>

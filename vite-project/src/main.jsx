@@ -7,7 +7,9 @@ import Home from "./Home";
 import About from "./About";
 
 function App() {
-  const [activeTab, setActiveTab] = useState({ tab: "Home", section: null });
+  const [activeTab, setActiveTab] = useState({ tab: "Home", section: null , key: Date.now()});
+  const [forceHighlight, setForceHighlight] = useState(false);
+  <Puzzles section={activeTab.section} forceHighlight={activeTab.forceHighlight} />
 
   const renderTabContent = () => {
     switch (activeTab.tab) {
@@ -16,13 +18,15 @@ function App() {
       case "About":
         return <About setActiveTab={setActiveTab} />;
       case "Puzzles":
-        return <Puzzles section={activeTab.section} />;
+  return <Puzzles section={activeTab.section} forceHighlight={forceHighlight} />;
       case "Projects":
-        return <Projects section={activeTab.section} />;
+  return <Projects section={activeTab.section} forceHighlight={forceHighlight} />;
       default:
         return null;
     }
   };
+
+
 
   useEffect(() => {
     const pingBackend = () => {
@@ -35,17 +39,16 @@ function App() {
     // Ping every 600 seconds
     const intervalId = setInterval(pingBackend, 600000);
 
-    pingBackend(); 
+    pingBackend();
 
     return () => clearInterval(intervalId); // clean up
   }, []); // runs once on mount
 
   // helper function to reset then set section
-  const handleTabClick = (tab, section) => {
-    setActiveTab({ tab, section: null }); // reset
-    setTimeout(() => {
-      setActiveTab({ tab, section });
-    }, 0);
+
+  const handleTabClick = (tab, section = null) => {
+    setActiveTab({ tab, section });
+    setForceHighlight(prev => !prev); // toggle to force child effect
   };
 
   return (
@@ -58,26 +61,32 @@ function App() {
         <button onClick={() => handleTabClick("About", null)}>About</button>
 
         <div className="dropdown">
-          <button className={activeTab.tab === "Puzzles" ? "active" : ""}>
-            Puzzles ▼
-          </button>
-          <div className="dropdown-content">
-            <span onClick={() => handleTabClick("Puzzles", "sliding")}>Sliding Puzzle</span>
-            <span onClick={() => handleTabClick("Puzzles", "sudoku")}>Sudoku</span>
-            <span onClick={() => handleTabClick("Puzzles", "hangman")}>Hangman</span>
-          </div>
-        </div>
+          <button
+          className={activeTab.tab === "Puzzles" ? "active" : ""}
+          onClick={() => handleTabClick("Puzzles", null)}
+        >
+          Puzzles ▼
+        </button>
+  <div className="dropdown-content">
+    <span onClick={() => handleTabClick("Puzzles", "sliding")}>Sliding Puzzle</span>
+    <span onClick={() => handleTabClick("Puzzles", "sudoku")}>Sudoku</span>
+    <span onClick={() => handleTabClick("Puzzles", "hangman")}>Hangman</span>
+      </div>
+    </div>
 
-        <div className="dropdown">
-          <button className={activeTab.tab === "Projects" ? "active" : ""}>
-            Projects ▼
-          </button>
-          <div className="dropdown-content">
-            <span onClick={() => handleTabClick("Projects", "weather")}>Weather Reporter</span>
-            <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
-            <span onClick={() => handleTabClick("Projects", "other")}>Other Projects</span>
-          </div>
+      <div className="dropdown">
+        <button
+    className={activeTab.tab === "Projects" ? "active" : ""}
+    onClick={() => handleTabClick("Projects", null)} // top button
+  >
+    Projects ▼
+  </button>
+        <div className="dropdown-content">
+          <span onClick={() => handleTabClick("Projects", "weather")}>Weather Reporter</span>
+    <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
+    <span onClick={() => handleTabClick("Projects", "other")}>Other Projects</span>
         </div>
+      </div>
       </div>
 
       {renderTabContent()}

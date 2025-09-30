@@ -3,7 +3,7 @@ import SlidingPuzzle from "./SlidingPuzzle";
 import SudokuGenerator from "./SudokuGenerator";
 import Hangman from "./Hangman";
 
-export default function Puzzles({ section }) {
+export default function Puzzles({ section, forceHighlight }) {
   const slidingRef = useRef(null);
   const sudokuRef = useRef(null);
   const hangmanRef = useRef(null);
@@ -22,7 +22,8 @@ export default function Puzzles({ section }) {
     if (section === "sliding") scrollTo(slidingRef);
     if (section === "sudoku") scrollTo(sudokuRef);
     if (section === "hangman") scrollTo(hangmanRef);
-  }, [section]);
+  }, [section, forceHighlight]);
+
 
   return (
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
