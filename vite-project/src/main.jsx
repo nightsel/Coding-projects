@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import ReactDOM from "react-dom/client";
 import './style.css';
 import Puzzles from "./Puzzles";
@@ -23,6 +23,22 @@ function App() {
         return null;
     }
   };
+
+  useEffect(() => {
+    const pingBackend = () => {
+      fetch('https://expressproject-al0i.onrender.com/ping')
+        .then(() => console.log("Backend pinged"))
+        .catch(() => console.log("Backend ping failed"));
+    };
+
+
+    // Ping every 600 seconds
+    const intervalId = setInterval(pingBackend, 600000);
+
+    pingBackend(); 
+
+    return () => clearInterval(intervalId); // clean up
+  }, []); // runs once on mount
 
   // helper function to reset then set section
   const handleTabClick = (tab, section) => {

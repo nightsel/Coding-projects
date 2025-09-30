@@ -102,6 +102,25 @@ export default function Projects({ section }) {
             {submitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
+        <button
+          onClick={async () => {
+            const res = await fetch('https://expressproject-al0i.onrender.com/results');
+            const data = await res.json();
+            alert(JSON.stringify(data, null, 2));
+          }}
+          style={{
+            padding: '6px 10px',
+            backgroundColor: '#6c757d',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            width: 'fit-content'
+          }}
+        >
+          Show current votes
+        </button>
+
       </div>
 
       <div className="section-divider"></div>
