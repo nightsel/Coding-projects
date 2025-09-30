@@ -1,185 +1,200 @@
-/* Reset some default margins/padding */
+/* Reset some default margins/padding and set basic font styling */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
+  margin: 0; /* remove default margin */
+  padding: 0; /* remove default padding */
+  font-family: Arial, sans-serif; /* consistent font across browsers */
+  line-height: 1.5; /* improves readability */
   background-color: #fdfdfd; /* light background for readability */
-  font-size: 20px; /* or whatever size you want */
-  font-family: Arial, sans-serif; /* optional for consistency */
+  font-size: 20px; /* base font size */
 }
 
-/* Container for the whole page */
+/* Container for the whole page content */
 #root > div {
-  padding: 20px; /* spacing from edges */
-  max-width: 900px; /* keeps content from being too wide */
-  margin: 0 auto; /* center horizontally if wide screen */
+  padding: 20px; /* spacing from edges of the viewport */
+  max-width: 900px; /* prevents content from being too wide on large screens */
+  margin: 0 auto; /* center container horizontally */
 }
 
-/* style.css */
+/* Highlight effect for elements */
 .highlight {
-  background-color: yellow; /* or a lighter color for subtle effect */
-  transition: background-color 0.5s ease;
+  background-color: yellow; /* temporary highlight color */
+  transition: background-color 0.5s ease; /* smooth fade effect */
 }
 
-/* highlight when the tab button is clicked */
+/* Additional class for sections that can be highlighted */
 .highlight-section {
-  transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease; /* smooth highlight transitions */
 }
 
+/* Highlight class for active section */
 .highlight-section.active {
-  background-color: #fff3b0; /* yellow highlight */
-  padding: 10px;
-  border-radius: 5px;
+  background-color: #fff3b0; /* subtle yellow highlight */
+  padding: 10px; /* add spacing inside highlighted section */
+  border-radius: 5px; /* slightly rounded corners */
 }
 
-/* line under section */
+/* Horizontal line between sections */
 .section-divider {
-  height: 2px;
-  background-color: #ddd;
-  margin: 20px 0;
+  height: 2px; /* thickness of the line */
+  background-color: #ddd; /* light gray color */
+  margin: 20px 0; /* spacing above and below the line */
 }
 
-
-/* Tabs container */
+/* Tabs container (the row of buttons) */
 .tab {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px; /* spacing from content below */
+  display: flex; /* align buttons horizontally */
+  gap: 10px; /* spacing between buttons */
+  margin-bottom: 20px; /* spacing below the tabs */
 }
 
-/* Tab buttons */
+/* Individual tab buttons */
 .tab button {
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  background-color: #eee;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: background-color 0.2s;
+  padding: 10px 20px; /* space inside the button */
+  border: 1px solid #ccc; /* light border */
+  background-color: #eee; /* default button color */
+  cursor: pointer; /* show pointer on hover */
+  border-radius: 5px; /* rounded corners */
+  font-size: 16px; /* readable font */
+  transition: background-color 0.2s; /* smooth hover effect */
 }
 
+/* Tab button hover state */
 .tab button:hover {
-  background-color: #ddd;
+  background-color: #ddd; /* slightly darker on hover */
 }
 
+/* Tab button when active (selected) */
 .tab button.active {
-  background-color: #bbb;
-  font-weight: bold;
+  background-color: #bbb; /* darker shade for active tab */
+  font-weight: bold; /* emphasize active tab */
 }
 
-/* Tab content */
+/* Tab content container */
 .tabcontent {
-  padding: 10px 0;
+  padding: 10px 0; /* vertical spacing inside tab content */
 }
 
-/* Optional: style for headings */
+/* Optional: headings spacing */
 h1, h2, h3, h5 {
-  margin-top: 0;
+  margin-top: 0; /* remove extra top margin */
 }
 
-/* Optional: make iframes and images responsive */
+/* Make iframes and images responsive */
 iframe, img {
-  max-width: 100%;
+  max-width: 100%; /* prevents overflow */
 }
 
+/* Buttons used in puzzles/games */
 .puzzle-button {
-  padding: 8px 16px;
-  margin: 5px 5px 5px 0;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
+  padding: 8px 16px; /* spacing inside button */
+  margin: 5px 5px 5px 0; /* spacing between buttons */
+  background-color: #007bff; /* blue background */
+  color: #fff; /* white text */
+  border: none; /* remove default border */
+  border-radius: 5px; /* rounded corners */
+  cursor: pointer; /* pointer cursor */
+  font-weight: bold; /* bold text */
+  transition: background-color 0.2s; /* smooth hover effect */
 }
 
-
+/* Hover effect for puzzle buttons */
 .puzzle-button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* darker blue on hover */
 }
 
+/* Dropdown container */
 .dropdown {
-  position: relative;
-  display: inline-block;
+  position: relative; /* needed for absolute positioning of dropdown-content */
+  display: inline-block; /* so multiple dropdowns can sit in a row */
 }
 
+/* Hidden dropdown menu */
 .dropdown-content {
   display: none; /* hidden by default */
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-  z-index: 1;
-  flex-direction: column;
+  position: absolute; /* position relative to dropdown */
+  background-color: white; /* white background */
+  min-width: 160px; /* minimum width of dropdown */
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2); /* subtle shadow */
+  z-index: 1; /* appear above other content */
+  flex-direction: column; /* vertical list */
 }
 
+/* Individual dropdown items */
 .dropdown-content span {
-  padding: 8px 12px;
-  cursor: pointer;
+  padding: 8px 12px; /* spacing inside each item */
+  cursor: pointer; /* pointer cursor for click */
 }
 
+/* Hover effect for dropdown items */
 .dropdown-content span:hover {
-  background-color: #f1f1f1;
+  background-color: #f1f1f1; /* light gray hover */
 }
 
-/* Show dropdown on hover */
+/* Show dropdown menu when hovering the parent */
 .dropdown:hover .dropdown-content {
-  display: flex;
+  display: flex; /* show dropdown */
 }
 
+/* Container for game controls (buttons, timers, etc.) */
 .game-controls {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-direction: column; /* stack vertically */
+  gap: 10px; /* spacing between controls */
+  margin-bottom: 20px; /* space below controls */
 }
 
+/* Top row in a game (e.g., title + timer) */
 .top-row {
   display: flex;
-  justify-content: space-between; /* Title left, timer right */
-  align-items: center;
+  justify-content: space-between; /* title left, timer right */
+  align-items: center; /* vertically align items */
 }
 
+/* Row of buttons inside a game */
 .button-row {
   display: flex;
-  gap: 10px;
+  gap: 10px; /* spacing between buttons */
 }
 
+/* Timer styling */
 .timer {
   font-weight: bold;
-  margin-left: auto; /* pushes it to the right in flex container */
+  margin-left: auto; /* pushes timer to the right */
 }
 
+/* Game section container */
 .game-section {
-  margin: 20px 0;
-  padding: 10px;
-  border: 1px solid #ddd; /* optional, for visual separation */
-  border-radius: 6px;
+  margin: 20px 0; /* spacing above and below section */
+  padding: 10px; /* internal spacing */
+  border: 1px solid #ddd; /* light border */
+  border-radius: 6px; /* rounded corners */
 }
 
+/* Divider inside controls or games */
 .controls-divider {
-  height: 1px;
-  background-color: #ccc;
-  margin: 8px 0; /* space above and below the line */
+  height: 1px; /* thin line */
+  background-color: #ccc; /* gray color */
+  margin: 8px 0; /* spacing above and below */
 }
 
+/* Dropdown for difficulty selection */
 .difficulty-select {
   padding: 6px 10px;
   font-size: 16px;
   border-radius: 4px;
 }
 
+/* Hangman buttons */
 .hangman button {
-  padding: 10px 14px; /* bigger click area */
-  font-size: 18px;    /* larger letters */
-  margin: 3px;        /* spacing between buttons */
+  padding: 10px 14px; /* bigger clickable area */
+  font-size: 18px; /* bigger letters */
+  margin: 3px; /* spacing between buttons */
   border-radius: 6px;
   cursor: pointer;
 }
 
+/* Disabled hangman buttons */
 .hangman button:disabled {
-  opacity: 0.5;       /* visually show disabled buttons */
-  cursor: not-allowed;
+  opacity: 0.5; /* visually indicate disabled state */
+  cursor: not-allowed; /* indicate non-clickable */
 }

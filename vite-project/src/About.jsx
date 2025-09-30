@@ -19,18 +19,18 @@ export default function About({ setActiveTab }) {
         The{' '}
         <span
           style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-          onClick={() => setActiveTab("Puzzles")}
+          onClick={() => setActiveTab({ tab: "Puzzles", section: null })}
         >
-          Puzzles tab
-        </span>{' '}
-        showcases some of the challenges I’ve built and solved. The{' '}
+          Puzzles Tab
+        </span>
+         &nbsp; showcases some of the challenges I’ve built and solved. The{' '}
         <span
           style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-          onClick={() => setActiveTab("Projects")}
+          onClick={() => setActiveTab({tab: "Projects", section: null})}
         >
           Projects tab
         </span>{' '}
-        contains other projects I’ve worked on, highlighting my skills and approach
+         contains other projects I’ve worked on, highlighting my skills and approach
         to programming, with links to repositories and relevant architecture.
       </p>
     </div>
