@@ -264,25 +264,40 @@ if (!loaded) return <p>Loading Sudoku...</p>;
   return (
     <div>
       <h3>Sudoku Generator</h3>
+      <p>
+        Generate a Sudoku puzzle and solve it by filling in numbers 1 through 9
+        in each row, column, and 3×3 box without repeating. The hint gives you
+        one of the correct numbers.
+      </p>
       <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
         <div>
           {/* Sudoku table */}
         </div>
-        <div style={{ fontSize: "18px", fontWeight: "bold" }}>
-          Time: {Math.floor(secondsElapsed / 60)}:{String(secondsElapsed % 60).padStart(2,'0')}
-        </div>
       </div>
+      <div className="sudoku-controls">
       <label>
-        Difficulty:
-        <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+        Difficulty:&nbsp;
+        <select
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+          className="difficulty-select"
+        >
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
         </select>
       </label>
-      <button onClick={() => generateSudoku(difficulty)} className="puzzle-button">Generate Sudoku</button>{" "}
-      <button onClick={giveHint} className="puzzle-button">Give Hint</button>
-      <p>{message}</p>
+      <div style={{ marginTop: "10px" }}>
+       <button onClick={() => generateSudoku(difficulty)} className="puzzle-button">Generate Sudoku</button>{" "}
+       <button onClick={giveHint} className="puzzle-button">Give Hint</button>
+     </div>
+     <span className="puzzle-timer">
+       Time: {Math.floor(secondsElapsed / 60)}:{String(secondsElapsed % 60).padStart(2,'0')}
+     </span>
+
+     <div className="controls-divider"></div>
+     {message && <div className="win-message">{message}</div>}
+    </div>
       <table style={{ borderCollapse: "collapse", marginTop: "10px" }}>
         <tbody>
           {board.map((row, rIdx) => (

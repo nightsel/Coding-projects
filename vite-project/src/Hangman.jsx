@@ -61,12 +61,13 @@ function Hangman() {
       const letter = String.fromCharCode(i);
       letters.push(
         <button
-          key={letter}
-          onClick={() => handleGuess(letter)}
-          disabled={guessedLetters.includes(letter) || message !== ""}
-        >
-          {letter}
-        </button>
+        key={letter}
+        className="hangman-button"
+        onClick={() => handleGuess(letter)}
+        disabled={guessedLetters.includes(letter) || message !== ""}
+      >
+        {letter}
+      </button>
       );
     }
     return letters;

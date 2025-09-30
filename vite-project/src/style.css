@@ -128,3 +128,58 @@ iframe, img {
 .dropdown:hover .dropdown-content {
   display: flex;
 }
+
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between; /* Title left, timer right */
+  align-items: center;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.timer {
+  font-weight: bold;
+  margin-left: auto; /* pushes it to the right in flex container */
+}
+
+.game-section {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #ddd; /* optional, for visual separation */
+  border-radius: 6px;
+}
+
+.controls-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0; /* space above and below the line */
+}
+
+.difficulty-select {
+  padding: 6px 10px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.hangman button {
+  padding: 10px 14px; /* bigger click area */
+  font-size: 18px;    /* larger letters */
+  margin: 3px;        /* spacing between buttons */
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.hangman button:disabled {
+  opacity: 0.5;       /* visually show disabled buttons */
+  cursor: not-allowed;
+}

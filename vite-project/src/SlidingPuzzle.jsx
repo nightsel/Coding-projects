@@ -162,11 +162,22 @@ export default function SlidingPuzzle() {
 
   return (
     <div>
-      <h3>Sliding Puzzle</h3>
-      <button onClick={resetPuzzle} className="puzzle-button">Reset Puzzle</button>
-      <button onClick={stepHint} className="puzzle-button">Hint</button>
-      <div style={{ marginTop: "10px" }}>Time: {seconds}s</div>
-      <div style={{ color: "green", fontWeight: "bold" }}>{winMessage}</div>
+      <div className="puzzle-header">
+        <h3>Sliding Puzzle</h3>
+        <p> The goal of this game is to arrange 15 numbered tiles in order from 1 to 15,
+           left to right and top to bottom, within a 4×4 grid. One empty space
+            allows you to slide the tiles around. Use logic and strategy to reorder
+             the tiles and complete the puzzle. </p>
+        <div className="puzzle-controls">
+          <button onClick={resetPuzzle} className="puzzle-button">Reset Puzzle</button>
+          <button onClick={stepHint} className="puzzle-button">Hint</button>
+          <br />
+          <span className="puzzle-timer">Time: {seconds}s</span>
+          
+          <div className="controls-divider"></div>
+          {winMessage && <div className="win-message">{winMessage}</div>}
+        </div>
+      </div>
 
       <div
         id="puzzle"
