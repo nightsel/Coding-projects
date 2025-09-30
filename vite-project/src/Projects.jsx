@@ -9,10 +9,25 @@ export default function Projects({ section }) {
   const pollRef = useRef(null);
   const otherRef = useRef(null);
 
+  const scrollTo = (ref) => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    ref.current.classList.add("highlight");
+    setTimeout(() => ref.current.classList.remove("highlight"), 1000);
+  };
+
   useEffect(() => {
     if (section === "weather") weatherRef.current?.scrollIntoView({ behavior: "smooth" });
     if (section === "poll") pollRef.current?.scrollIntoView({ behavior: "smooth" });
     if (section === "other") otherRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [section]);
+
+  useEffect(() => {
+    if (!section) return;
+
+    if (section === "weather") scrollTo(weatherRef);
+    if (section === "poll") scrollTo(pollRef);
+    if (section === "other") scrollTo(otherRef);
   }, [section]);
 
   return (

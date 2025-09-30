@@ -16,6 +16,13 @@ body {
   margin: 0 auto; /* center horizontally if wide screen */
 }
 
+/* style.css */
+.highlight {
+  background-color: yellow; /* or a lighter color for subtle effect */
+  transition: background-color 0.5s ease;
+}
+
+
 /* Tabs container */
 .tab {
   display: flex;
@@ -69,6 +76,7 @@ iframe, img {
   font-weight: bold;
   transition: background-color 0.2s;
 }
+
 
 .puzzle-button:hover {
   background-color: #0056b3;
