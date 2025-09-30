@@ -32,19 +32,23 @@ export default function Projects({ section }) {
 
   return (
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
-      <div ref={weatherRef}>
+      <div ref={weatherRef} className="highlight-section">
+        <h5>Weather Reporter</h5>
         <WeatherReporter />
-        <p>
-          This uses the <a href="https://www.weatherapi.com" target="_blank">WeatherAPI</a> service
-          and my own API hosted on <a href="https://coding-projects-dhbrgrgtx-nightsels-projects.vercel.app/" target="_blank">Vercel</a>:
-        </p>
-        <ul>
-          <li>API provides a route to <code>/weather/city</code> to fetch results from WeatherAPI.</li>
-          <li>API key is stored privately in the cloud (Vercel).</li>
-          <li>Setup allowed me to practice building and deploying a serverless architecture.</li>
-          <li>Code is available in the main GitHub repository folder <code>my-app</code>.</li>
-        </ul>
+      <p>
+        This uses the <a href="https://www.weatherapi.com" target="_blank">WeatherAPI</a> service
+        and my own API hosted on <a href="https://coding-projects-dhbrgrgtx-nightsels-projects.vercel.app/" target="_blank">Vercel</a>:
+      </p>
+      <ul>
+        <li>API provides a route to <code>/weather/city</code> to fetch results from WeatherAPI.</li>
+        <li>API key is stored privately in the cloud (Vercel).</li>
+        <li>Setup allowed me to practice building and deploying a serverless architecture.</li>
+        <li>Code is available in the main GitHub repository folder <code>my-app</code>.</li>
+      </ul>
       </div>
+      <div className="section-divider"></div>
+
+
 
       <div ref={pollRef}>
         <h5>Vote & Leave Feedback</h5>
@@ -99,6 +103,8 @@ export default function Projects({ section }) {
           </button>
         </form>
       </div>
+
+      <div className="section-divider"></div>
 
       <div ref={otherRef}>
         <h5>Other projects</h5>

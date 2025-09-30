@@ -28,7 +28,9 @@ export default function Puzzles({ section }) {
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
         <div ref={slidingRef}><SlidingPuzzle /></div>
+        <div className="section-divider"></div>
         <div ref={sudokuRef}><SudokuGenerator /></div>
+        <div className="section-divider"></div>
         <div ref={hangmanRef}><Hangman /></div>
       </div>
     </div>

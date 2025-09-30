@@ -35,7 +35,6 @@ export default function WeatherReporter() {
 
   return (
     <div className="weather-reporter">
-      <h5>Weather Reporter</h5>
       <input
         value={city}
         onChange={(e) => setCity(e.target.value)}

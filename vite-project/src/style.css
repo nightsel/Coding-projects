@@ -22,6 +22,24 @@ body {
   transition: background-color 0.5s ease;
 }
 
+/* highlight when the tab button is clicked */
+.highlight-section {
+  transition: background-color 0.5s ease;
+}
+
+.highlight-section.active {
+  background-color: #fff3b0; /* yellow highlight */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* line under section */
+.section-divider {
+  height: 2px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
 
 /* Tabs container */
 .tab {
