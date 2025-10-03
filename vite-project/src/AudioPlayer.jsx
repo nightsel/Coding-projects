@@ -46,8 +46,11 @@ export default function AudioPlayer() {
     analyserRef.current.fftSize = 2048;
 
     if (!sourceRef.current) {
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.value = 1; // fixed gain for analyser
       sourceRef.current = audioCtx.createMediaElementSource(audio);
-      sourceRef.current.connect(analyserRef.current);
+      sourceRef.current.connect(gainNode);
+      gainNode.connect(analyserRef.current);
       analyserRef.current.connect(audioCtx.destination);
     }
 
@@ -77,6 +80,13 @@ export default function AudioPlayer() {
       const floatArray = new Float32Array(analyser.frequencyBinCount);
       analyser.getFloatFrequencyData(floatArray);
 
+      // Convert dB → linear amplitude
+      const linear = floatArray.map(v => Math.pow(10, v / 20));
+
+      // Find max in this frame to normalize
+      const maxVal = Math.max(...linear, 1e-8); // avoid division by 0
+      const normalized = linear.map(v => v / maxVal);
+
       freqCtx.clearRect(0, 0, freqCanvas.width, freqCanvas.height);
       const barWidth = freqCanvas.width / numBuckets;
       const sampleRate = audioCtx.sampleRate;
@@ -89,16 +99,12 @@ export default function AudioPlayer() {
         const freqStart = minFreq * Math.pow(maxFreq / minFreq, i / numBuckets);
         const freqEnd = minFreq * Math.pow(maxFreq / minFreq, (i + 1) / numBuckets);
         const startBin = Math.floor(freqStart / binFreq);
-        const endBin = Math.min(Math.floor(freqEnd / binFreq), floatArray.length - 1);
+        const endBin = Math.min(Math.floor(freqEnd / binFreq), linear.length - 1);
 
-        let sumDB = 0;
-        for (let j = startBin; j <= endBin; j++) sumDB += floatArray[j];
-        const avgDB = sumDB / (endBin - startBin + 1);
-
-        const minDB = -80;
-        const maxDB = 0;
-        let val = (avgDB - minDB) / (maxDB - minDB);
-        val = Math.max(0, Math.min(1, val));
+        // Average normalized amplitude in this bucket
+        let sum = 0;
+        for (let j = startBin; j <= endBin; j++) sum += normalized[j];
+        const val = sum / (endBin - startBin + 1);
 
         const barHeight = val * freqCanvas.height;
         freqCtx.fillStyle = "#4caf50";
