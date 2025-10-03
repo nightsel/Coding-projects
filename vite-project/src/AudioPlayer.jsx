@@ -74,21 +74,17 @@ export default function AudioPlayer() {
 
       requestAnimationFrame(animateWaveform);
     }
-
     function drawFrequencies() {
       const analyser = analyserRef.current;
       const floatArray = new Float32Array(analyser.frequencyBinCount);
       analyser.getFloatFrequencyData(floatArray);
 
-      // Convert dB → linear amplitude
+      // Convert dB to linear amplitude
       const linear = floatArray.map(v => Math.pow(10, v / 20));
 
-      // Find max in this frame to normalize
-      const maxVal = Math.max(...linear, 1e-8); // avoid division by 0
-      const normalized = linear.map(v => v / maxVal);
-
-      freqCtx.clearRect(0, 0, freqCanvas.width, freqCanvas.height);
-      const barWidth = freqCanvas.width / numBuckets;
+      // --- Log-frequency buckets ---
+      const numBuckets = 12;
+      const bucketValues = [];
       const sampleRate = audioCtx.sampleRate;
       const fftSize = analyser.fftSize;
       const binFreq = sampleRate / fftSize;
@@ -101,18 +97,90 @@ export default function AudioPlayer() {
         const startBin = Math.floor(freqStart / binFreq);
         const endBin = Math.min(Math.floor(freqEnd / binFreq), linear.length - 1);
 
-        // Average normalized amplitude in this bucket
         let sum = 0;
-        for (let j = startBin; j <= endBin; j++) sum += normalized[j];
-        const val = sum / (endBin - startBin + 1);
+        for (let j = startBin; j <= endBin; j++) sum += linear[j];
+        let val = sum / (endBin - startBin + 1);
+        val = Math.pow(val, 0.5); // mild compression
+        bucketValues.push(val);
+      }
 
-        const barHeight = val * freqCanvas.height;
+      // --- Frequency weighting: downweight bass, boost highs ---
+      const weights = [0.5, 0.6, 0.7, 0.8, 1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0];
+      for (let i = 0; i < numBuckets; i++) bucketValues[i] *= weights[i];
+
+      // --- Global compression ---
+      for (let i = 0; i < numBuckets; i++) bucketValues[i] = Math.pow(bucketValues[i], 0.7);
+
+      // --- Rolling loudness reference + soft limiter ---
+      const avgVal = bucketValues.reduce((a, b) => a + b, 0) / numBuckets;
+      if (!drawFrequencies.loudnessRef) drawFrequencies.loudnessRef = avgVal;
+      drawFrequencies.loudnessRef = 0.98 * drawFrequencies.loudnessRef + 0.02 * avgVal;
+
+      const scale = 0.6 / (drawFrequencies.loudnessRef + 1e-6);
+      for (let i = 0; i < numBuckets; i++) {
+        let v = bucketValues[i] * scale;
+        const limit = 0.75;
+        if (v > limit) v = limit + (v - limit) * 0.3;
+        bucketValues[i] = Math.min(v, 0.9);
+      }
+
+      // --- Smooth dynamic high-frequency highlighting ---
+      const highStart = 4; // start index of top 8 buckets
+      const highEnd = 11;  // end index
+      const highBuckets = bucketValues.slice(highStart, highEnd + 1);
+      const maxHigh = Math.max(...highBuckets);
+
+      for (let i = highStart; i <= highEnd; i++) {
+        const v = bucketValues[i];
+        const ratio = v / (maxHigh + 1e-6);
+        const factor = 0.1 + 0.9 * Math.pow(ratio, 2); // smooth suppression
+        bucketValues[i] *= factor;
+      }
+
+      // --- Smoothing (applied after suppression) ---
+      if (!drawFrequencies.prevBuckets) drawFrequencies.prevBuckets = bucketValues.slice();
+      const smoothing = 0.6;
+      for (let i = 0; i < numBuckets; i++) {
+        bucketValues[i] = smoothing * drawFrequencies.prevBuckets[i] + (1 - smoothing) * bucketValues[i];
+      }
+      drawFrequencies.prevBuckets = bucketValues.slice();
+
+      // --- Draw bars ---
+      const freqCanvas = freqCanvasRef.current;
+      const freqCtx = freqCanvas.getContext("2d");
+      freqCtx.clearRect(0, 0, freqCanvas.width, freqCanvas.height);
+      const barWidth = freqCanvas.width / numBuckets;
+
+      for (let i = 0; i < numBuckets; i++) {
+        const barHeight = bucketValues[i] * freqCanvas.height * 0.8;
         freqCtx.fillStyle = "#4caf50";
         freqCtx.fillRect(i * barWidth, freqCanvas.height - barHeight, barWidth - 2, barHeight);
       }
 
       requestAnimationFrame(drawFrequencies);
     }
+
+
+
+
+
+
+
+
+    function scaleFrequency(value) {
+    // Step 1: cut off noise floor (ignore hiss / tiny overtones)
+    if (value < 20) return 0;
+
+    // Step 2: compress dynamic range (square root curve)
+    let scaled = Math.pow(value / 255, 0.5) * 255;
+
+    // Step 3: optional boost factor (adjust if you want bars taller/shorter)
+    return Math.min(scaled * 1.2, 255);
+  }
+
+
+
+
 
     waveformCanvas.addEventListener("click", (e) => {
       const rect = waveformCanvas.getBoundingClientRect();
@@ -179,7 +247,7 @@ export default function AudioPlayer() {
     </button>
       <br />
       <audio ref={audioRef} controls style={{ width: "400px" }} crossOrigin="anonymous">
-        <source ref={audioSourceRef} type="audio/mpeg" />
+         <source ref={audioSourceRef} type="audio/mpeg" />
       </audio>
       <canvas ref={waveformCanvasRef} width="600" height="100"></canvas>
       <canvas ref={freqCanvasRef} width="600" height="150"></canvas>
