@@ -89,6 +89,7 @@ export default function Projects({ section, forceHighlight }) {
               <option value="Hangman">Hangman</option>
               <option value="Weather Reporter">Weather Reporter</option>
               <option value="Full-Stack Poll">Full-Stack Poll</option>
+              <option value="Audio Player">Audio Player </option>
             </select>
           </label>
 
