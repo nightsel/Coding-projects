@@ -121,8 +121,11 @@ export default function AudioPlayer() {
     });
   }, [audioCtx]);
 
+  const [loading, setLoading] = useState(false);
+
   async function downloadAudio() {
     if (!audioUrl) return alert("Please enter an audio URL");
+    setLoading(true); // start loading
 
     try {
       const res = await fetch(
@@ -147,6 +150,9 @@ export default function AudioPlayer() {
       console.error("Download failed:", err);
       alert("Download failed: " + err.message);
     }
+    finally {
+      setLoading(false); // finished loading
+    }
   }
 
   return (
@@ -159,11 +165,11 @@ export default function AudioPlayer() {
         style={{ width: "100%", maxWidth: "600px" }} // <-- adjust width
       />
       <p style={{ color: "red", fontSize: "0.9em" }}>
-        Note: YouTube links will not work due to anti-bot protections. Please use other sources. Be careful with the volume.
+        Note: YouTube links will not work due to anti-bot protections. Please use other sources. Be careful with the volume. An example of a link that works: https://soundcloud.com/stereodivefoundation-music/chronos
       </p>
-      <button className="puzzle-button" onClick={downloadAudio}>
-        Load Audio
-      </button>
+      <button onClick={downloadAudio} className="puzzle-button"  disabled={loading}>
+      {loading ? "Loading audio..." : "Load Audio"}
+    </button>
       <br />
       <audio ref={audioRef} controls crossOrigin="anonymous">
         <source ref={audioSourceRef} type="audio/mpeg" />

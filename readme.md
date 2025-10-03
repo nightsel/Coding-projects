@@ -1,4 +1,5 @@
-Folder `docs` contains the code for the website https://nightsel.github.io/Coding-projects/ .
+The `docs` folder contains the built website code for https://nightsel.github.io/Coding-projects/ .
+The source React project, built with Vite, is in the `vite-project` folder.
 
 Folder `leetcode` contains the codes I made for practice on https://leetcode.com/problemset/ .
 
