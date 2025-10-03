@@ -36,6 +36,7 @@ export default function AudioPlayer() {
 
   useEffect(() => {
     const audio = audioRef.current;
+    audio.volume = 0.35;
     const waveformCanvas = waveformCanvasRef.current;
     const freqCanvas = freqCanvasRef.current;
     const waveformCtx = waveformCanvas.getContext("2d");
@@ -171,7 +172,7 @@ export default function AudioPlayer() {
       {loading ? "Loading audio..." : "Load Audio"}
     </button>
       <br />
-      <audio ref={audioRef} controls crossOrigin="anonymous">
+      <audio ref={audioRef} controls style={{ width: "400px" }} crossOrigin="anonymous">
         <source ref={audioSourceRef} type="audio/mpeg" />
       </audio>
       <canvas ref={waveformCanvasRef} width="600" height="100"></canvas>
