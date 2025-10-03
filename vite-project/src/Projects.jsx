@@ -1,6 +1,7 @@
 // Projects.jsx
 import React, { useState, useRef, useEffect } from "react";
 import WeatherReporter from "./WeatherReporter";
+import AudioPlayer from "./AudioPlayer.jsx";
 
 export default function Projects({ section, forceHighlight }) {
   const [submitting, setSubmitting] = useState(false);
@@ -8,6 +9,7 @@ export default function Projects({ section, forceHighlight }) {
   const weatherRef = useRef(null);
   const pollRef = useRef(null);
   const otherRef = useRef(null);
+  const audioRef = useRef(null);
 
   const scrollTo = (ref) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -20,6 +22,7 @@ export default function Projects({ section, forceHighlight }) {
     if (section === "weather") weatherRef.current?.scrollIntoView({ behavior: "smooth" });
     if (section === "poll") pollRef.current?.scrollIntoView({ behavior: "smooth" });
     if (section === "other") otherRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (section === "audioplayer") audioRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [section]);
 
   useEffect(() => {
@@ -28,6 +31,7 @@ export default function Projects({ section, forceHighlight }) {
     if (section === "weather") scrollTo(weatherRef);
     if (section === "poll") scrollTo(pollRef);
     if (section === "other") scrollTo(otherRef);
+    if (section === "audioplayer") scrollTo(audioRef);
   }, [section, forceHighlight]);
 
   return (
@@ -125,12 +129,25 @@ export default function Projects({ section, forceHighlight }) {
 
       <div className="section-divider"></div>
 
+      <div ref={audioRef}>
+        <h3>Audio Player</h3>
+        <AudioPlayer />
+        <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
+        <li>This is a custom React audio player with a waveform visualizer and clickable seek.</li>
+        <li>Audio files you load are temporarily stored in <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Storage</a> under names like <code>temp_audio_[uuid].mp3</code> and are automatically deleted after 15 minutes.</li>
+        <li>The backend running on <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a> handles fetching and streaming these audio files to your player.</li>
+        <li>Loading audio may take a few seconds depending on file size and network.</li>
+        </ul>
+      </div>
+
+      <div className="section-divider"></div>
+
       <div ref={otherRef}>
         <h3>Other projects</h3>
         <p>The repositories for my projects are organized as follows:</p>
         <ul>
           <li>
-            <strong>Full-Stack Poll Backend:</strong>
+            <strong>Full-Stack Poll and Audio Player API:</strong>
             <a href="https://github.com/nightsel/expressproject" target="_blank"> Express repository</a>
           </li>
           <li>

@@ -1,0 +1,175 @@
+import React, { useRef, useEffect, useState } from "react";
+import "./style.css";
+
+export default function AudioPlayer() {
+  const audioRef = useRef(null);
+  const audioSourceRef = useRef(null);
+  const waveformCanvasRef = useRef(null);
+  const freqCanvasRef = useRef(null);
+
+  const [audioUrl, setAudioUrl] = useState("");
+  const [audioCtx] = useState(() => new (window.AudioContext || window.webkitAudioContext)());
+  const analyserRef = useRef(null);
+  const sourceRef = useRef(null);
+  const waveformDataRef = useRef(null);
+  const numBuckets = 10;
+
+  function downsampleWaveform(data, width) {
+    const factor = Math.floor(data.length / width);
+    const downsampled = [];
+
+    for (let i = 0; i < width; i++) {
+      const slice = data.slice(i * factor, (i + 1) * factor);
+      let sumSquares = slice.reduce((sum, v) => sum + v * v, 0);
+      const rms = Math.sqrt(sumSquares / slice.length);
+      downsampled.push({ min: -rms, max: rms });
+    }
+
+    const maxVal = Math.max(...downsampled.map(d => d.max));
+    const minVal = Math.min(...downsampled.map(d => d.min));
+
+    return downsampled.map(({ min, max }) => ({
+      min: (min - minVal) / (maxVal - minVal) * 2 - 1,
+      max: (max - minVal) / (maxVal - minVal) * 2 - 1
+    }));
+  }
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    const waveformCanvas = waveformCanvasRef.current;
+    const freqCanvas = freqCanvasRef.current;
+    const waveformCtx = waveformCanvas.getContext("2d");
+    const freqCtx = freqCanvas.getContext("2d");
+
+    analyserRef.current = audioCtx.createAnalyser();
+    analyserRef.current.fftSize = 2048;
+
+    if (!sourceRef.current) {
+      sourceRef.current = audioCtx.createMediaElementSource(audio);
+      sourceRef.current.connect(analyserRef.current);
+      analyserRef.current.connect(audioCtx.destination);
+    }
+
+    function animateWaveform() {
+      if (!waveformDataRef.current || !audio.duration) {
+        requestAnimationFrame(animateWaveform);
+        return;
+      }
+      waveformCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+      const middleY = waveformCanvas.height / 2;
+      const amplitude = middleY;
+      const progressX = Math.floor(audio.currentTime / audio.duration * waveformCanvas.width);
+
+      for (let x = 0; x < waveformDataRef.current.length; x++) {
+        const { min, max } = waveformDataRef.current[x];
+        const y1 = middleY - max * amplitude;
+        const y2 = middleY - min * amplitude;
+        waveformCtx.fillStyle = x < progressX ? "#4caf50" : "#ccc";
+        waveformCtx.fillRect(x, Math.min(y1, y2), 1, Math.abs(y2 - y1));
+      }
+
+      requestAnimationFrame(animateWaveform);
+    }
+
+    function drawFrequencies() {
+      const analyser = analyserRef.current;
+      const floatArray = new Float32Array(analyser.frequencyBinCount);
+      analyser.getFloatFrequencyData(floatArray);
+
+      freqCtx.clearRect(0, 0, freqCanvas.width, freqCanvas.height);
+      const barWidth = freqCanvas.width / numBuckets;
+      const sampleRate = audioCtx.sampleRate;
+      const fftSize = analyser.fftSize;
+      const binFreq = sampleRate / fftSize;
+      const minFreq = 20;
+      const maxFreq = 20000;
+
+      for (let i = 0; i < numBuckets; i++) {
+        const freqStart = minFreq * Math.pow(maxFreq / minFreq, i / numBuckets);
+        const freqEnd = minFreq * Math.pow(maxFreq / minFreq, (i + 1) / numBuckets);
+        const startBin = Math.floor(freqStart / binFreq);
+        const endBin = Math.min(Math.floor(freqEnd / binFreq), floatArray.length - 1);
+
+        let sumDB = 0;
+        for (let j = startBin; j <= endBin; j++) sumDB += floatArray[j];
+        const avgDB = sumDB / (endBin - startBin + 1);
+
+        const minDB = -80;
+        const maxDB = 0;
+        let val = (avgDB - minDB) / (maxDB - minDB);
+        val = Math.max(0, Math.min(1, val));
+
+        const barHeight = val * freqCanvas.height;
+        freqCtx.fillStyle = "#4caf50";
+        freqCtx.fillRect(i * barWidth, freqCanvas.height - barHeight, barWidth - 2, barHeight);
+      }
+
+      requestAnimationFrame(drawFrequencies);
+    }
+
+    waveformCanvas.addEventListener("click", (e) => {
+      const rect = waveformCanvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percentage = clickX / waveformCanvas.width;
+      audio.currentTime = percentage * audio.duration;
+    });
+
+    audio.addEventListener("play", async () => {
+      if (audioCtx.state === "suspended") await audioCtx.resume();
+      animateWaveform();
+      drawFrequencies();
+    });
+  }, [audioCtx]);
+
+  async function downloadAudio() {
+    if (!audioUrl) return alert("Please enter an audio URL");
+
+    try {
+      const res = await fetch(
+        `https://expressproject-al0i.onrender.com/download-audio?url=${encodeURIComponent(audioUrl)}`
+      );
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+      const data = await res.json();
+      if (data.error) {
+        alert("Error: " + data.error);
+        return;
+      }
+
+      const proxiedUrl = `https://expressproject-al0i.onrender.com/proxy-audio?url=${encodeURIComponent(data.url)}`;
+      const arrayBuffer = await (await fetch(proxiedUrl)).arrayBuffer();
+      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+      waveformDataRef.current = downsampleWaveform(audioBuffer.getChannelData(0), waveformCanvasRef.current.width);
+
+      audioSourceRef.current.src = proxiedUrl;
+      audioRef.current.load();
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert("Download failed: " + err.message);
+    }
+  }
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Enter audio URL (e.g., SoundCloud, other direct links)"
+        value={audioUrl}
+        onChange={(e) => setAudioUrl(e.target.value)}
+        style={{ width: "100%", maxWidth: "600px" }} // <-- adjust width
+      />
+      <p style={{ color: "red", fontSize: "0.9em" }}>
+        Note: YouTube links will not work due to anti-bot protections. Please use other sources. Be careful with the volume.
+      </p>
+      <button className="puzzle-button" onClick={downloadAudio}>
+        Load Audio
+      </button>
+      <br />
+      <audio ref={audioRef} controls crossOrigin="anonymous">
+        <source ref={audioSourceRef} type="audio/mpeg" />
+      </audio>
+      <canvas ref={waveformCanvasRef} width="600" height="100"></canvas>
+      <canvas ref={freqCanvasRef} width="600" height="150"></canvas>
+    </div>
+  );
+}

@@ -84,6 +84,7 @@ function App() {
         <div className="dropdown-content">
           <span onClick={() => handleTabClick("Projects", "weather")}>Weather Reporter</span>
     <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
+    <span onClick={() => handleTabClick("Projects", "audioplayer")}>Audio Player</span> {/* new */}
     <span onClick={() => handleTabClick("Projects", "other")}>Other Projects</span>
         </div>
       </div>
