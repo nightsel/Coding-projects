@@ -197,60 +197,69 @@ export default function AudioPlayer() {
   }, [audioCtx]);
 
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(""); // <-- new state for UI messages
 
   async function downloadAudio() {
-    if (!audioUrl) return alert("Please enter an audio URL");
-    setLoading(true); // start loading
-
-    try {
-      const res = await fetch(
-        `https://expressproject-al0i.onrender.com/download-audio?url=${encodeURIComponent(audioUrl)}`
-      );
-      if (!res.ok) throw new Error(`Server error: ${res.status}`);
-
-      const data = await res.json();
-      if (data.error) {
-        alert("Error: " + data.error);
+      if (!audioUrl) {
+        setMessage("Please enter an audio URL.");
         return;
       }
 
-      const proxiedUrl = `https://expressproject-al0i.onrender.com/proxy-audio?url=${encodeURIComponent(data.url)}`;
-      const arrayBuffer = await (await fetch(proxiedUrl)).arrayBuffer();
-      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-      waveformDataRef.current = downsampleWaveform(audioBuffer.getChannelData(0), waveformCanvasRef.current.width);
+      setLoading(true);
+      setMessage(""); // clear previous messages
 
-      audioSourceRef.current.src = proxiedUrl;
-      audioRef.current.load();
-    } catch (err) {
-      console.error("Download failed:", err);
-      alert("Download failed: " + err.message);
+      try {
+        const res = await fetch(
+          `https://expressproject-al0i.onrender.com/download-audio?url=${encodeURIComponent(audioUrl)}`
+        );
+
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+        const data = await res.json();
+
+        if (data.error) {
+          setMessage("Error: " + data.error); // show error in UI
+          return;
+        }
+
+        const proxiedUrl = `https://expressproject-al0i.onrender.com/proxy-audio?url=${encodeURIComponent(data.url)}`;
+        const arrayBuffer = await (await fetch(proxiedUrl)).arrayBuffer();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+        waveformDataRef.current = downsampleWaveform(audioBuffer.getChannelData(0), waveformCanvasRef.current.width);
+
+        audioSourceRef.current.src = proxiedUrl;
+        audioRef.current.load();
+      } catch (err) {
+        setMessage("Download failed: " + err.message); // <-- display error instead of alert
+      } finally {
+        setLoading(false);
+      }
     }
-    finally {
-      setLoading(false); // finished loading
-    }
+
+    return (
+      <div>
+        <input
+          type="text"
+          placeholder="Enter audio URL (e.g., SoundCloud, other direct links)"
+          value={audioUrl}
+          onChange={(e) => setAudioUrl(e.target.value)}
+          style={{ width: "100%", maxWidth: "600px" }}
+        />
+        <p style={{ color: "red", fontSize: "0.9em" }}>
+          Note: YouTube links will not work due to anti-bot protections. Please use other sources. BE CAREFUL WITH THE VOLUME! Example of a link that works: https://soundcloud.com/stereodivefoundation-music/chronos
+        </p>
+        <button onClick={downloadAudio} className="puzzle-button" disabled={loading}>
+          {loading ? "Loading audio..." : "Load Audio"}
+        </button>
+
+        {/* Error / status message */}
+        {message && <p style={{ color: "red", marginTop: "10px" }}>{message}</p>}
+
+        <audio ref={audioRef} controls style={{ width: "400px" }} crossOrigin="anonymous">
+          <source ref={audioSourceRef} type="audio/mpeg" />
+        </audio>
+        <canvas ref={waveformCanvasRef} width="600" height="100"></canvas>
+        <canvas ref={freqCanvasRef} width="600" height="150"></canvas>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="Enter audio URL (e.g., SoundCloud, other direct links)"
-        value={audioUrl}
-        onChange={(e) => setAudioUrl(e.target.value)}
-        style={{ width: "100%", maxWidth: "600px" }} // <-- adjust width
-      />
-      <p style={{ color: "red", fontSize: "0.9em" }}>
-        Note: YouTube links will not work due to anti-bot protections. Please use other sources. Be careful with the volume. An example of a link that works: https://soundcloud.com/stereodivefoundation-music/chronos
-      </p>
-      <button onClick={downloadAudio} className="puzzle-button"  disabled={loading}>
-      {loading ? "Loading audio..." : "Load Audio"}
-    </button>
-      <br />
-      <audio ref={audioRef} controls style={{ width: "400px" }} crossOrigin="anonymous">
-         <source ref={audioSourceRef} type="audio/mpeg" />
-      </audio>
-      <canvas ref={waveformCanvasRef} width="600" height="100"></canvas>
-      <canvas ref={freqCanvasRef} width="600" height="150"></canvas>
-    </div>
-  );
-}
