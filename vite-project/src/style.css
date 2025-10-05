@@ -62,6 +62,11 @@ body {
 .tab button:hover {
   background-color: #ddd; /* slightly darker on hover */
 }
+.full-width-container {
+  max-width: none; /* override default 900px */
+  width: 100%;
+  margin: 0 auto;
+}
 
 /* Tab button when active (selected) */
 .tab button.active {

@@ -40,7 +40,8 @@ export default function WeatherReporter() {
         onChange={(e) => setCity(e.target.value)}
         placeholder="Enter city"
       />
-      <button onClick={fetchWeather}>Get Weather</button>
+      <span>&nbsp;</span>
+      <button className="puzzle-button" onClick={fetchWeather}> Get Weather</button>
       <div id="output">{output}</div>
     </div>
   );

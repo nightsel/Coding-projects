@@ -11,6 +11,7 @@ export default function Projects({ section, forceHighlight }) {
   const otherRef = useRef(null);
   const audioRef = useRef(null);
 
+
   const scrollTo = (ref) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -33,6 +34,11 @@ export default function Projects({ section, forceHighlight }) {
     if (section === "other") scrollTo(otherRef);
     if (section === "audioplayer") scrollTo(audioRef);
   }, [section, forceHighlight]);
+
+  const [artist, setArtist] = useState('');
+  const [song, setSong] = useState('');
+  const [lyricsArray, setLyricsArray] = useState([]);
+  const [searching, setSearching] = useState(false);
 
   return (
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
@@ -132,13 +138,78 @@ export default function Projects({ section, forceHighlight }) {
 
       <div ref={audioRef}>
         <h3>Audio Player</h3>
-        <AudioPlayer />
-        <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
-        <li>This is a custom React audio player with a waveform visualizer and clickable seek.</li>
-        <li>Audio files you load are temporarily stored in <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Storage</a> under names like <code>temp_audio_[uuid].mp3</code> and are automatically deleted after 15 minutes.</li>
-        <li>The backend running on <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a> handles fetching and streaming these audio files to your player.</li>
-        <li>Loading audio may take a few seconds depending on file size and network.</li>
-        </ul>
+
+        {/* Inputs and search button */}
+        <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            placeholder="Artist"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+            style={{ padding: '5px' }}
+          />
+          <input
+            type="text"
+            placeholder="Song"
+            value={song}
+            onChange={(e) => setSong(e.target.value)}
+            style={{ padding: '5px' }}
+          />
+          <button className="puzzle-button"
+            onClick={async () => {
+              if (!artist || !song) return;
+              setSearching(true);
+              const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+              console.log("Fetching lyrics from URL:", url);
+              const res = await fetch(`https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`);
+              const data = await res.json();
+              console.log("Fetched lyrics data:", data); // <-- see the full object
+              setLyricsArray(data.lines || []);
+              setSearching(false);
+            }}
+            disabled={searching}
+            style={{ padding: '6px 12px' }}
+          >
+            {searching ? 'Searching...' : 'Search Lyrics'}
+          </button>
+        </div>
+
+        {/* Player + Lyrics side by side */}
+        <div className="full-width-container"
+          style={{
+            display: "flex",
+            gap: "20px",
+            width: "1200vw",       // fill parent width
+            maxWidth: "1200px",  // allow bigger than default
+            margin: "0 auto",    // center
+            alignItems: "flex-start",
+          }}
+        >
+          {/* Audio Player */}
+          <div style={{ flex: "0 0 300px" }}>
+            <AudioPlayer />
+          </div>
+
+          {/* Lyrics */}
+          <div
+            style={{
+              flex: 1,
+              maxHeight: "400px",
+              overflowY: "auto",
+              border: "1px solid #ddd",
+              padding: "10px",
+              borderRadius: "6px",
+            }}
+          >
+            <h4>Lyrics</h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, lineHeight: "1.5" }}>
+              {lyricsArray.map((line, index) => (
+                <li key={index}>{line}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
       </div>
 
       <div className="section-divider"></div>
