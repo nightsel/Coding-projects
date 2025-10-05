@@ -59,84 +59,6 @@ export default function Projects({ section, forceHighlight }) {
       </div>
       <div className="section-divider"></div>
 
-
-
-      <div ref={pollRef}>
-        <h3>Vote & Leave Feedback</h3>
-        <ul style={{ maxWidth:'600px', lineHeight: '1.5' }}>
-          <li>Pick your favorite feature of this website and optionally leave a comment.</li>
-          <li>Your vote and comment are stored in a private PostgreSQL database on <a href='https://render.com/' target='_blank'>Render</a>.</li>
-          <li>Only your vote is shown in the results; comments are stored privately.</li>
-          <li>Submitting may take a few seconds if the cloud service is still starting.</li>
-        </ul>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const option = e.target.elements.option.value;
-            const feedback = e.target.elements.feedback.value;
-            if (!option) return;
-            setSubmitting(true);
-            const res = await fetch('https://expressproject-al0i.onrender.com/vote', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ option, feedback })
-            });
-            if (res.ok) alert('Vote submitted!');
-            setSubmitting(false);
-            e.target.reset();
-          }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px', marginBottom: '20px' }}
-        >
-          <label style={{ display: 'flex', flexDirection: 'column' }}>
-            Choose your favorite feature:
-            <select name="option" required style={{ padding: '5px', marginTop: '5px' }}>
-              <option value="">Select...</option>
-              <option value="Sliding Puzzle">Sliding Puzzle</option>
-              <option value="Sudoku Generator">Sudoku Generator</option>
-              <option value="Hangman">Hangman</option>
-              <option value="Weather Reporter">Weather Reporter</option>
-              <option value="Full-Stack Poll">Full-Stack Poll</option>
-              <option value="Audio Player">Audio Player </option>
-            </select>
-          </label>
-
-          <label style={{ display: 'flex', flexDirection: 'column' }}>
-            Optional feedback:
-            <input
-              name="feedback"
-              type="text"
-              placeholder="Your comments..."
-              style={{ padding: '5px', marginTop: '5px' }}
-            />
-          </label>
-
-          <button type="submit" disabled={submitting} style={{ padding: '8px 12px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', width: 'fit-content' }}>
-            {submitting ? 'Submitting...' : 'Submit'}
-          </button>
-        </form>
-        <button
-          onClick={async () => {
-            const res = await fetch('https://expressproject-al0i.onrender.com/results');
-            const data = await res.json();
-            alert(JSON.stringify(data, null, 2));
-          }}
-          style={{
-            padding: '6px 10px',
-            backgroundColor: '#6c757d',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            width: 'fit-content'
-          }}
-        >
-          Show current votes
-        </button>
-
-      </div>
-
-      <div className="section-divider"></div>
-
       <div ref={audioRef}>
         <h3>Audio Player and Lyrics Search</h3>
         {/* Description */}
@@ -228,6 +150,81 @@ export default function Projects({ section, forceHighlight }) {
         </div>
 
 
+      <div className="section-divider"></div>
+
+      <div ref={pollRef}>
+        <h3>Vote & Leave Feedback</h3>
+        <ul style={{ maxWidth:'600px', lineHeight: '1.5' }}>
+          <li>Pick your favorite feature of this website and optionally leave a comment.</li>
+          <li>Your vote and comment are stored in a private PostgreSQL database on <a href='https://render.com/' target='_blank'>Render</a>.</li>
+          <li>Only your vote is shown in the results; comments are stored privately.</li>
+          <li>Submitting may take a few seconds if the cloud service is still starting.</li>
+        </ul>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const option = e.target.elements.option.value;
+            const feedback = e.target.elements.feedback.value;
+            if (!option) return;
+            setSubmitting(true);
+            const res = await fetch('https://expressproject-al0i.onrender.com/vote', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ option, feedback })
+            });
+            if (res.ok) alert('Vote submitted!');
+            setSubmitting(false);
+            e.target.reset();
+          }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px', marginBottom: '20px' }}
+        >
+          <label style={{ display: 'flex', flexDirection: 'column' }}>
+            Choose your favorite feature:
+            <select name="option" required style={{ padding: '5px', marginTop: '5px' }}>
+              <option value="">Select...</option>
+              <option value="Sliding Puzzle">Sliding Puzzle</option>
+              <option value="Sudoku Generator">Sudoku Generator</option>
+              <option value="Hangman">Hangman</option>
+              <option value="Weather Reporter">Weather Reporter</option>
+              <option value="Full-Stack Poll">Full-Stack Poll</option>
+              <option value="Audio Player">Audio Player </option>
+            </select>
+          </label>
+
+          <label style={{ display: 'flex', flexDirection: 'column' }}>
+            Optional feedback:
+            <input
+              name="feedback"
+              type="text"
+              placeholder="Your comments..."
+              style={{ padding: '5px', marginTop: '5px' }}
+            />
+          </label>
+
+          <button type="submit" disabled={submitting} style={{ padding: '8px 12px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', width: 'fit-content' }}>
+            {submitting ? 'Submitting...' : 'Submit'}
+          </button>
+        </form>
+        <button
+          onClick={async () => {
+            const res = await fetch('https://expressproject-al0i.onrender.com/results');
+            const data = await res.json();
+            alert(JSON.stringify(data, null, 2));
+          }}
+          style={{
+            padding: '6px 10px',
+            backgroundColor: '#6c757d',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            width: 'fit-content'
+          }}
+        >
+          Show current votes
+        </button>
+
+      </div>
       <div className="section-divider"></div>
 
       <div ref={otherRef}>
