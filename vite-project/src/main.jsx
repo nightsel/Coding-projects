@@ -4,7 +4,7 @@ import './style.css';
 import Puzzles from "./Puzzles";
 import Projects from "./Projects";
 import Home from "./Home";
-import About from "./About";
+//import About from "./About";
 
 function App() {
   const [activeTab, setActiveTab] = useState({ tab: "Home", section: null , key: Date.now()});
@@ -15,8 +15,8 @@ function App() {
     switch (activeTab.tab) {
       case "Home":
         return <Home setActiveTab={setActiveTab} />;
-      case "About":
-        return <About setActiveTab={setActiveTab} />;
+      //case "About":
+      //  return <About setActiveTab={setActiveTab} />;
       case "Puzzles":
   return <Puzzles section={activeTab.section} forceHighlight={forceHighlight} />;
       case "Projects":
@@ -58,7 +58,7 @@ function App() {
       {/* Navbar */}
       <div className="tab">
         <button onClick={() => handleTabClick("Home", null)}>Home</button>
-        <button onClick={() => handleTabClick("About", null)}>About</button>
+        {/*<button onClick={() => handleTabClick("About", null)}>About</button> */}
 
         <div className="dropdown">
           <button
