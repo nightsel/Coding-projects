@@ -14,7 +14,7 @@ function App() {
   const renderTabContent = () => {
     switch (activeTab.tab) {
       case "Home":
-        return <Home />;
+        return <Home setActiveTab={setActiveTab} />;
       case "About":
         return <About setActiveTab={setActiveTab} />;
       case "Puzzles":

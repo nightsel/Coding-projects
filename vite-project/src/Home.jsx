@@ -1,24 +1,48 @@
 import React from "react";
-export default function Home() {
+export default function Home({ setActiveTab }) {
   return (
     <div className="tabcontent" style={{ padding: '10px' }}>
-      <h1>Hissipuheeni</h1>
-      <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/cKqKmzKE51o"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      ></iframe>
+      <h1>Welcome</h1>
       <p>
+        This website showcases my programming skills and projects. Here's a quick guide:
+      </p>
+      <ul>
+        <li>
+          <span
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => setActiveTab({ tab: "About", section: null })}
+          >
+            About Tab
+          </span>{" "}
+          – Learn about me, my background, and my approach to programming.
+        </li>
+        <li>
+          <span
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => setActiveTab({ tab: "Puzzles", section: null })}
+          >
+            Puzzles Tab
+          </span>{" "}
+          – Explore algorithmic challenges I’ve built and solved.
+        </li>
+        <li>
+          <span
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => setActiveTab({ tab: "Projects", section: null })}
+          >
+            Projects Tab
+          </span>{" "}
+          – See other projects I’ve worked on, with links to repositories and project details.
+        </li>
+      </ul>
+      <p>
+        Main repository is in{" "}
         <a
-          href="https://www.youtube.com/watch?v=cKqKmzKE51o"
+          href="https://github.com/nightsel/Coding-projects"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
-          Videon linkki
+          GitHub: nightsel/Coding-projects
         </a>
       </p>
     </div>

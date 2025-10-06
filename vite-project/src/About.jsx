@@ -15,34 +15,6 @@ export default function About({ setActiveTab }) {
         understand them fully. I find solving algorithmic puzzles exciting and
         enjoy figuring out creative solutions.
       </p>
-      <p>
-        The{' '}
-        <span
-          style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-          onClick={() => setActiveTab({ tab: "Puzzles", section: null })}
-        >
-          Puzzles Tab
-        </span>
-         &nbsp; showcases some of the challenges I’ve built and solved. The{' '}
-        <span
-          style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-          onClick={() => setActiveTab({tab: "Projects", section: null})}
-        >
-          Projects tab
-        </span>{' '}
-         contains other projects I’ve worked on, highlighting my skills and approach
-        to programming, with links to repositories and relevant architecture.
-      </p>
-      <p>
-        Main repository is in{' '}
-        <a
-          href="https://github.com/nightsel/Coding-projects"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub: nightsel/Coding-projects
-        </a>
-      </p>
     </div>
   );
 }
