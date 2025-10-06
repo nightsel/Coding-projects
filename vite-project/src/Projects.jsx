@@ -232,19 +232,23 @@ export default function Projects({ section, forceHighlight }) {
         <p>The repositories for my projects are organized as follows:</p>
         <ul>
           <li>
-            <strong>Full-Stack Poll and Audio Player API:</strong>
-            <a href="https://github.com/nightsel/expressproject" target="_blank"> Express repository</a>
+            <strong>Main Repository:</strong>
+            <a href="https://github.com/nightsel/Coding-projects" target="_blank" rel="noopener noreferrer">
+              {' '}Coding-projects
+            </a>
           </li>
           <li>
-            <strong>Front-End & Website Code:</strong> Included in the main repository
-            <a href="https://github.com/nightsel/coding-projects" target="_blank"> coding-projects</a>
+            <strong>Full-Stack Poll and Audio Player API:</strong>
+            <a href="https://github.com/nightsel/expressproject" target="_blank" rel="noopener noreferrer">
+              {' '}Express repository
+            </a>
           </li>
           <li>
             <strong>Other Projects in Main Repository:</strong>
             <ul>
               <li>Back-end code for puzzles and other website functionality</li>
-              <li>Solution scripts for <a href="https://leetcode.com/problemset/" target="_blank">LeetCode</a></li>
-              <li>Other projects using ChatGPT for data analysis, data processing, and AI in video game-related scripts</li>
+              <li>Solution scripts for <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer">LeetCode</a></li>
+              <li>AI-assisted data analysis, data processing, and game-related scripting</li>
             </ul>
           </li>
         </ul>

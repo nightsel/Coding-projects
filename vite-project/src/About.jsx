@@ -5,7 +5,7 @@ export default function About({ setActiveTab }) {
     <div className="tabcontent" style={{ padding: '10px' }}>
       <h3>About</h3>
       <p>
-        Hello, Hi, I'm Max. I discovered programming during my university studies
+        Hello, I'm Max. I discovered programming during my university studies
         in applied mathematics and quickly realized it's what I enjoy most. I've
         focused on software engineering through side studies and personal projects,
         and I'm eager to start a career in this field.
@@ -32,6 +32,16 @@ export default function About({ setActiveTab }) {
         </span>{' '}
          contains other projects I’ve worked on, highlighting my skills and approach
         to programming, with links to repositories and relevant architecture.
+      </p>
+      <p>
+        Main repository is in{' '}
+        <a
+          href="https://github.com/nightsel/Coding-projects"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub: nightsel/Coding-projects
+        </a>
       </p>
     </div>
   );
