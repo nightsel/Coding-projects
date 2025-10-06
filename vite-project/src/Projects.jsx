@@ -41,6 +41,7 @@ export default function Projects({ section, forceHighlight }) {
   const [searching, setSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
+
   return (
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
       <div ref={weatherRef} className="highlight-section">
@@ -64,7 +65,7 @@ export default function Projects({ section, forceHighlight }) {
         {/* Description */}
         <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
           <li>This is a custom React audio player with a waveform visualizer and clickable seek.</li>
-          <li>Please search songs from <a href="https://soundcloud.com/">Soundcloud</a>, yt-dlp works there and it's not traffic limited. Loading audio should take less than a minute depending on file size and network.</li>
+          <li>Song *Luna - ST/A#R is loaded by default to save your time. You can use it for testing. You can search other songs from <a href="https://soundcloud.com/">Soundcloud</a>, yt-dlp works there and it's not traffic limited. Loading audio should take less than a minute depending on file size and network.</li>
           <li>Audio files you load are temporarily stored in <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Storage</a> under names like <code>temp_audio_[uuid].mp3</code> and are automatically deleted after 15 minutes.</li>
           <li>The backend running on <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a> handles fetching and streaming these audio files to your player.</li>
           <li>Lyrics are fetched from two websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete.</li>

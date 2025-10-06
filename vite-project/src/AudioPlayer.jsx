@@ -235,6 +235,30 @@ export default function AudioPlayer() {
         setLoading(false);
       }
     }
+    useEffect(() => {
+      const loadLuna = async () => {
+        try {
+          const url = "https://expressproject-al0i.onrender.com/luna";
+          const response = await fetch(url);
+          const arrayBuffer = await response.arrayBuffer();
+          const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+          // Downsample waveform and store it
+          waveformDataRef.current = downsampleWaveform(
+            audioBuffer.getChannelData(0),
+            waveformCanvasRef.current.width
+          );
+
+          // Set the <audio> element source and play
+          audioSourceRef.current.src = url;
+          audioRef.current.load();
+        } catch (err) {
+          console.error("Failed to load /luna for waveform:", err);
+        }
+      };
+
+      loadLuna();
+    }, []);
 
     return (
       <div>
