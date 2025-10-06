@@ -35,6 +35,29 @@ export default function Projects({ section, forceHighlight }) {
     if (section === "audioplayer") scrollTo(audioRef);
   }, [section, forceHighlight]);
 
+  useEffect(() => {
+  const fetchDefaultLyrics = async () => {
+    setSearching(true);
+    setHasSearched(true);
+    try {
+      // If your backend supports fetching by URL directly
+      // Lyrics for *luna ST/A#R
+      const artdef = "*Luna";
+      const songdef = "ST/A#R";
+      const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${(artdef)}&song=${(songdef)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      setLyricsArray(data.lines || []);
+    } catch (err) {
+      setLyricsArray([]);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  fetchDefaultLyrics();
+}, []);
+
   const [artist, setArtist] = useState('');
   const [song, setSong] = useState('');
   const [lyricsArray, setLyricsArray] = useState([]);
@@ -65,10 +88,10 @@ export default function Projects({ section, forceHighlight }) {
         {/* Description */}
         <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
           <li>This is a custom React audio player with a waveform visualizer and clickable seek.</li>
-          <li>Song *Luna - ST/A#R is loaded by default to save your time. You can use it for testing. You can search other songs from <a href="https://soundcloud.com/">Soundcloud</a>, yt-dlp works there and it's not traffic limited. Loading audio should take less than a minute depending on file size and network.</li>
+          <li>The default song <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> is pre-loaded from storage to save testing time and it is used according to the artist’s <a href="https://www.ast-luna.com/guideline">guideline</a> (non-commercial use, credit to *Luna given). You can use it for testing. You can search other songs from <a href="https://soundcloud.com/">Soundcloud</a> without respecting guidelines because this site does not permanently save any other songs. Loading audio should take less than a minute depending on file size and network.</li>
           <li>Audio files you load are temporarily stored in <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Storage</a> under names like <code>temp_audio_[uuid].mp3</code> and are automatically deleted after 15 minutes.</li>
           <li>The backend running on <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a> handles fetching and streaming these audio files to your player.</li>
-          <li>Lyrics are fetched from two websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete.</li>
+          <li>Lyrics are fetched from three websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a>, <a href="https://utaten.com/"> UtaTen </a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.</li>
         </ul>
 
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
