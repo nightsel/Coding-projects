@@ -5,7 +5,7 @@ export default function Home({ setActiveTab }) {
     <div className="tabcontent" style={{ padding: '10px' }}>
       <h1>Welcome</h1>
       <p>
-        Hi, I am Max. This website showcases my programming skills and projects. Here's a quick guide:
+        Hi, I’m Max. This website showcases my programming skills and projects. Here’s a quick guide:
       </p>
       <ul>
         <li>
@@ -15,7 +15,7 @@ export default function Home({ setActiveTab }) {
           >
             Puzzles Tab
           </span>{" "}
-          – Explore algorithmic challenges I’ve built and solved.
+          - Explore algorithmic challenges I’ve built and solved, including Sliding Puzzle, Sudoku, Hangman, and their solvers.
         </li>
         <li>
           <span
@@ -24,11 +24,12 @@ export default function Home({ setActiveTab }) {
           >
             Projects Tab
           </span>{" "}
-          – See other projects I’ve worked on, with links to repositories and project details.
+          - Projects made for personal challenge such as Weather Reporter, Audio Player, Full Stack Poll, and other projects, showcasing skills in cloud/remote databases and backend deployment both locally and on cloud.
+          This website itself is a full-stack project.
         </li>
       </ul>
       <p>
-        Main repository is in{" "}
+        Main repository is available on{" "}
         <a
           href="https://github.com/nightsel/Coding-projects"
           target="_blank"
