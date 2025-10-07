@@ -11,6 +11,15 @@ export default function Projects({ section, forceHighlight }) {
   const otherRef = useRef(null);
   const audioRef = useRef(null);
 
+  const [artist, setArtist] = useState('');
+  const [song, setSong] = useState('');
+  const artdef = "*Luna";
+  const songdef = "ST/A#R";
+  const [lyricsArray, setLyricsArray] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [currentLyricsInfo, setCurrentLyricsInfo] = useState({ artist: artdef, song: songdef });
+
 
   const scrollTo = (ref) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -42,14 +51,15 @@ export default function Projects({ section, forceHighlight }) {
     try {
       // If your backend supports fetching by URL directly
       // Lyrics for *luna ST/A#R
-      const artdef = "*Luna";
-      const songdef = "ST/A#R";
+
       const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${(artdef)}&song=${(songdef)}`;
       const res = await fetch(url);
       const data = await res.json();
       setLyricsArray(data.lines || []);
+      setCurrentLyricsInfo({ artist: artdef, song: songdef });
     } catch (err) {
       setLyricsArray([]);
+      setCurrentLyricsInfo({});
     } finally {
       setSearching(false);
     }
@@ -58,11 +68,7 @@ export default function Projects({ section, forceHighlight }) {
   fetchDefaultLyrics();
 }, []);
 
-  const [artist, setArtist] = useState('');
-  const [song, setSong] = useState('');
-  const [lyricsArray, setLyricsArray] = useState([]);
-  const [searching, setSearching] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+
 
 
   return (
@@ -114,6 +120,7 @@ export default function Projects({ section, forceHighlight }) {
                 onChange={(e) => setSong(e.target.value)}
                 style={{ padding: '5px' }}
               />
+              {/* Lyrics button */}
               <button
                 className="puzzle-button"
                 onClick={async () => {
@@ -127,8 +134,10 @@ export default function Projects({ section, forceHighlight }) {
                     const res = await fetch(url);
                     const data = await res.json();
                     setLyricsArray(data.lines || []);
+                    setCurrentLyricsInfo({ artist, song });
                   } catch (err) {
                     setLyricsArray([]);
+                    setCurrentLyricsInfo({});
                   } finally {
                     setSearching(false);
                   }
@@ -157,7 +166,11 @@ export default function Projects({ section, forceHighlight }) {
               justifyContent: 'flex-start',
             }}
           >
-            <h4 style={{ margin: 0, marginBottom: '4px' }}>Lyrics</h4>
+            <h4 style={{ margin: 0, marginBottom: '4px' }}>
+              {lyricsArray.length > 0
+                ? `Lyrics for "${currentLyricsInfo.song}" by ${currentLyricsInfo.artist}`
+                : 'Lyrics'}
+            </h4>
             {lyricsArray.length > 0 ? (
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '1.5' }}>
                 {lyricsArray.map((line, index) => (

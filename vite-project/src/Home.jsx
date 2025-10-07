@@ -24,9 +24,9 @@ export default function Home({ setActiveTab }) {
           >
             Projects Tab
           </span>{" "}
-          - Projects made for personal challenge such as Weather Reporter, Audio Player, Full Stack Poll, and other projects, showcasing skills in cloud/remote databases and backend deployment both locally and on cloud.
-          This website itself is a full-stack project.
+          - Projects made for personal challenge such as Weather Reporter, Audio Player, Full Stack Poll, and other projects, showcasing skills in cloud/remote databases and backend deployment both locally and on cloud. This website itself is also a full-stack project.
         </li>
+
       </ul>
       <p>
         Main repository is available on{" "}
