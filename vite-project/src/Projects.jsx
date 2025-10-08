@@ -93,12 +93,17 @@ export default function Projects({ section, forceHighlight }) {
         <h3>Audio Player and Lyrics Search</h3>
         {/* Description */}
         <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
+          {/*
           <li>This is a custom React audio player with a waveform visualizer and clickable seek. Songs can be uploaded from <a href="https://soundcloud.com/">Soundcloud</a> links. Loading audio should take less than a minute depending on file size and network.</li>
           <li>The default song <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> is pre-loaded from storage to save functionality testing time and it is used according to the artist’s <a href="https://www.ast-luna.com/guideline">guideline</a> (non-commercial use, credit to *Luna given).</li>
           <li>Audio files you load are temporarily stored in <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Storage</a> under names like <code>temp_audio_[uuid].mp3</code> and are automatically deleted after 15 minutes.</li>
           <li>The backend running on <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a> handles fetching and streaming these audio files to your player.</li>
           <li>Lyrics are fetched from three websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a>, <a href="https://utaten.com/"> UtaTen </a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.</li>
-        </ul>
+          */}
+          <li> This is an audio player with a waveform amplitude/frequency visualizer and clickable seek on the amplitude graph.</li>
+          <li> The default song <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna)</li>
+          <li> For implementation details see the <a href="https://github.com/nightsel/coding-projects/homedocumentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
+      </ul>
 
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
           {/* Left column: AudioPlayer + Inputs */}
