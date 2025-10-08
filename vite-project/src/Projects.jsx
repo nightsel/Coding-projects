@@ -102,7 +102,7 @@ export default function Projects({ section, forceHighlight }) {
           */}
           <li> This is an audio player with a waveform amplitude/frequency visualizer and clickable seek on the amplitude graph.</li>
           <li> The default song <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna)</li>
-          <li> For implementation details see the <a href="https://github.com/nightsel/coding-projects/homedocumentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
+          <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
       </ul>
 
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
