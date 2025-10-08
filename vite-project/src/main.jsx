@@ -58,36 +58,36 @@ function App() {
       {/* Navbar */}
       <div className="tab">
         <button onClick={() => handleTabClick("Home", null)}>Home</button>
-        {/*<button onClick={() => handleTabClick("About", null)}>About</button> */}
-
         <div className="dropdown">
           <button
-          className={activeTab.tab === "Puzzles" ? "active" : ""}
-          onClick={() => handleTabClick("Puzzles", null)}
-        >
-          Puzzles ▼
-        </button>
-  <div className="dropdown-content">
-    <span onClick={() => handleTabClick("Puzzles", "sliding")}>Sliding Puzzle</span>
-    <span onClick={() => handleTabClick("Puzzles", "sudoku")}>Sudoku</span>
-    <span onClick={() => handleTabClick("Puzzles", "hangman")}>Hangman</span>
-      </div>
-    </div>
-
-      <div className="dropdown">
-        <button
-    className={activeTab.tab === "Projects" ? "active" : ""}
-    onClick={() => handleTabClick("Projects", null)} // top button
-  >
-    Projects ▼
-  </button>
-        <div className="dropdown-content">
-          <span onClick={() => handleTabClick("Projects", "weather")}>Weather Reporter</span>
-    <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
-    <span onClick={() => handleTabClick("Projects", "audioplayer")}>Audio Player</span> {/* new */}
-    <span onClick={() => handleTabClick("Projects", "other")}>Other Projects</span>
+            className={activeTab.tab === "Puzzles" ? "active" : ""}
+            onClick={() => handleTabClick("Puzzles", null)}
+          >
+            Puzzles ▼
+          </button>
+          <div className="dropdown-content">
+            <span onClick={() => handleTabClick("Puzzles", "sliding")}>Sliding Puzzle</span>
+            <span onClick={() => handleTabClick("Puzzles", "sudoku")}>Sudoku</span>
+            <span onClick={() => handleTabClick("Puzzles", "hangman")}>Hangman</span>
+          </div>
         </div>
-      </div>
+        <div className="dropdown">
+          <button
+            className={activeTab.tab === "Projects" ? "active" : ""}
+            onClick={() => handleTabClick("Projects", null)}
+          >
+            Projects ▼
+          </button>
+          <div className="dropdown-content">
+            <span onClick={() => handleTabClick("Projects", "weather")}>Weather Reporter</span>
+            <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
+            <span onClick={() => handleTabClick("Projects", "audioplayer")}>Audio Player</span>
+            <span onClick={() => handleTabClick("Projects", "other")}>Other Projects</span>
+          </div>
+        </div>
+
+        {/* Blue bar */}
+        <div className="blue-bar"></div>
       </div>
 
       {renderTabContent()}

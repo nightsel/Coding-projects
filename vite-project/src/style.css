@@ -203,3 +203,50 @@ iframe, img {
   opacity: 0.5; /* visually indicate disabled state */
   cursor: not-allowed; /* indicate non-clickable */
 }
+
+/* Make buttons blend into background */
+.tab button {
+  background-color: transparent; /* no background */
+  border: none;                 /* remove border */
+  color: inherit;               /* inherit text color from parent */
+  padding: 8px 12px;            /* optional padding */
+  cursor: pointer;              /* pointer cursor on hover */
+  font-size: 1rem;              /* match surrounding text */
+}
+
+/* Optional hover effect */
+.tab button:hover {
+  text-decoration: underline; /* subtle effect on hover */
+}
+
+/* Active tab style */
+.tab button.active {
+  font-weight: bold; /* or slight color change */
+  /* background-color: rgba(0,0,0,0.1); optional */
+}
+
+/* Dropdown button blending */
+.dropdown button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.tab {
+  position: relative; /* for positioning the blue bar */
+  display: flex;
+  gap: 10px; /* space between buttons */
+  align-items: center;
+}
+
+/* Blue bar under the buttons */
+.blue-bar {
+  position: absolute;
+  bottom: 0;             /* stick to bottom of .tab */
+  left: 0;
+  width: 100%;           /* full width of navbar */
+  height: 4px;           /* thickness of the bar */
+  background-color: #007bff; /* blue color */
+}
