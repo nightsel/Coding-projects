@@ -384,7 +384,6 @@ body {
   padding: 0;
   padding-top: 85px; /* adjust to navbar height */
 }
-}
 
 /* Section container styling */
 .tabcontent, .highlight-section {
@@ -537,4 +536,175 @@ a:hover {
   width: 400px;   /* smaller width */
   height: 30px;   /* shorter height for a sleeker look */
   outline: none;
+}
+
+.section-card {
+  background-color: transparent; /* remove white */
+  box-shadow: none;               /* remove inner shadow */
+  padding: 15px;
+  border-radius: 6px;            /* optional, keep rounding */
+  margin-bottom: 20px;
+}
+
+/*
+.tabcontent {
+  background-color: transparent;  /* remove white */
+  border: none;                    /* optional */
+  box-shadow: none;                /* optional */
+}
+*/
+
+/* Add a specific class for Puzzles tab */
+.tabcontent.puzzles {
+  background: none;   /* no white box */
+  border: none;       /* remove border */
+  box-shadow: none;   /* remove shadow */
+  padding: 0;         /* optional: reset padding */
+}
+
+.game-section {
+  background: #ffffff; /* white boxes for each game */
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 15px;
+}
+
+/* Make the parent tabcontent transparent */
+.tabcontent.puzzles {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Style each game like a card */
+.game-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin: 0 auto 30px auto;   /* auto left/right centers it */
+  max-width: 600px;           /* limits width */
+  width: 100%;                /* allows shrinking on small screens */
+}
+
+
+/* Limit project section width */
+.tabcontent .section-card {
+  max-width: 600px;   /* limits width */
+  margin: 0 auto 30px auto; /* center horizontally, 30px bottom margin */
+  padding: 20px;
+  background-color: #fff;   /* white cards */
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* Optional: reduce the inner gap of the tabcontent itself */
+.tabcontent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;  /* smaller than 30px for cleaner spacing */
+  padding: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tabcontent {
+  background-color: transparent; /* don’t override card backgrounds */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* vertical spacing between cards */
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Cards themselves */
+.tabcontent .section-card {
+  background-color: #ffffff; /* white card */
+  border: 1px solid #d0d0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* subtle separation */
+  margin: 0; /* margin handled by flex gap */
+  max-width: 600px;
+  width: 100%;
+  align-self: center; /* center within flex column */
+}
+
+.tabcontent .section-card {
+  border: none; /* remove gray borders */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* keep shadow for separation */
+}
+
+.tabcontent {
+  background-color: transparent; /* no background for parent */
+  border: none;                  /* remove gray border */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;                     /* spacing between cards */
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section-card {
+  background-color: #fff;           /* white card */
+  border: none;                     /* remove gray border */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* subtle shadow for separation */
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0;                        /* gap handled by tabcontent flex gap */
+  width: 100%;
+  max-width: 600px;
+  align-self: center;                /* center in flex column */
+}
+/*
+.tabcontent,
+.section-card {
+  border: none !important;
+  outline: none !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* keeps subtle shadow */
+  background-color: #fff; /* ensures white background */
+}*/
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; /* make same as your content background */
+}
+
+/* If you want the "page background" different than the white content */
+body {
+  background-color: #f5f5fa; /* light grayish-purple */
+}
+
+.tabcontent, .section-card {
+  background-color: #ffffff;  /* your white boxes */
+  margin: 0 auto;             /* center horizontally */
+  padding: 20px;
+  border: none;
+  box-shadow: none;
+  max-width: 800px;           /* optional */
+}
+
+/* Remove any leftover padding from parents */
+.home-padding, .max-width-container {
+  padding: 0;
+}
+
+/* Remove all borders and shadows from white boxes */
+.tabcontent,
+.section-card,
+.audio-player-card,
+.game-section {
+  border: none !important;   /* remove the gray border */
+  box-shadow: none !important; /* remove faint shadow */
+  background-color: #ffffff; /* keep the inner content white */
+}
+
+/* Optional: add padding inside the boxes if needed */
+.tabcontent .section-card {
+  padding: 20px;
+  margin: 0 auto 30px auto;  /* centers the boxes, keeps spacing below */
 }

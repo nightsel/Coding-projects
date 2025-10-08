@@ -26,12 +26,10 @@ export default function Puzzles({ section, forceHighlight }) {
 
 
   return (
-    <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+    <div className="tabcontent puzzles">
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div className="game-section" ref={slidingRef}><SlidingPuzzle /></div>
-
         <div className="game-section" ref={sudokuRef}><SudokuGenerator /></div>
-
         <div className="game-section" ref={hangmanRef}><Hangman /></div>
       </div>
     </div>
