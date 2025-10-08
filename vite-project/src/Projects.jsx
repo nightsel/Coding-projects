@@ -72,7 +72,7 @@ export default function Projects({ section, forceHighlight }) {
 
 
   return (
-    <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
+    <div className="tabcontent projects" >
       <div ref={weatherRef} className="highlight-section section-card">
         <h3>Weather Reporter</h3>
         <WeatherReporter />
@@ -87,9 +87,10 @@ export default function Projects({ section, forceHighlight }) {
         <li>Code is available in the main GitHub repository folder <code>my-app</code>.</li>
       </ul>
       </div>
-      <div className="section-divider"></div>
+
 
       <div ref={audioRef}>
+        <div className="section-card" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
         <h3>Audio Player and Lyrics Search</h3>
         {/* Description */}
         <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
@@ -105,7 +106,6 @@ export default function Projects({ section, forceHighlight }) {
           <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
       </ul>
 
-        <div className="section-card" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
           {/* Left column: AudioPlayer + Inputs */}
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
@@ -193,9 +193,6 @@ export default function Projects({ section, forceHighlight }) {
         </div>
         </div>
 
-
-      <div className="section-divider"></div>
-
       <div className="section-card" ref={pollRef}>
         <h3>Vote & Leave Feedback</h3>
         <ul style={{ maxWidth:'600px', lineHeight: '1.5' }}>
@@ -269,7 +266,7 @@ export default function Projects({ section, forceHighlight }) {
         </button>
 
       </div>
-      <div className="section-divider"></div>
+
 
       <div className="section-card" ref={otherRef}>
         <h3>Other projects</h3>

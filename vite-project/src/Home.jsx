@@ -4,7 +4,7 @@ export default function Home({ setActiveTab }) {
   return (
     <div className="home-padding">
       <div className="max-width-container">
-    <div className="tabcontent" style={{ padding: '10px' }}>
+    <div className="tabcontent" style={{ marginLeft: '10%'  }}>
       <div className="section-card">
       <h1>Welcome</h1>
       <p>

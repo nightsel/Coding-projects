@@ -1,11 +1,13 @@
 /* Reset some default margins/padding and set basic font styling */
 body {
-  margin: 0; /* remove default margin */
-  padding: 0; /* remove default padding */
-  font-family: Arial, sans-serif; /* consistent font across browsers */
-  line-height: 1.5; /* improves readability */
-  background-color: #fdfdfd; /* light background for readability */
-  font-size: 20px; /* base font size */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  background-color: #f5f5fa;
+  font-size: 20px;
+  padding-top: 85px; /* adjust to navbar height */
+  color: #1a0d2e;
 }
 
 /* Container for the whole page content */
@@ -17,266 +19,45 @@ body {
   text-align: center;
 }
 
-.home-padding {
-  padding-left: 10%; /* pushes content 30% from the left */
+.home-padding, .max-width-container {
+  padding: 0;
 }
+
 .max-width-container {
-  max-width: 900px;      /* or whatever width you want */
-  width: 100%;           /* allow it to shrink on smaller screens */
-  padding: 0 20px;       /* optional: some padding inside */
-  box-sizing: border-box; /* ensures padding doesn’t exceed max width */
+  max-width: 900px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Highlight effect for elements */
-.highlight {
-  background-color: yellow; /* temporary highlight color */
-  transition: background-color 0.5s ease; /* smooth fade effect */
-}
-
-/* Additional class for sections that can be highlighted */
-.highlight-section {
-  transition: background-color 0.5s ease; /* smooth highlight transitions */
-}
-
-/* Highlight class for active section */
-.highlight-section.active {
-  background-color: #fff3b0; /* subtle yellow highlight */
-  padding: 10px; /* add spacing inside highlighted section */
-  border-radius: 5px; /* slightly rounded corners */
-}
-
-/* Horizontal line between sections */
-.section-divider {
-  height: 2px; /* thickness of the line */
-  background-color: #ddd; /* light gray color */
-  margin: 20px 0; /* spacing above and below the line */
-}
-
-/* Tabs container (the row of buttons) */
-.tab {
-  display: flex; /* align buttons horizontally */
-  gap: 10px; /* spacing between buttons */
-  margin-bottom: 20px; /* spacing below the tabs */
-}
-
-/* Individual tab buttons */
-.tab button {
-  padding: 10px 20px; /* space inside the button */
-  border: 1px solid #ccc; /* light border */
-  background-color: #eee; /* default button color */
-  cursor: pointer; /* show pointer on hover */
-  border-radius: 5px; /* rounded corners */
-  font-size: 16px; /* readable font */
-  transition: background-color 0.2s; /* smooth hover effect */
-}
-
-/* Tab button hover state */
-.tab button:hover {
-  background-color: #ddd; /* slightly darker on hover */
-}
 .full-width-container {
-  max-width: none; /* override default 900px */
+  max-width: none;
   width: 100%;
   margin: 0 auto;
 }
 
-/* Tab button when active (selected) */
-.tab button.active {
-  background-color: #bbb; /* darker shade for active tab */
-  font-weight: bold; /* emphasize active tab */
+/* Highlight effect for elements */
+.highlight {
+  background-color: yellow;
+  transition: background-color 0.5s ease;
 }
 
-/* Tab content container */
-.tabcontent {
-  padding: 10px 0; /* vertical spacing inside tab content */
+.highlight-section {
+  transition: background-color 0.5s ease;
 }
 
-/* Optional: headings spacing */
-h1, h2, h3, h5 {
-  margin-top: 0; /* remove extra top margin */
+.highlight-section.active {
+  background-color: #fff3b0;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-/* Make iframes and images responsive */
-iframe, img {
-  max-width: 100%; /* prevents overflow */
+.section-divider {
+  height: 2px;
+  background-color: #d0d0e0;
+  margin: 20px 0;
 }
 
-/* Buttons used in puzzles/games */
-.puzzle-button {
-  padding: 8px 16px; /* spacing inside button */
-  margin: 5px 5px 5px 0; /* spacing between buttons */
-  background-color: #007bff; /* blue background */
-  color: #fff; /* white text */
-  border: none; /* remove default border */
-  border-radius: 5px; /* rounded corners */
-  cursor: pointer; /* pointer cursor */
-  font-weight: bold; /* bold text */
-  transition: background-color 0.2s; /* smooth hover effect */
-}
-
-/* Hover effect for puzzle buttons */
-.puzzle-button:hover {
-  background-color: #0056b3; /* darker blue on hover */
-}
-
-/* Dropdown container */
-.dropdown {
-  position: relative; /* needed for absolute positioning of dropdown-content */
-  display: inline-block; /* so multiple dropdowns can sit in a row */
-}
-
-/* Hidden dropdown menu */
-.dropdown-content {
-  display: none; /* hidden by default */
-  position: absolute; /* position relative to dropdown */
-  background-color: white; /* white background */
-  min-width: 160px; /* minimum width of dropdown */
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2); /* subtle shadow */
-  z-index: 1; /* appear above other content */
-  flex-direction: column; /* vertical list */
-}
-
-/* Individual dropdown items */
-.dropdown-content span {
-  padding: 8px 12px; /* spacing inside each item */
-  cursor: pointer; /* pointer cursor for click */
-}
-
-/* Hover effect for dropdown items */
-.dropdown-content span:hover {
-  background-color: #f1f1f1; /* light gray hover */
-}
-
-/* Show dropdown menu when hovering the parent */
-.dropdown:hover .dropdown-content {
-  display: flex; /* show dropdown */
-}
-
-/* Container for game controls (buttons, timers, etc.) */
-.game-controls {
-  display: flex;
-  flex-direction: column; /* stack vertically */
-  gap: 10px; /* spacing between controls */
-  margin-bottom: 20px; /* space below controls */
-}
-
-/* Top row in a game (e.g., title + timer) */
-.top-row {
-  display: flex;
-  justify-content: space-between; /* title left, timer right */
-  align-items: center; /* vertically align items */
-}
-
-/* Row of buttons inside a game */
-.button-row {
-  display: flex;
-  gap: 10px; /* spacing between buttons */
-}
-
-/* Timer styling */
-.timer {
-  font-weight: bold;
-  margin-left: auto; /* pushes timer to the right */
-}
-
-/* Game section container */
-.game-section {
-  margin: 20px 0; /* spacing above and below section */
-  padding: 10px; /* internal spacing */
-  border: 1px solid #ddd; /* light border */
-  border-radius: 6px; /* rounded corners */
-}
-
-/* Divider inside controls or games */
-.controls-divider {
-  height: 1px; /* thin line */
-  background-color: #ccc; /* gray color */
-  margin: 8px 0; /* spacing above and below */
-}
-
-/* Dropdown for difficulty selection */
-.difficulty-select {
-  padding: 6px 10px;
-  font-size: 16px;
-  border-radius: 4px;
-}
-
-/* Hangman buttons */
-.hangman button {
-  padding: 10px 14px; /* bigger clickable area */
-  font-size: 18px; /* bigger letters */
-  margin: 3px; /* spacing between buttons */
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Disabled hangman buttons */
-.hangman button:disabled {
-  opacity: 0.5; /* visually indicate disabled state */
-  cursor: not-allowed; /* indicate non-clickable */
-}
-
-/* Make buttons blend into background */
-.tab button {
-  background-color: transparent; /* no background */
-  border: none;                 /* remove border */
-  color: inherit;               /* inherit text color from parent */
-  padding: 8px 12px;            /* optional padding */
-  cursor: pointer;              /* pointer cursor on hover */
-  font-size: 1rem;              /* match surrounding text */
-}
-
-/* Optional hover effect */
-.tab button:hover {
-  text-decoration: underline; /* subtle effect on hover */
-}
-
-/* Active tab style */
-.tab button.active {
-  font-weight: bold; /* or slight color change */
-  /* background-color: rgba(0,0,0,0.1); optional */
-}
-
-/* Dropdown button blending */
-.dropdown button {
-  background-color: transparent;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.full-width-navbar {
-  position: relative; /* make it the parent context */
-  background-color: #0056b3;
-  color: white;
-  width: 100%;
-}
-
-.blue-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  width: 100%;
-  background-color: #007bff; /* lighter blue accent */
-}
-
-.section-card {
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
-.section-card h1,
-.section-card h2,
-.section-card h3 {
-  color: #270032; /* ~5% more purple than #0d0015 */
-}
-p, span, li {
-  color: #333;
-}
-
+/* Tabs container */
 .tab {
   display: flex;
   gap: 20px;
@@ -292,29 +73,119 @@ p, span, li {
   cursor: pointer;
   font-size: 1rem;
   padding: 8px 12px;
+  transition: color 0.2s, background-color 0.2s;
 }
 
+.tab button:hover {
+  background-color: #eee;  /* slightly lighter gray on hover */
+  color: #1a0d2e;          /* dark text on hover */
+}
+.tab button.active {
+  background-color: #ddd; /* light gray background for active tab */
+  color: #1a0d2e;          /* optional: darker text for contrast */
+  font-weight: bold;
+}
 
+.tabcontent {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  max-width: 800px;
+  margin-left: 10%;
+}
 
-/* Dropdown content styling */
+.tabcontent.puzzles {
+  margin-left: 10%; /* pulls content left */
+
+}
+
+.tabcontent.projects {
+  margin-left: 10%; /* pulls content left */
+
+}
+
+.tabcontent .section-card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin: 0 auto 30px auto;
+  max-width: 600px;
+  width: 100%;
+  align-self: center;
+}
+
+.full-width-navbar {
+  width: 100%;
+  background-color: #007bff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  color: white;
+}
+
+.blue-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background-color: #5a35a5;
+}
+
+/* Dropdown styling */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: white; /* so it pops over blue navbar */
-  min-width: 160px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-  z-index: 1;
-  color: black;
+  top: 100%;
+  left: 0;
+  width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  flex-direction: column;
+  z-index: 10;
+  padding: 10px;
+  color: #1a0d2e;
 }
 
 .dropdown:hover .dropdown-content {
-  display: block;
+  display: flex;
 }
 
+.dropdown-content span {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.dropdown-content span:hover {
+  background-color: rgba(107, 63, 160, 0.05);
+}
+
+/* Cards container */
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* fixed min width, fill remaining space */
-  gap: 20px; /* space between boxes */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
   padding: 20px 0;
 }
 
@@ -327,167 +198,122 @@ p, span, li {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Hover effect to pop out */
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
-/* Dropdown container */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown menu as fixed-size box */
-.dropdown-content {
-  display: none;           /* hidden by default */
-  position: absolute;      /* relative to parent tab */
-  top: 100%;               /* position below tab */
-  left: 0;
-  width: 200px;            /* fixed width */
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  border-radius: 6px;
-  flex-direction: column;
-  z-index: 10;
-  padding: 10px;
-}
-
-/* Show on hover */
-.dropdown:hover .dropdown-content {
-  display: flex;
-}
-
-/* Dropdown items */
-.dropdown-content span {
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-/* Hover effect for items */
-.dropdown-content span:hover {
-  background-color: #f0f0f0;
-}
-
-/* ------------------------------
-   BASE PAGE COLORS
---------------------------------*/
-body {
-  background-color: #f5f5fa; /* light grayish-purple page background */
-  color: #1a0d2e; /* default text almost black with 5% purple */
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
-  padding-top: 85px; /* adjust to navbar height */
-}
-
-/* Section container styling */
-.tabcontent, .highlight-section {
-  background-color: #ffffff; /* white sections */
-  border: 1px solid #d0d0e0; /* light gray-purple divider */
-  border-radius: 6px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* subtle depth */
-}
-
-/* Horizontal divider line inside sections */
-.section-divider {
-  background-color: #d0d0e0; /* subtle gray-purple */
-}
-
-/* ------------------------------
-   NAVIGATION BAR
---------------------------------*/
-.full-width-navbar {
+/* Game sections */
+.game-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin: 0 auto 30px auto;
+  max-width: 600px;
   width: 100%;
-  background-color: #007bff;
-  position: fixed; /* pins it */
-  top: 0;          /* top of the page */
-  left: 0;
-  z-index: 1000;   /* ensures it’s above other content */
 }
 
-/* Tab buttons */
-.tab button {
-  background-color: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 8px 12px;
-  transition: color 0.2s, background-color 0.2s;
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-/* Active tab / hovered tab */
-.tab button.active,
-.tab button:hover {
-  color: #6b3fa0; /* medium purple highlight */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Blue highlight bar under nav tabs */
-.blue-bar {
-  background-color: #5a35a5; /* dark purple for active tab indicator */
+.button-row {
+  display: flex;
+  gap: 10px;
 }
 
-/* Dropdown buttons */
-.dropdown button {
-  color: white;
+.timer {
+  font-weight: bold;
+  margin-left: auto;
 }
 
-.dropdown-content {
-  background-color: #ffffff; /* white dropdown over nav */
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-  color: #1a0d2e;
+.controls-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0;
 }
 
-/* Dropdown hover effect */
-.dropdown-content span:hover {
-  background-color: rgba(107, 63, 160, 0.05); /* subtle purple overlay */
-}
-
-/* ------------------------------
-   HEADERS
---------------------------------*/
-h1, h2, h3, h4, h5 {
-  color: #1a0d2e; /* almost black with subtle purple tint */
-  margin-top: 0;
-}
-
-/* ------------------------------
-   BUTTONS & LINKS
---------------------------------*/
-.puzzle-button,
-button[type="submit"] {
-  background-color: #6b3fa0; /* medium purple */
-  color: #fff;
+.difficulty-select {
+  padding: 6px 10px;
+  font-size: 16px;
   border-radius: 4px;
+}
+
+/* Puzzle buttons */
+.puzzle-button {
+  padding: 8px 16px;
+  margin: 5px 5px 5px 0;
+  background-color: #007bff;
+  color: #fff;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
   transition: background-color 0.2s;
 }
 
-.puzzle-button:hover,
-button[type="submit"]:hover {
-  background-color: #8250c9; /* slightly brighter purple on hover */
+.puzzle-button:hover {
+  background-color: #0056b3;
 }
 
-a {
-  color: #6b3fa0;
-  text-decoration: none;
+/* Hangman buttons */
+.hangman button {
+  padding: 10px 14px;
+  font-size: 18px;
+  margin: 3px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-a:hover {
-  text-decoration: underline;
+.hangman button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* ------------------------------
-   LYRICS BOX & CARDS
---------------------------------*/
+/* Audio player cards */
+.audio-player-card {
+  background-color: #f0e8ff;
+  border: 1px solid #6b3fa0;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 300px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.audio-player-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.styled-audio {
+  width: 400px;
+  height: 30px;
+  outline: none;
+  border: 2px solid #6b3fa0;
+  border-radius: 6px;
+  padding: 4px;
+  background-color: #fff;
+}
+
+.waveform-canvas,
+.freq-canvas {
+  border: 1px solid #6b3fa0;
+  border-radius: 4px;
+  background-color: #fdf7ff;
+}
+
+/* Lyrics and audio player container */
 .lyrics-box, .audio-player-container {
   border: 1px solid #d0d0e0;
   border-radius: 6px;
@@ -497,214 +323,20 @@ a:hover {
   background-color: #ffffff;
 }
 
-/* Optional subtle hover effect on sections */
-.highlight-section:hover {
-  background-color: rgba(107, 63, 160, 0.03);
-}
-.audio-player-card {
-  background-color: #f0e8ff; /* light purple background */
-  border: 1px solid #6b3fa0; /* purple border */
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  max-width: 300px; /* match your column width */
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.audio-player-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
-
-/* Audio element styling */
-.styled-audio {
-  width: 400px;           /* fixed width */
-  border: 2px solid #6b3fa0; /* medium purple border */
-  border-radius: 6px;
-  padding: 4px;           /* small padding inside border */
-  background-color: #fff; /* white background */
-}
-
-/* Optional: waveform and frequency canvases */
-.waveform-canvas,
-.freq-canvas {
-  border: 1px solid #6b3fa0; /* subtle purple border */
-  border-radius: 4px;
-  background-color: #fdf7ff; /* very light purple background */
-}
-.styled-audio {
-  width: 400px;   /* smaller width */
-  height: 30px;   /* shorter height for a sleeker look */
-  outline: none;
-}
-
+/* Section cards */
 .section-card {
-  background-color: transparent; /* remove white */
-  box-shadow: none;               /* remove inner shadow */
+  background: white;
   padding: 15px;
-  border-radius: 6px;            /* optional, keep rounding */
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
   margin-bottom: 20px;
+  display: block;
 }
 
-/*
-.tabcontent {
-  background-color: transparent;  /* remove white */
-  border: none;                    /* optional */
-  box-shadow: none;                /* optional */
-}
-*/
-
-/* Add a specific class for Puzzles tab */
-.tabcontent.puzzles {
-  background: none;   /* no white box */
-  border: none;       /* remove border */
-  box-shadow: none;   /* remove shadow */
-  padding: 0;         /* optional: reset padding */
-}
-
-.game-section {
-  background: #ffffff; /* white boxes for each game */
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  padding: 15px;
-}
-
-/* Make the parent tabcontent transparent */
-.tabcontent.puzzles {
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
-
-/* Style each game like a card */
-.game-section {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  padding: 20px;
-  margin: 0 auto 30px auto;   /* auto left/right centers it */
-  max-width: 600px;           /* limits width */
-  width: 100%;                /* allows shrinking on small screens */
-}
-
-
-/* Limit project section width */
-.tabcontent .section-card {
-  max-width: 600px;   /* limits width */
-  margin: 0 auto 30px auto; /* center horizontally, 30px bottom margin */
-  padding: 20px;
-  background-color: #fff;   /* white cards */
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-}
-
-/* Optional: reduce the inner gap of the tabcontent itself */
-.tabcontent {
+/* Audio section layout */
+.audio-section-inner {
   display: flex;
-  flex-direction: column;
-  gap: 20px;  /* smaller than 30px for cleaner spacing */
-  padding: 10px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.tabcontent {
-  background-color: transparent; /* don’t override card backgrounds */
-  display: flex;
-  flex-direction: column;
-  gap: 30px; /* vertical spacing between cards */
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Cards themselves */
-.tabcontent .section-card {
-  background-color: #ffffff; /* white card */
-  border: 1px solid #d0d0e0;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* subtle separation */
-  margin: 0; /* margin handled by flex gap */
-  max-width: 600px;
-  width: 100%;
-  align-self: center; /* center within flex column */
-}
-
-.tabcontent .section-card {
-  border: none; /* remove gray borders */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* keep shadow for separation */
-}
-
-.tabcontent {
-  background-color: transparent; /* no background for parent */
-  border: none;                  /* remove gray border */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;                     /* spacing between cards */
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.section-card {
-  background-color: #fff;           /* white card */
-  border: none;                     /* remove gray border */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* subtle shadow for separation */
-  border-radius: 8px;
-  padding: 20px;
-  margin: 0;                        /* gap handled by tabcontent flex gap */
-  width: 100%;
-  max-width: 600px;
-  align-self: center;                /* center in flex column */
-}
-/*
-.tabcontent,
-.section-card {
-  border: none !important;
-  outline: none !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* keeps subtle shadow */
-  background-color: #fff; /* ensures white background */
-}*/
-
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff; /* make same as your content background */
-}
-
-/* If you want the "page background" different than the white content */
-body {
-  background-color: #f5f5fa; /* light grayish-purple */
-}
-
-.tabcontent, .section-card {
-  background-color: #ffffff;  /* your white boxes */
-  margin: 0 auto;             /* center horizontally */
-  padding: 20px;
-  border: none;
-  box-shadow: none;
-  max-width: 800px;           /* optional */
-}
-
-/* Remove any leftover padding from parents */
-.home-padding, .max-width-container {
-  padding: 0;
-}
-
-/* Remove all borders and shadows from white boxes */
-.tabcontent,
-.section-card,
-.audio-player-card,
-.game-section {
-  border: none !important;   /* remove the gray border */
-  box-shadow: none !important; /* remove faint shadow */
-  background-color: #ffffff; /* keep the inner content white */
-}
-
-/* Optional: add padding inside the boxes if needed */
-.tabcontent .section-card {
-  padding: 20px;
-  margin: 0 auto 30px auto;  /* centers the boxes, keeps spacing below */
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
