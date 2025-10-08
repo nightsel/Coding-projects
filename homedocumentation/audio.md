@@ -10,7 +10,7 @@ The backend running on [Render](https://render.com/) handles fetching and stream
 
 Lyrics are fetched from three websites — [Lyrical Nonsense](https://www.lyrical-nonsense.com/), [UtaTen](https://utaten.com/), and [LyricsTranslate](https://lyricstranslate.com/) — so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.
 
-todo: lyrics translation if available
-lyrics automatic scrolling when audio player timer progresses
-lyrics matching timer exactly with api like textalive app api (only works for songs with timed syllables in the database)
+todo: lyrics translation if available  
+lyrics automatic scrolling when audio player timer progresses  
+lyrics matching timer exactly with api like textalive app api (only works for songs with timed syllables in the database)  
 audio visualization with 3d animation
