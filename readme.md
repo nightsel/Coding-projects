@@ -1,10 +1,14 @@
-The `docs` folder contains the built website code for https://nightsel.github.io/Coding-projects/ .  
-The source React project, built with Vite, is in the `vite-project` folder.  
-Audio player documentation is in [this link](https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md).
+- The `docs` folder contains the **built website** for https://nightsel.github.io/Coding-projects/.  
+  This is the production-ready version, optimized for deployment.  
 
-Folder `leetcode` contains the codes I made for practice on https://leetcode.com/problemset/ .
+- The `vite-project` folder contains the **source React project**, which is easier to read and edit.  
+  It is built using **React + Vite**. Use this folder for development and building updates.  
 
-Folder `my-app` has code for [Vercel](https://vercel.com/) cloud service. The code uses a secure private API key (stored in the cloud) and is called from my GitHub webpage to fetch the weather report. The most relevant files are`index.html`, `api/weather.js` and
+- Audio player documentation is in [this link](https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md).  
+
+- Folder `leetcode` contains the codes I made for practice on https://leetcode.com/problemset/ .
+
+- Folder `my-app` has code for [Vercel](https://vercel.com/) cloud service. The code uses a secure private API key (stored in the cloud) and is called from my GitHub webpage to fetch the weather report. The most relevant files are`index.html`, `api/weather.js` and
 `App.jsx`.
 
 
