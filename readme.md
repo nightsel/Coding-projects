@@ -1,5 +1,6 @@
-The `docs` folder contains the built website code for https://nightsel.github.io/Coding-projects/ .
-The source React project, built with Vite, is in the `vite-project` folder.
+The `docs` folder contains the built website code for https://nightsel.github.io/Coding-projects/ .  
+The source React project, built with Vite, is in the `vite-project` folder.  
+Audio player documentation is in [this link](https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md).
 
 Folder `leetcode` contains the codes I made for practice on https://leetcode.com/problemset/ .
 
