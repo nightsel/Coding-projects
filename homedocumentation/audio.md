@@ -6,7 +6,7 @@ The default song *Luna - ST/A#R* is pre-loaded from storage to save functionalit
 
 Audio files you load are temporarily stored in [Supabase Storage](https://supabase.com/) under names like `temp_audio_[uuid].mp3` and are automatically deleted after 15 minutes.
 
-The backend running on [Render](https://render.com/) handles fetching and streaming these audio files to your player. Render server implementation is in the repository [expressproject](https://github.com/nightsel/expressproject).
+The backend running on [Render](https://render.com/) handles fetching and streaming these audio files to your player. **Render server implementation is in the repository [expressproject](https://github.com/nightsel/expressproject)**.
 
 Lyrics are fetched from three websites — [Lyrical Nonsense](https://www.lyrical-nonsense.com/), [UtaTen](https://utaten.com/), and [LyricsTranslate](https://lyricstranslate.com/) — so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.
 
