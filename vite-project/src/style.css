@@ -502,3 +502,39 @@ a:hover {
 .highlight-section:hover {
   background-color: rgba(107, 63, 160, 0.03);
 }
+.audio-player-card {
+  background-color: #f0e8ff; /* light purple background */
+  border: 1px solid #6b3fa0; /* purple border */
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 300px; /* match your column width */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.audio-player-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+/* Audio element styling */
+.styled-audio {
+  width: 400px;           /* fixed width */
+  border: 2px solid #6b3fa0; /* medium purple border */
+  border-radius: 6px;
+  padding: 4px;           /* small padding inside border */
+  background-color: #fff; /* white background */
+}
+
+/* Optional: waveform and frequency canvases */
+.waveform-canvas,
+.freq-canvas {
+  border: 1px solid #6b3fa0; /* subtle purple border */
+  border-radius: 4px;
+  background-color: #fdf7ff; /* very light purple background */
+}
+.styled-audio {
+  width: 400px;   /* smaller width */
+  height: 30px;   /* shorter height for a sleeker look */
+  outline: none;
+}

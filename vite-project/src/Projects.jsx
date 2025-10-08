@@ -108,7 +108,9 @@ export default function Projects({ section, forceHighlight }) {
         <div className="section-card" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
           {/* Left column: AudioPlayer + Inputs */}
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+
             <AudioPlayer />
+
 
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
               <input
@@ -228,8 +230,8 @@ export default function Projects({ section, forceHighlight }) {
               <option value="Sudoku Generator">Sudoku Generator</option>
               <option value="Hangman">Hangman</option>
               <option value="Weather Reporter">Weather Reporter</option>
-              <option value="Full-Stack Poll">Full-Stack Poll</option>
               <option value="Audio Player">Audio Player </option>
+              <option value="Full-Stack Poll">Full-Stack Poll</option>
             </select>
           </label>
 

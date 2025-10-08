@@ -8,9 +8,13 @@ Audio files you load are temporarily stored in [Supabase Storage](https://supaba
 
 The backend running on [Render](https://render.com/) handles fetching and streaming these audio files to your player. **Render server implementation is in the repository [expressproject](https://github.com/nightsel/expressproject)**.
 
+Waveform amplitude is straightforward to implement. Waveform frequency is more complex, as humans perceive certain frequencies more strongly due to evolutionary factors. Low-frequency sounds can also generate overtones, creating high-frequency components that are harder to hear. I’ve made adjustments to the waveform frequency to better match my own perception, but I am not a professional audio engineer.
+
 Lyrics are fetched from three websites — [Lyrical Nonsense](https://www.lyrical-nonsense.com/), [UtaTen](https://utaten.com/), and [LyricsTranslate](https://lyricstranslate.com/) — so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.
 
 todo: lyrics translation if available  
 lyrics automatic scrolling when audio player timer progresses  
 lyrics matching timer exactly with api like textalive app api (only works for songs with timed syllables in the database)  
+add different background depending on what the song sounds like??
+Frequency visualization improvement overall
 audio visualization with 3d animation
