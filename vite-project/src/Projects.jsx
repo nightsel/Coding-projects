@@ -22,7 +22,7 @@ export default function Projects({ section, forceHighlight }) {
 
 
   const scrollTo = (ref) => {
-    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
 
     ref.current.classList.add("highlight");
     setTimeout(() => ref.current.classList.remove("highlight"), 1000);
@@ -73,7 +73,7 @@ export default function Projects({ section, forceHighlight }) {
 
   return (
     <div className="tabcontent" style={{ padding: "10px", maxWidth: "800px", margin: "0 auto" }}>
-      <div ref={weatherRef} className="highlight-section">
+      <div ref={weatherRef} className="highlight-section section-card">
         <h3>Weather Reporter</h3>
         <WeatherReporter />
       <p>
@@ -105,7 +105,7 @@ export default function Projects({ section, forceHighlight }) {
           <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
       </ul>
 
-        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        <div className="section-card" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
           {/* Left column: AudioPlayer + Inputs */}
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <AudioPlayer />
@@ -194,7 +194,7 @@ export default function Projects({ section, forceHighlight }) {
 
       <div className="section-divider"></div>
 
-      <div ref={pollRef}>
+      <div className="section-card" ref={pollRef}>
         <h3>Vote & Leave Feedback</h3>
         <ul style={{ maxWidth:'600px', lineHeight: '1.5' }}>
           <li>Pick your favorite feature of this website and optionally leave a comment.</li>
@@ -243,7 +243,7 @@ export default function Projects({ section, forceHighlight }) {
             />
           </label>
 
-          <button type="submit" disabled={submitting} style={{ padding: '8px 12px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', width: 'fit-content' }}>
+          <button className="puzzle-button" type="submit" disabled={submitting} style={{ padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', width: 'fit-content' }}>
             {submitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
@@ -269,7 +269,7 @@ export default function Projects({ section, forceHighlight }) {
       </div>
       <div className="section-divider"></div>
 
-      <div ref={otherRef}>
+      <div className="section-card" ref={otherRef}>
         <h3>Other projects</h3>
         <p>The repositories for my projects are organized as follows:</p>
         <ul>

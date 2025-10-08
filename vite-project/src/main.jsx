@@ -9,14 +9,13 @@ import Home from "./Home";
 function App() {
   const [activeTab, setActiveTab] = useState({ tab: "Home", section: null , key: Date.now()});
   const [forceHighlight, setForceHighlight] = useState(false);
-  <Puzzles section={activeTab.section} forceHighlight={activeTab.forceHighlight} />
+
 
   const renderTabContent = () => {
     switch (activeTab.tab) {
       case "Home":
         return <Home setActiveTab={setActiveTab} />;
-      //case "About":
-      //  return <About setActiveTab={setActiveTab} />;
+
       case "Puzzles":
   return <Puzzles section={activeTab.section} forceHighlight={forceHighlight} />;
       case "Projects":
@@ -53,11 +52,17 @@ function App() {
 
   return (
     <div>
-      <h2>My Website</h2>
-
       {/* Navbar */}
-      <div className="tab">
-        <button onClick={() => handleTabClick("Home", null)}>Home</button>
+      <div className="full-width-navbar">
+        <div>
+          <div className="tab">
+
+            <button
+              className={activeTab.tab === "Home" ? "active" : ""}
+              onClick={() => handleTabClick("Home", null)}
+            >
+              Home
+            </button>
         <div className="dropdown">
           <button
             className={activeTab.tab === "Puzzles" ? "active" : ""}
@@ -80,15 +85,16 @@ function App() {
           </button>
           <div className="dropdown-content">
             <span onClick={() => handleTabClick("Projects", "weather")}>Weather Reporter</span>
-            <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
             <span onClick={() => handleTabClick("Projects", "audioplayer")}>Audio Player</span>
+            <span onClick={() => handleTabClick("Projects", "poll")}>Poll</span>
             <span onClick={() => handleTabClick("Projects", "other")}>Other Projects</span>
           </div>
         </div>
-
+        </div>
         {/* Blue bar */}
         <div className="blue-bar"></div>
       </div>
+    </div>
 
       {renderTabContent()}
     </div>

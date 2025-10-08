@@ -10,9 +10,21 @@ body {
 
 /* Container for the whole page content */
 #root > div {
-  padding: 20px; /* spacing from edges of the viewport */
-  max-width: 900px; /* prevents content from being too wide on large screens */
-  margin: 0 auto; /* center container horizontally */
+  /*padding-top: 60px; /* height of navbar + some spacing */
+}
+
+.centered-content {
+  text-align: center;
+}
+
+.home-padding {
+  padding-left: 10%; /* pushes content 30% from the left */
+}
+.max-width-container {
+  max-width: 900px;      /* or whatever width you want */
+  width: 100%;           /* allow it to shrink on smaller screens */
+  padding: 0 20px;       /* optional: some padding inside */
+  box-sizing: border-box; /* ensures padding doesn’t exceed max width */
 }
 
 /* Highlight effect for elements */
@@ -234,19 +246,259 @@ iframe, img {
   font-size: 1rem;
 }
 
-.tab {
-  position: relative; /* for positioning the blue bar */
-  display: flex;
-  gap: 10px; /* space between buttons */
-  align-items: center;
+.full-width-navbar {
+  position: relative; /* make it the parent context */
+  background-color: #0056b3;
+  color: white;
+  width: 100%;
 }
 
-/* Blue bar under the buttons */
 .blue-bar {
   position: absolute;
-  bottom: 0;             /* stick to bottom of .tab */
+  bottom: 0;
   left: 0;
-  width: 100%;           /* full width of navbar */
-  height: 4px;           /* thickness of the bar */
-  background-color: #007bff; /* blue color */
+  height: 4px;
+  width: 100%;
+  background-color: #007bff; /* lighter blue accent */
+}
+
+.section-card {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+.section-card h1,
+.section-card h2,
+.section-card h3 {
+  color: #270032; /* ~5% more purple than #0d0015 */
+}
+p, span, li {
+  color: #333;
+}
+
+.tab {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 10px 40px;
+  position: relative;
+}
+
+.tab button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px 12px;
+}
+
+
+
+/* Dropdown content styling */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white; /* so it pops over blue navbar */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  color: black;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* fixed min width, fill remaining space */
+  gap: 20px; /* space between boxes */
+  padding: 20px 0;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Hover effect to pop out */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown menu as fixed-size box */
+.dropdown-content {
+  display: none;           /* hidden by default */
+  position: absolute;      /* relative to parent tab */
+  top: 100%;               /* position below tab */
+  left: 0;
+  width: 200px;            /* fixed width */
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  flex-direction: column;
+  z-index: 10;
+  padding: 10px;
+}
+
+/* Show on hover */
+.dropdown:hover .dropdown-content {
+  display: flex;
+}
+
+/* Dropdown items */
+.dropdown-content span {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Hover effect for items */
+.dropdown-content span:hover {
+  background-color: #f0f0f0;
+}
+
+/* ------------------------------
+   BASE PAGE COLORS
+--------------------------------*/
+body {
+  background-color: #f5f5fa; /* light grayish-purple page background */
+  color: #1a0d2e; /* default text almost black with 5% purple */
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  padding-top: 85px; /* adjust to navbar height */
+}
+}
+
+/* Section container styling */
+.tabcontent, .highlight-section {
+  background-color: #ffffff; /* white sections */
+  border: 1px solid #d0d0e0; /* light gray-purple divider */
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* subtle depth */
+}
+
+/* Horizontal divider line inside sections */
+.section-divider {
+  background-color: #d0d0e0; /* subtle gray-purple */
+}
+
+/* ------------------------------
+   NAVIGATION BAR
+--------------------------------*/
+.full-width-navbar {
+  width: 100%;
+  background-color: #007bff;
+  position: fixed; /* pins it */
+  top: 0;          /* top of the page */
+  left: 0;
+  z-index: 1000;   /* ensures it’s above other content */
+}
+
+/* Tab buttons */
+.tab button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px 12px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+/* Active tab / hovered tab */
+.tab button.active,
+.tab button:hover {
+  color: #6b3fa0; /* medium purple highlight */
+}
+
+/* Blue highlight bar under nav tabs */
+.blue-bar {
+  background-color: #5a35a5; /* dark purple for active tab indicator */
+}
+
+/* Dropdown buttons */
+.dropdown button {
+  color: white;
+}
+
+.dropdown-content {
+  background-color: #ffffff; /* white dropdown over nav */
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  color: #1a0d2e;
+}
+
+/* Dropdown hover effect */
+.dropdown-content span:hover {
+  background-color: rgba(107, 63, 160, 0.05); /* subtle purple overlay */
+}
+
+/* ------------------------------
+   HEADERS
+--------------------------------*/
+h1, h2, h3, h4, h5 {
+  color: #1a0d2e; /* almost black with subtle purple tint */
+  margin-top: 0;
+}
+
+/* ------------------------------
+   BUTTONS & LINKS
+--------------------------------*/
+.puzzle-button,
+button[type="submit"] {
+  background-color: #6b3fa0; /* medium purple */
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.puzzle-button:hover,
+button[type="submit"]:hover {
+  background-color: #8250c9; /* slightly brighter purple on hover */
+}
+
+a {
+  color: #6b3fa0;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------
+   LYRICS BOX & CARDS
+--------------------------------*/
+.lyrics-box, .audio-player-container {
+  border: 1px solid #d0d0e0;
+  border-radius: 6px;
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+/* Optional subtle hover effect on sections */
+.highlight-section:hover {
+  background-color: rgba(107, 63, 160, 0.03);
 }

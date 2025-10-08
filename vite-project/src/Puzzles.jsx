@@ -9,7 +9,7 @@ export default function Puzzles({ section, forceHighlight }) {
   const hangmanRef = useRef(null);
 
   const scrollTo = (ref) => {
-    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
 
     // Optional highlight effect
     ref.current.classList.add("highlight");

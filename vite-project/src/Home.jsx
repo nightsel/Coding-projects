@@ -2,7 +2,10 @@ import React from "react";
 
 export default function Home({ setActiveTab }) {
   return (
+    <div className="home-padding">
+      <div className="max-width-container">
     <div className="tabcontent" style={{ padding: '10px' }}>
+      <div className="section-card">
       <h1>Welcome</h1>
       <p>
         Hi, I’m Max. This website showcases my programming skills and projects. Here’s a quick guide:
@@ -39,5 +42,8 @@ export default function Home({ setActiveTab }) {
         </a>
       </p>
     </div>
+  </div>
+  </div>
+  </div>
   );
 }
