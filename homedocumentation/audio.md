@@ -12,6 +12,8 @@ Waveform amplitude is straightforward to implement. Waveform frequency is more c
 
 Lyrics are fetched from three websites — [Lyrical Nonsense](https://www.lyrical-nonsense.com/), [UtaTen](https://utaten.com/), and [LyricsTranslate](https://lyricstranslate.com/) — so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.
 
+Fetching is done via HTML scraping, manually identifying which <div> contains the relevant text. For UtaTen, the site’s search function is used to locate the best matching lyrics page because their URLs do not follow a consistent artist-song pattern. Normally, I would request permission, but this GitHub project does not significantly stress the site’s servers beyond what a single user would do.
+
 todo: lyrics translation if available  
 lyrics automatic scrolling when audio player timer progresses  
 lyrics matching timer exactly with api like textalive app api (only works for songs with timed syllables in the database)  

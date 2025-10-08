@@ -288,11 +288,11 @@ export default function Projects({ section, forceHighlight }) {
             </a>
           </li>
           <li>
-            <strong>Other Projects in Main Repository:</strong>
+            <strong>Other Projects in </strong><a href="https://github.com/nightsel/Coding-projects" target="_blank" rel="noopener noreferrer"> Main repository </a>:
             <ul>
               <li>Back-end code for puzzles and other website functionality</li>
-              <li>Solution scripts for <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer">LeetCode</a></li>
-              <li>AI-assisted data analysis, data processing, and game-related scripting</li>
+              <li>Solution scripts in C++ for <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer">LeetCode</a></li>
+              <li>Data analysis, web scraping and a small AI project related to video games</li>
             </ul>
           </li>
         </ul>
