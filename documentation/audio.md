@@ -34,7 +34,7 @@ I’ve fine-tuned the frequency visualization to better reflect my own hearing p
 
 ---
 
-## ✍️ Lyrics System
+## Lyrics System
 
 Lyrics are fetched from three public sources:
 
