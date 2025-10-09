@@ -7,7 +7,7 @@ Songs can be uploaded via SoundCloud links. Loading time depends on file size an
 
 ##  Default Song
 
-The default track **_Luna - ST/A#R_** is preloaded from storage to speed up testing.  
+The default track **_*Luna - ST/A#R_** is preloaded from storage to speed up testing.  
 It is used under the artist’s [guideline](https://www.ast-luna.com/guideline) — **non-commercial use, with credit to Luna**.
 
 ---
