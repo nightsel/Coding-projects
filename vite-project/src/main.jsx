@@ -6,6 +6,7 @@ import Projects from "./Projects";
 import Home from "./Home";
 //import About from "./About";
 
+
 export default function CloudStatus() {
   const [statuses, setStatuses] = useState({
     render: "checking",
@@ -46,10 +47,7 @@ export default function CloudStatus() {
       setStatuses(newStatuses);
     };
 
-    // Initial check
     checkStatuses();
-
-    // Poll every 60 seconds
     const interval = setInterval(checkStatuses, 60000);
     return () => clearInterval(interval);
   }, []);
@@ -60,46 +58,51 @@ export default function CloudStatus() {
       status === "checking" ? "orange" : "red";
 
     return (
-      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-        <span
-          style={{
-            width: "10px",
-            height: "10px",
-            borderRadius: "50%",
-            backgroundColor: color,
-          }}
-        ></span>
-        <span style={{ fontSize: "0.85em", color: "black", textTransform: "capitalize" }}>
-          {status}
-        </span>
-      </span>
+      <span
+        style={{
+          width: "10px",
+          height: "10px",
+          borderRadius: "50%",
+          backgroundColor: color,
+          display: "inline-block",
+        }}
+      ></span>
     );
   };
 
   return (
-    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-      <div style={{
+    <div
+      style={{
         display: "flex",
-        alignItems: "center",
+        flexDirection: "column",
+        alignItems: "flex-start",
         gap: "6px",
-        padding: "2px 8px",
+        padding: "4px 8px",
+        backgroundColor: "#f9f9f9",
         borderRadius: "12px",
-        backgroundColor: "#f0f0f0"
-      }}>
+        fontSize: "0.85em",
+        color: "black",
+      }}
+    >
+      {/* Heading */}
+      <strong style={{ marginBottom: "4px" }}>Cloud Services</strong>
+
+      {/* Render & Supabase */}
+      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
         {renderDot(statuses.render)}
-        <span style={{ fontWeight: "bold", color: "black", fontSize: "0.85em" }}>Render & Supabase</span>
+        <span>Render & Supabase</span>
+        <span style={{ marginLeft: "6px", fontWeight: "bold" }}>
+          {statuses.render.charAt(0).toUpperCase() + statuses.render.slice(1)}
+        </span>
       </div>
 
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "6px",
-        padding: "2px 8px",
-        borderRadius: "12px",
-        backgroundColor: "#f0f0f0"
-      }}>
+      {/* Vercel */}
+      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
         {renderDot(statuses.vercel)}
-        <span style={{ fontWeight: "bold", color: "black", fontSize: "0.85em" }}>Vercel</span>
+        <span>Vercel</span>
+        <span style={{ marginLeft: "6px", fontWeight: "bold" }}>
+          {statuses.vercel.charAt(0).toUpperCase() + statuses.vercel.slice(1)}
+        </span>
       </div>
     </div>
   );
