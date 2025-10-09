@@ -1,24 +1,74 @@
-### Audio Player and Lyrics Search
+# 🎧 Audio Player & Lyrics Search
 
-This is a custom React audio player with a waveform visualizer and clickable seek. Songs can be uploaded from SoundCloud links. Loading audio should take less than a minute depending on file size and network speed.
+A **custom React audio player** featuring waveform visualization, clickable seek, and automatic lyrics fetching.  
+Songs can be uploaded via SoundCloud links. Loading time depends on file size and network speed (typically under a minute).
 
-The default song *Luna - ST/A#R* is pre-loaded from storage to save functionality testing time. It is used according to the artist’s [guideline](https://www.ast-luna.com/guideline) (non-commercial use, credit to **Luna given*).
+---
 
-Audio files you load are temporarily stored in [Supabase Storage](https://supabase.com/) under names like `temp_audio_[uuid].mp3` and are automatically deleted after 15 minutes.
+## 🎵 Default Song
 
-The backend running on [Render](https://render.com/) handles fetching and streaming these audio files to your player. **Render server implementation is in the repository [expressproject](https://github.com/nightsel/expressproject)**.
+The default track **_Luna - ST/A#R_** is preloaded from storage to speed up testing.  
+It is used under the artist’s [guideline](https://www.ast-luna.com/guideline) — **non-commercial use, with credit to Luna**.
 
-Waveform amplitude is straightforward to implement. Waveform frequency is more complex, as humans perceive certain frequencies more strongly due to evolutionary factors. Low-frequency sounds can also generate overtones, creating high-frequency components that are harder to hear. I’ve made adjustments to the waveform frequency to better match my own perception, but I am not a professional audio engineer.
+---
 
-Lyrics are fetched from three websites — [Lyrical Nonsense](https://www.lyrical-nonsense.com/), [UtaTen](https://utaten.com/), and [LyricsTranslate](https://lyricstranslate.com/) — so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.
+## ☁️ Audio Handling
 
-Lyrics have automatic scrolling that can be toggled off. Lyrics reset when a new song is loaded.
+Uploaded audio files are temporarily stored in [**Supabase Storage**](https://supabase.com/) under names like: `temp_audio_[uuid].mp3`
 
-Fetching is done via HTML scraping, manually identifying which <div> contains the relevant text. For UtaTen, the site’s search function is used to locate the best matching lyrics page because their URLs do not follow a consistent artist-song pattern. Normally, I would request permission, but this GitHub project does not significantly stress the site’s servers beyond what a single user would do.
+Files are **automatically deleted after 15 minutes**.
 
+The backend runs on [**Render**](https://render.com/) and handles fetching and streaming audio files to the player.  
 
-todo: lyrics translation if available  
-lyrics matching timer exactly with api like textalive app api (only works for songs with timed syllables in the database)  
-add different background depending on what the song sounds like??
-Frequency visualization improvement overall
-audio visualization with 3d animation
+**Backend repository:** [nightsel/expressproject](https://github.com/nightsel/expressproject)
+
+---
+
+## 🔊 Waveform Visualization
+
+- **Amplitude visualization** is simple to generate.
+- **Frequency visualization** is more complex because human hearing emphasizes certain frequencies.  
+  Low-frequency sounds can also create subtle overtones that are harder to hear.
+
+I’ve fine-tuned the frequency visualization to better reflect my own hearing perception (I’m not an audio engineer though).
+
+---
+
+## ✍️ Lyrics System
+
+Lyrics are fetched from three public sources:
+
+- [Lyrical Nonsense](https://www.lyrical-nonsense.com/)
+- [UtaTen](https://utaten.com/)
+- [LyricsTranslate](https://lyricstranslate.com/)
+
+> Some songs may not be found or may have incomplete lyrics.  
+> Lyrics are **not stored** anywhere.
+
+### Features
+-  Automatic scrolling (can be toggled off)  
+-  Romaji lyric support (when available)  
+-  Reset lyrics when a new song loads  
+
+Fetching uses **HTML scraping** to identify the correct `<div>` for lyric content.  
+For **UtaTen**, the internal search is used since URLs don’t follow a predictable pattern.  
+Although scraping is used, traffic is minimal — equivalent to a single user browsing the site.
+
+---
+
+## 🧩 Technical Notes
+
+- Built with **React**
+- Hosted via **Render**
+- File storage via **Supabase**
+- Lyrics fetched dynamically from HTML responses
+- Clean waveform rendering optimized for low CPU usage
+
+---
+
+## 🧠 Future Plans / TODO
+
+-  Fetch lyrics **translations** (if available)  
+-  Integrate **TextAlive API** for time-synced lyrics  
+-  Dynamic background reacting to song “mood” or tone  
+- 

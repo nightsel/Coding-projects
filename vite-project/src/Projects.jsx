@@ -22,6 +22,7 @@ export default function Projects({ section, forceHighlight }) {
   const [hasSearched, setHasSearched] = useState(false);
   const [currentLyricsInfo, setCurrentLyricsInfo] = useState({ artist: artdef, song: songdef });
   const [autoScroll, setAutoScroll] = useState(true);
+  const [useRomaji, setUseRomaji] = useState(false);
 
   const autoScrollRef = useRef(autoScroll);
     useEffect(() => {
@@ -95,30 +96,52 @@ export default function Projects({ section, forceHighlight }) {
   }, [section, forceHighlight]);
 
   useEffect(() => {
-  const fetchDefaultLyrics = async () => {
-    setSearching(true);
-    setHasSearched(true);
-    try {
-      // If your backend supports fetching by URL directly
-      // Lyrics for *luna ST/A#R
+    const fetchDefaultLyrics = async () => {
+      setSearching(true);
+      setHasSearched(true);
+      try {
+        const mode = useRomaji ? "romaji" : "hiragana";
+        const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artdef)}&song=${encodeURIComponent(songdef)}&mode=${mode}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setLyricsArray(data.lines || []);
+        setCurrentLyricsInfo({ artist: artdef, song: songdef });
+      } catch (err) {
+        setLyricsArray([]);
+        setCurrentLyricsInfo({});
+      } finally {
+        setSearching(false);
+      }
+    };
 
-      const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${(artdef)}&song=${(songdef)}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setLyricsArray(data.lines || []);
-      setCurrentLyricsInfo({ artist: artdef, song: songdef });
-    } catch (err) {
-      setLyricsArray([]);
-      setCurrentLyricsInfo({});
-    } finally {
-      setSearching(false);
-    }
-  };
-
-  fetchDefaultLyrics();
-}, []);
+    fetchDefaultLyrics();
+    // intentionally NOT adding useRomaji here to avoid double-fetch on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
+  useEffect(() => {
+    if (!hasSearched || searching) return; // don’t run on initial mount or mid-search
+
+    const fetchLyricsWithNewMode = async () => {
+      setSearching(true);
+      try {
+        const { artist, song } = currentLyricsInfo;
+        if (!artist || !song) return;
+        const mode = useRomaji ? "romaji" : "hiragana";
+        const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setLyricsArray(data.lines || []);
+      } catch (err) {
+        setLyricsArray([]);
+      } finally {
+        setSearching(false);
+      }
+    };
+
+    fetchLyricsWithNewMode();
+  }, [useRomaji]);
 
 
   return (
@@ -191,7 +214,8 @@ export default function Projects({ section, forceHighlight }) {
                   setHasSearched(true);
 
                   try {
-                    const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+                    const mode = useRomaji ? "romaji" : "hiragana";
+                    const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}`;
                     const res = await fetch(url);
                     const data = await res.json();
                     setLyricsArray(data.lines || []);
@@ -214,6 +238,14 @@ export default function Projects({ section, forceHighlight }) {
               >
                 {autoScroll ? 'Turn off lyric auto-scroll' : 'Turn on lyric auto-scroll'}
               </button>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <input
+                  type="checkbox"
+                  checked={useRomaji}
+                  onChange={() => setUseRomaji(!useRomaji)}
+                />
+                Display lyrics in Romaji
+              </label>
             </div>
           </div>
 
