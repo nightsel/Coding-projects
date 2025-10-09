@@ -48,6 +48,7 @@ Lyrics are fetched from three public sources:
 ### Features
 -  Automatic scrolling (can be toggled off)  
 -  Romaji lyric support (when available)  
+-  Translation support
 -  Reset lyrics when a new song loads  
 
 Fetching uses **HTML scraping** to identify the correct `<div>` for lyric content.  
@@ -68,7 +69,6 @@ Although scraping is used, traffic is minimal — equivalent to a single user br
 
 ##  Future Plans / TODO
 
--  Fetch lyrics **translations** (if available)  
 -  Integrate **TextAlive API** for time-synced lyrics  
 -  Dynamic background reacting to song “mood” or tone  
 -  Improved frequency waveform visualization  

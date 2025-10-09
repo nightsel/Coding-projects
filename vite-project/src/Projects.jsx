@@ -23,6 +23,7 @@ export default function Projects({ section, forceHighlight }) {
   const [currentLyricsInfo, setCurrentLyricsInfo] = useState({ artist: artdef, song: songdef });
   const [autoScroll, setAutoScroll] = useState(true);
   const [useRomaji, setUseRomaji] = useState(false);
+  const [lyricsMode, setLyricsMode] = useState("normal"); // "normal", "romaji", "translation"
 
   const autoScrollRef = useRef(autoScroll);
     useEffect(() => {
@@ -100,7 +101,7 @@ export default function Projects({ section, forceHighlight }) {
       setSearching(true);
       setHasSearched(true);
       try {
-        const mode = useRomaji ? "romaji" : "hiragana";
+        const mode = lyricsMode;
         const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artdef)}&song=${encodeURIComponent(songdef)}&mode=${mode}`;
         const res = await fetch(url);
         const data = await res.json();
@@ -115,21 +116,20 @@ export default function Projects({ section, forceHighlight }) {
     };
 
     fetchDefaultLyrics();
-    // intentionally NOT adding useRomaji here to avoid double-fetch on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
 
   useEffect(() => {
-    if (!hasSearched || searching) return; // don’t run on initial mount or mid-search
+    if (!hasSearched || searching) return; // skip on initial mount or mid-search
 
     const fetchLyricsWithNewMode = async () => {
       setSearching(true);
       try {
         const { artist, song } = currentLyricsInfo;
         if (!artist || !song) return;
-        const mode = useRomaji ? "romaji" : "hiragana";
-        const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}`;
+
+        const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${lyricsMode}`;
         const res = await fetch(url);
         const data = await res.json();
         setLyricsArray(data.lines || []);
@@ -141,7 +141,7 @@ export default function Projects({ section, forceHighlight }) {
     };
 
     fetchLyricsWithNewMode();
-  }, [useRomaji]);
+  }, [lyricsMode]); // <-- watch the mode
 
 
   return (
@@ -214,7 +214,7 @@ export default function Projects({ section, forceHighlight }) {
                   setHasSearched(true);
 
                   try {
-                    const mode = useRomaji ? "romaji" : "hiragana";
+                    const mode = lyricsMode;
                     const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}`;
                     const res = await fetch(url);
                     const data = await res.json();
@@ -238,14 +238,23 @@ export default function Projects({ section, forceHighlight }) {
               >
                 {autoScroll ? 'Turn off lyric auto-scroll' : 'Turn on lyric auto-scroll'}
               </button>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <input
-                  type="checkbox"
-                  checked={useRomaji}
-                  onChange={() => setUseRomaji(!useRomaji)}
-                />
-                Display lyrics in Romaji
-              </label>
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                {["normal", "romaji", "translate"].map(mode => (
+                  <button
+                    key={mode}
+                    onClick={() => setLyricsMode(mode)}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '4px',
+                      border: lyricsMode === mode ? '2px solid #007bff' : '1px solid #ccc',
+                      background: lyricsMode === mode ? '#e6f0ff' : '#fff',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
