@@ -3,8 +3,6 @@
 *USELESS*
 *pycache*
 *node_modules*
-*package*
-*package-lock*
 *.env
 hello.js
 temptesting
