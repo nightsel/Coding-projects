@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./style.css";
 
-export default function AudioPlayer() {
+export default function AudioPlayer({ onProgress}) {
   const audioRef = useRef(null);
   const audioSourceRef = useRef(null);
   const waveformCanvasRef = useRef(null);
@@ -66,6 +66,12 @@ export default function AudioPlayer() {
       requestAnimationFrame(animateWaveform);
       return;
     }
+
+    const progress = audioRef.current.currentTime / audioRef.current.duration;
+
+    // call the parent callback if it exists
+    if (onProgress) onProgress(progress);
+
 
     const progressX = Math.floor(audioRef.current.currentTime / audioRef.current.duration * waveformCanvasRef.current.width);
     drawWaveform(progressX);

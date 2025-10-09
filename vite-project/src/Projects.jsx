@@ -10,6 +10,8 @@ export default function Projects({ section, forceHighlight }) {
   const pollRef = useRef(null);
   const otherRef = useRef(null);
   const audioRef = useRef(null);
+  const lyricsRef = useRef(null);
+  const lyricsPersistentRef = useRef([]);
 
   const [artist, setArtist] = useState('');
   const [song, setSong] = useState('');
@@ -20,6 +22,9 @@ export default function Projects({ section, forceHighlight }) {
   const [hasSearched, setHasSearched] = useState(false);
   const [currentLyricsInfo, setCurrentLyricsInfo] = useState({ artist: artdef, song: songdef });
 
+  useEffect(() => {
+    lyricsPersistentRef.current = lyricsArray;
+  }, [lyricsArray]);
 
   const scrollTo = (ref) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -27,6 +32,38 @@ export default function Projects({ section, forceHighlight }) {
   /*  ref.current.classList.add("highlight");
     setTimeout(() => ref.current.classList.remove("highlight"), 1000);*/
   };
+
+  const currentLineRef = useRef(-1);
+
+  const scrollLyricsInstant = (progress) => {
+    const lyrics = lyricsPersistentRef.current;
+    const container = lyricsRef.current;
+    if (!container || !lyrics || lyrics.length === 0) return;
+
+    const offset = 0.1; // start scrolling at 25% of the song
+    if (progress < offset) return; // don't scroll yet
+
+    const bias = 0; // forward bias AFTER offset
+    const adjustedProgress = Math.min(1, progress + bias);
+    const rawIndex = (adjustedProgress - offset) / (1 - offset) * lyrics.length;
+    const currentIndex = Math.min(Math.floor(rawIndex), lyrics.length - 1);
+
+    if (currentIndex === currentLineRef.current) return;
+    currentLineRef.current = currentIndex;
+
+    const line = document.getElementById(`lyric-${currentIndex}`);
+    if (!line) return;
+
+    // Scroll relative to the container
+    const containerTop = container.getBoundingClientRect().top;
+    const lineTop = line.getBoundingClientRect().top;
+    container.scrollTop += lineTop - containerTop;
+  };
+
+  useEffect(() => {
+    currentLineRef.current = -1; // reset index
+    if (lyricsArray.length > 0) scrollLyricsInstant(0); // scroll to start
+  }, [lyricsArray]);
 
   useEffect(() => {
     if (section === "weather") weatherRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -102,14 +139,14 @@ export default function Projects({ section, forceHighlight }) {
           <li>Lyrics are fetched from three websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a>, <a href="https://utaten.com/"> UtaTen </a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.</li>
           */}
           <li> This is an audio player with a waveform amplitude/frequency visualizer and clickable seek on the amplitude graph.</li>
-          <li> The default song <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna)</li>
-          <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/homedocumentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
+          <li> The default song is <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna)</li>
+          <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/documentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
       </ul>
 
           {/* Left column: AudioPlayer + Inputs */}
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
-            <AudioPlayer />
+          <AudioPlayer onProgress={scrollLyricsInstant} />
 
 
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -179,11 +216,36 @@ export default function Projects({ section, forceHighlight }) {
                 : 'Lyrics'}
             </h4>
             {lyricsArray.length > 0 ? (
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '1.5' }}>
-                {lyricsArray.map((line, index) => (
-                  <li key={index}>{line}</li>
-                ))}
-              </ul>
+              <div
+                ref={lyricsRef} // <- move the ref here
+                style={{
+                  flex: 1,
+                  maxWidth: '700px',
+                  minWidth: '300px',
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                  border: '1px solid #ddd',
+                  padding: '10px',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                <h4 style={{ margin: 0, marginBottom: '4px' }}>
+                  {lyricsArray.length > 0
+                    ? `Lyrics for "${currentLyricsInfo.song}" by ${currentLyricsInfo.artist}`
+                    : 'Lyrics'}
+                </h4>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '1.5' }}>
+                  {lyricsArray.map((line, index) => (
+                    <li key={index} id={`lyric-${index}`}>
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
             ) : (
               hasSearched && !searching && (
                 <p style={{ color: 'red', margin: 0 }}>Lyrics not found. Please check the artist/song name or try again.</p>
