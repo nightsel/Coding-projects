@@ -7,38 +7,103 @@ import Home from "./Home";
 //import About from "./About";
 
 export default function CloudStatus() {
-const [status, setStatus] = useState("checking");
+  const [statuses, setStatuses] = useState({
+    render: "checking",
+    vercel: "checking",
+  });
 
-useEffect(() => {
-  const checkStatus = async () => {
-    try {
-      const res = await fetch("https://expressproject-al0i.onrender.com/status", { method: "GET" });
-      if (res.ok) setStatus("online");
-      else setStatus("offline");
-    } catch {
-      setStatus("offline");
-    }
+  useEffect(() => {
+    const checkStatuses = async () => {
+      const newStatuses = { ...statuses };
+
+      // --- Check Render & Supabase via backend ---
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const res = await fetch("https://expressproject-al0i.onrender.com/ping", {
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+        newStatuses.render = res.ok ? "online" : "offline";
+      } catch {
+        newStatuses.render = "offline";
+      }
+
+      // --- Check Vercel directly ---
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const res = await fetch(
+          "https://coding-projects-nightsel-nightsels-projects.vercel.app/api/hello",
+          { signal: controller.signal }
+        );
+        clearTimeout(timeout);
+        newStatuses.vercel = res.ok ? "online" : "offline";
+      } catch {
+        newStatuses.vercel = "offline";
+      }
+
+      setStatuses(newStatuses);
+    };
+
+    // Initial check
+    checkStatuses();
+
+    // Poll every 60 seconds
+    const interval = setInterval(checkStatuses, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const renderDot = (status) => {
+    const color =
+      status === "online" ? "limegreen" :
+      status === "checking" ? "orange" : "red";
+
+    return (
+      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <span
+          style={{
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            backgroundColor: color,
+          }}
+        ></span>
+        <span style={{ fontSize: "0.85em", color: "black", textTransform: "capitalize" }}>
+          {status}
+        </span>
+      </span>
+    );
   };
 
-  checkStatus();
-  const interval = setInterval(checkStatus, 30000); // recheck every 30s
-  return () => clearInterval(interval);
-}, []);
+  return (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "2px 8px",
+        borderRadius: "12px",
+        backgroundColor: "#f0f0f0"
+      }}>
+        {renderDot(statuses.render)}
+        <span style={{ fontWeight: "bold", color: "black", fontSize: "0.85em" }}>Render & Supabase</span>
+      </div>
 
-const color =
-  status === "online" ? "limegreen" :
-  status === "checking" ? "orange" : "red";
-
-return (
-  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-    <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: color }}></span>
-    <span style={{ fontSize: "0.9em" }}>
-      {status === "online" ? "Online" : status === "checking" ? "Checking..." : "Offline"}
-    </span>
-  </div>
-);
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "2px 8px",
+        borderRadius: "12px",
+        backgroundColor: "#f0f0f0"
+      }}>
+        {renderDot(statuses.vercel)}
+        <span style={{ fontWeight: "bold", color: "black", fontSize: "0.85em" }}>Vercel</span>
+      </div>
+    </div>
+  );
 }
-
 
 function App() {
   const [activeTab, setActiveTab] = useState({ tab: "Home", section: null , key: Date.now()});
@@ -87,9 +152,9 @@ function App() {
   return (
     <div>
       {/* Navbar */}
-      <div className="full-width-navbar">
+      <div className="full-width-navbar" style={{ display: "flex", alignItems: "center", padding: "0 12px" }}>
         <div>
-          <div className="tab">
+          <div className="tab" style={{ display: "flex", gap: "12px" }}>
 
             <button
               className={activeTab.tab === "Home" ? "active" : ""}
@@ -128,7 +193,9 @@ function App() {
         {/* Blue bar */}
         <div className="blue-bar"></div>
       </div>
-      <CloudStatus />
+      <div style={{ marginLeft: "20%" }}>
+        <CloudStatus />
+      </div>
     </div>
 
       {renderTabContent()}
