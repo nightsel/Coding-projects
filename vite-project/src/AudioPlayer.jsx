@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./style.css";
 
-export default function AudioPlayer({ onProgress}) {
+export default function AudioPlayer({ onProgress, onAudioLoad}) {
   const audioRef = useRef(null);
   const audioSourceRef = useRef(null);
   const waveformCanvasRef = useRef(null);
@@ -183,8 +183,16 @@ export default function AudioPlayer({ onProgress}) {
       // Draw waveform instantly
       drawWaveform();
 
+    /*  // Reset lyrics scroll
+      if (lyricsRef.current) {
+        lyricsRef.current.scrollTop = 0;      // scroll to top
+      }
+      currentLineRef.current = -1;            // reset current lyric index*/
+
       audioSourceRef.current.src = url;
       audioRef.current.load();
+
+      if (onAudioLoad) onAudioLoad(); // <-- call callback here
     } catch (err) {
       console.error("Failed to load audio:", err);
     }
@@ -230,7 +238,7 @@ export default function AudioPlayer({ onProgress}) {
             onChange={(e) => setAudioUrl(e.target.value)}
             style={{ width: "300px" }}
           />
-          <p style={{ fontSize: "12px", color: "#555", margin: 0 }}>
+          <p style={{ fontSize: "15px", color: "#555", margin: 0 }}>
             Note: YouTube links will not work due to anti-bot protections. Please use other sources. <strong>BE CAREFUL WITH THE VOLUME!</strong>
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px" }}>

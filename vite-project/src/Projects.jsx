@@ -21,6 +21,12 @@ export default function Projects({ section, forceHighlight }) {
   const [searching, setSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [currentLyricsInfo, setCurrentLyricsInfo] = useState({ artist: artdef, song: songdef });
+  const [autoScroll, setAutoScroll] = useState(true);
+
+  const autoScrollRef = useRef(autoScroll);
+    useEffect(() => {
+      autoScrollRef.current = autoScroll;
+    }, [autoScroll]);
 
   useEffect(() => {
     lyricsPersistentRef.current = lyricsArray;
@@ -36,14 +42,16 @@ export default function Projects({ section, forceHighlight }) {
   const currentLineRef = useRef(-1);
 
   const scrollLyricsInstant = (progress) => {
+    if (!autoScrollRef.current) return; // skip scrolling if disabled
+
     const lyrics = lyricsPersistentRef.current;
     const container = lyricsRef.current;
     if (!container || !lyrics || lyrics.length === 0) return;
 
-    const offset = 0.1; // start scrolling at 25% of the song
-    if (progress < offset) return; // don't scroll yet
+    const offset = 0.1;
+    if (progress < offset) return;
 
-    const bias = 0; // forward bias AFTER offset
+    const bias = 0;
     const adjustedProgress = Math.min(1, progress + bias);
     const rawIndex = (adjustedProgress - offset) / (1 - offset) * lyrics.length;
     const currentIndex = Math.min(Math.floor(rawIndex), lyrics.length - 1);
@@ -54,7 +62,6 @@ export default function Projects({ section, forceHighlight }) {
     const line = document.getElementById(`lyric-${currentIndex}`);
     if (!line) return;
 
-    // Scroll relative to the container
     const containerTop = container.getBoundingClientRect().top;
     const lineTop = line.getBoundingClientRect().top;
     container.scrollTop += lineTop - containerTop;
@@ -64,6 +71,12 @@ export default function Projects({ section, forceHighlight }) {
     currentLineRef.current = -1; // reset index
     if (lyricsArray.length > 0) scrollLyricsInstant(0); // scroll to start
   }, [lyricsArray]);
+
+  const handleAudioLoad = () => {
+    setLyricsArray([]);           // clear lyrics
+    currentLineRef.current = -1;  // reset lyric index
+    setCurrentLyricsInfo({});     // optional: clear artist/song info
+  };
 
   useEffect(() => {
     if (section === "weather") weatherRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -139,14 +152,18 @@ export default function Projects({ section, forceHighlight }) {
           <li>Lyrics are fetched from three websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a>, <a href="https://utaten.com/"> UtaTen </a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.</li>
           */}
           <li> This is an audio player with a waveform amplitude/frequency visualizer and clickable seek on the amplitude graph.</li>
-          <li> The default song is <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna)</li>
+          <li> The default song is <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna). For faster testing purposes because
+          loading audio can take up to a minute.</li>
           <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/documentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
       </ul>
 
           {/* Left column: AudioPlayer + Inputs */}
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
-          <AudioPlayer onProgress={scrollLyricsInstant} />
+            <AudioPlayer
+              onProgress={scrollLyricsInstant}
+              onAudioLoad={handleAudioLoad} // <-- new prop
+            />
 
 
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -190,6 +207,12 @@ export default function Projects({ section, forceHighlight }) {
                 style={{ padding: '6px 12px', height: '36px' }}
               >
                 {searching ? 'Searching...' : 'Search Lyrics'}
+              </button>
+              <button className="puzzle-button"
+                onClick={() => setAutoScroll(prev => !prev)}
+                style={{ marginBottom: '10px', padding: '6px 12px' }}
+              >
+                {autoScroll ? 'Turn off lyric auto-scroll' : 'Turn on lyric auto-scroll'}
               </button>
             </div>
           </div>
