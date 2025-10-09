@@ -340,3 +340,46 @@ body {
   flex-wrap: wrap;
   align-items: flex-start;
 }
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111;
+  color: white;
+  padding: 10px 20px;
+  height: 50px;
+}
+
+.cloud-status {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+}
+
+.status-dot.online {
+  background: #2ecc71; /* green */
+}
+
+.status-dot.offline {
+  background: #e74c3c; /* red */
+}
+
+.nav-title {
+  font-weight: bold;
+  font-size: 16px;
+}

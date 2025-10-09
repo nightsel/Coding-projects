@@ -6,6 +6,40 @@ import Projects from "./Projects";
 import Home from "./Home";
 //import About from "./About";
 
+export default function CloudStatus() {
+const [status, setStatus] = useState("checking");
+
+useEffect(() => {
+  const checkStatus = async () => {
+    try {
+      const res = await fetch("https://expressproject-al0i.onrender.com/status", { method: "GET" });
+      if (res.ok) setStatus("online");
+      else setStatus("offline");
+    } catch {
+      setStatus("offline");
+    }
+  };
+
+  checkStatus();
+  const interval = setInterval(checkStatus, 30000); // recheck every 30s
+  return () => clearInterval(interval);
+}, []);
+
+const color =
+  status === "online" ? "limegreen" :
+  status === "checking" ? "orange" : "red";
+
+return (
+  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+    <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: color }}></span>
+    <span style={{ fontSize: "0.9em" }}>
+      {status === "online" ? "Online" : status === "checking" ? "Checking..." : "Offline"}
+    </span>
+  </div>
+);
+}
+
+
 function App() {
   const [activeTab, setActiveTab] = useState({ tab: "Home", section: null , key: Date.now()});
   const [forceHighlight, setForceHighlight] = useState(false);
@@ -94,6 +128,7 @@ function App() {
         {/* Blue bar */}
         <div className="blue-bar"></div>
       </div>
+      <CloudStatus />
     </div>
 
       {renderTabContent()}
