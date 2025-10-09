@@ -232,11 +232,6 @@ export default function Projects({ section, forceHighlight }) {
                   justifyContent: 'flex-start',
                 }}
               >
-                <h4 style={{ margin: 0, marginBottom: '4px' }}>
-                  {lyricsArray.length > 0
-                    ? `Lyrics for "${currentLyricsInfo.song}" by ${currentLyricsInfo.artist}`
-                    : 'Lyrics'}
-                </h4>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '1.5' }}>
                   {lyricsArray.map((line, index) => (
                     <li key={index} id={`lyric-${index}`}>

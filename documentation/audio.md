@@ -15,7 +15,6 @@ Lyrics are fetched from three websites — [Lyrical Nonsense](https://www.lyrica
 Fetching is done via HTML scraping, manually identifying which <div> contains the relevant text. For UtaTen, the site’s search function is used to locate the best matching lyrics page because their URLs do not follow a consistent artist-song pattern. Normally, I would request permission, but this GitHub project does not significantly stress the site’s servers beyond what a single user would do.
 
 todo: lyrics translation if available  
-lyrics automatic scrolling when audio player timer progresses  
 lyrics matching timer exactly with api like textalive app api (only works for songs with timed syllables in the database)  
 add different background depending on what the song sounds like??
 Frequency visualization improvement overall
