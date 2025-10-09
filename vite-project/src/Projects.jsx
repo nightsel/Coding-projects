@@ -176,7 +176,7 @@ export default function Projects({ section, forceHighlight }) {
           */}
           <li> This is an audio player with a waveform amplitude/frequency visualizer and clickable seek on the amplitude graph.</li>
           <li> The default song is <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna). For faster testing purposes because
-          loading audio can take up to a minute.</li>
+          loading audio can take up to a minute. Lyrics can be automatically translated. </li>
           <li> For implementation details see the <a href="https://github.com/nightsel/Coding-projects/blob/main/documentation/audio.md" target="_blank" rel="noopener noreferrer">technical documentation</a>.</li>
       </ul>
 

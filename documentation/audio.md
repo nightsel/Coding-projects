@@ -48,7 +48,7 @@ Lyrics are fetched from three public sources:
 ### Features
 -  Automatic scrolling (can be toggled off)  
 -  Romaji lyric support (when available)  
--  Translation support
+-  Translation support using [DEEPL](https://www.deepl.com/) API
 -  Reset lyrics when a new song loads  
 
 Fetching uses **HTML scraping** to identify the correct `<div>` for lyric content.  
