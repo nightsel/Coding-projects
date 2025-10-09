@@ -71,4 +71,14 @@ Although scraping is used, traffic is minimal — equivalent to a single user br
 -  Fetch lyrics **translations** (if available)  
 -  Integrate **TextAlive API** for time-synced lyrics  
 -  Dynamic background reacting to song “mood” or tone  
-- 
+-  Improved frequency waveform visualization  
+-  3D audio-reactive visualization mode  
+
+---
+
+## 💡 Notes
+
+This project is intended for **educational and non-commercial purposes only**.  
+If you’re an artist or site owner and want your content removed or credited differently, feel free to contact me.
+
+---
