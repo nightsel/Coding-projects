@@ -12,8 +12,8 @@ export default function Puzzles({ section, forceHighlight }) {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
 
     // Optional highlight effect
-    ref.current.classList.add("highlight");
-    setTimeout(() => ref.current.classList.remove("highlight"), 1000);
+    /*ref.current.classList.add("highlight");
+    setTimeout(() => ref.current.classList.remove("highlight"), 1000);*/
   };
 
   useEffect(() => {

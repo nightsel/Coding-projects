@@ -24,8 +24,8 @@ export default function Projects({ section, forceHighlight }) {
   const scrollTo = (ref) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
 
-    ref.current.classList.add("highlight");
-    setTimeout(() => ref.current.classList.remove("highlight"), 1000);
+  /*  ref.current.classList.add("highlight");
+    setTimeout(() => ref.current.classList.remove("highlight"), 1000);*/
   };
 
   useEffect(() => {
