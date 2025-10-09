@@ -1,18 +1,18 @@
-# 🎧 Audio Player & Lyrics Search
+#  Audio Player & Lyrics Search
 
 A **custom React audio player** featuring waveform visualization, clickable seek, and automatic lyrics fetching.  
 Songs can be uploaded via SoundCloud links. Loading time depends on file size and network speed (typically under a minute).
 
 ---
 
-## 🎵 Default Song
+##  Default Song
 
 The default track **_Luna - ST/A#R_** is preloaded from storage to speed up testing.  
 It is used under the artist’s [guideline](https://www.ast-luna.com/guideline) — **non-commercial use, with credit to Luna**.
 
 ---
 
-## ☁️ Audio Handling
+##  Audio Handling
 
 Uploaded audio files are temporarily stored in [**Supabase Storage**](https://supabase.com/) under names like: `temp_audio_[uuid].mp3`
 
@@ -24,7 +24,7 @@ The backend runs on [**Render**](https://render.com/) and handles fetching and s
 
 ---
 
-## 🔊 Waveform Visualization
+##  Waveform Visualization
 
 - **Amplitude visualization** is simple to generate.
 - **Frequency visualization** is more complex because human hearing emphasizes certain frequencies.  
@@ -56,7 +56,7 @@ Although scraping is used, traffic is minimal — equivalent to a single user br
 
 ---
 
-## 🧩 Technical Notes
+##  Technical Notes
 
 - Built with **React**
 - Hosted via **Render**
@@ -66,7 +66,7 @@ Although scraping is used, traffic is minimal — equivalent to a single user br
 
 ---
 
-## 🧠 Future Plans / TODO
+##  Future Plans / TODO
 
 -  Fetch lyrics **translations** (if available)  
 -  Integrate **TextAlive API** for time-synced lyrics  
@@ -76,7 +76,7 @@ Although scraping is used, traffic is minimal — equivalent to a single user br
 
 ---
 
-## 💡 Notes
+##  Notes
 
 This project is intended for **educational and non-commercial purposes only**.  
 If you’re an artist or site owner and want your content removed or credited differently, feel free to contact me.
