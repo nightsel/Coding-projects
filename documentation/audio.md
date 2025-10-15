@@ -58,6 +58,9 @@ Each line is highlighted in real time as the song progresses.
 Currently, this system works only for English songs, since it relies on an English speech recognition model.
 It’s still a work in progress. The timing can be inaccurate, especially for songs with unusual phrasing or background vocals.
 
+Code for the backend that handles lyric alignment is at [my other repository](https://github.com/nightsel/pythonrw). This repository is hosted on (Railway)[https://railway.com/].
+The alignment uses Aeneas library and python code, with just 1 important route that my frontend calls through my node js server on (Render)[https://render.com/] to get the alignment results.
+
 Fetching uses **HTML scraping** to identify the correct `<div>` for lyric content.  
 For **UtaTen**, the internal search is used since URLs don’t follow a predictable pattern.  
 Although scraping is used, traffic is minimal — equivalent to a single user browsing the site.
@@ -76,7 +79,6 @@ Although scraping is used, traffic is minimal — equivalent to a single user br
 
 ##  Future Plans / TODO
 
--  Integrate **TextAlive API** for time-synced lyrics  
 -  Dynamic background reacting to song “mood” or tone  
 -  Improved frequency waveform visualization  
 -  3D audio-reactive visualization mode  
