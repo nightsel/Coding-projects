@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./style.css";
 
-export default function AudioPlayer({ onProgress, onAudioLoad}) {
+export default function AudioPlayer({ onProgress, onAudioLoad, onAudioUrlChange }) {
   const audioRef = useRef(null);
   const audioSourceRef = useRef(null);
   const waveformCanvasRef = useRef(null);
@@ -15,6 +15,7 @@ export default function AudioPlayer({ onProgress, onAudioLoad}) {
   const analyserRef = useRef(null);
   const sourceRef = useRef(null);
   const waveformDataRef = useRef(null);
+
 
   const numBuckets = 12;
 
@@ -70,7 +71,12 @@ export default function AudioPlayer({ onProgress, onAudioLoad}) {
     const progress = audioRef.current.currentTime / audioRef.current.duration;
 
     // call the parent callback if it exists
-    if (onProgress) onProgress(progress);
+
+    if (onProgress) onProgress(audioRef.current.currentTime, progress);
+    else {
+      console.log("no Progress");
+    }
+
 
 
     const progressX = Math.floor(audioRef.current.currentTime / audioRef.current.duration * waveformCanvasRef.current.width);
@@ -214,6 +220,7 @@ export default function AudioPlayer({ onProgress, onAudioLoad}) {
       if (data.error) { setMessage("Error: " + data.error); return; }
 
       const proxiedUrl = `https://expressproject-al0i.onrender.com/proxy-audio?url=${encodeURIComponent(data.url)}`;
+      if (onAudioUrlChange) onAudioUrlChange(proxiedUrl);
       await loadAudioFromUrl(proxiedUrl);
     } catch (err) {
       setMessage("Download failed: " + err.message);
@@ -225,6 +232,7 @@ export default function AudioPlayer({ onProgress, onAudioLoad}) {
   useEffect(() => {
     // Load default /luna track
     loadAudioFromUrl("https://expressproject-al0i.onrender.com/luna");
+    if (onAudioUrlChange) onAudioUrlChange("https://expressproject-al0i.onrender.com/luna");
   }, []);
 
   return (

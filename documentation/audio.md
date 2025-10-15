@@ -36,11 +36,12 @@ I’ve fine-tuned the frequency visualization to better reflect my own hearing p
 
 ## Lyrics System
 
-Lyrics are fetched from three public sources:
+Lyrics are fetched from four public sources:
 
 - [Lyrical Nonsense](https://www.lyrical-nonsense.com/)
 - [UtaTen](https://utaten.com/)
 - [LyricsTranslate](https://lyricstranslate.com/)
+- [Letras](https://Letras.com/)
 
 > Some songs may not be found or may have incomplete lyrics.  
 > Lyrics are **not stored** anywhere.
@@ -50,6 +51,12 @@ Lyrics are fetched from three public sources:
 -  Romaji lyric support (when available)  
 -  Translation support using [DEEPL](https://www.deepl.com/) API
 -  Reset lyrics when a new song loads  
+-  Experimental lyric–audio alignment — highlights each line as it’s sung
+
+The lyric-audio alignment feature attempts to synchronize lyrics with the playback time of the audio player.
+Each line is highlighted in real time as the song progresses.
+Currently, this system works only for English songs, since it relies on an English speech recognition model.
+It’s still a work in progress. The timing can be inaccurate, especially for songs with unusual phrasing or background vocals.
 
 Fetching uses **HTML scraping** to identify the correct `<div>` for lyric content.  
 For **UtaTen**, the internal search is used since URLs don’t follow a predictable pattern.  

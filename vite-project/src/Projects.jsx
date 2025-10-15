@@ -12,6 +12,7 @@ export default function Projects({ section, forceHighlight }) {
   const audioRef = useRef(null);
   const lyricsRef = useRef(null);
   const lyricsPersistentRef = useRef([]);
+  const alignedLyricsRef = useRef([]);
 
   const [artist, setArtist] = useState('');
   const [song, setSong] = useState('');
@@ -24,6 +25,51 @@ export default function Projects({ section, forceHighlight }) {
   const [autoScroll, setAutoScroll] = useState(true);
   const [useRomaji, setUseRomaji] = useState(false);
   const [lyricsMode, setLyricsMode] = useState("normal"); // "normal", "romaji", "translation"
+  const [alignedLyrics, setAlignedLyrics] = useState([]);
+  const [syncing, setSyncing] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState("");
+  const [lyricsSite, setLyricsSite] = useState("LN");
+  const lastTimeRef = useRef(0);
+
+  const lastHighlightedRef = useRef(null);
+
+  useEffect(() => {
+    alignedLyricsRef.current = alignedLyrics;
+  }, [alignedLyrics]);
+
+  const handleTimeUpdate = (time) => {
+    const lyrics = alignedLyricsRef.current;
+    if (!lyrics || lyrics.length === 0) return;
+
+    const current = lyrics.find(line => time >= line.start && time < line.end);
+    if (!current) return;
+
+    const index = lyrics.indexOf(current);
+    const lineEl = document.getElementById(`lyric-${index}`);
+    if (!lineEl) return;
+
+    // Only update if we actually changed lines
+    if (lastHighlightedRef.current !== lineEl) {
+      if (lastHighlightedRef.current) {
+        lastHighlightedRef.current.classList.remove("highlight-line");
+        lastHighlightedRef.current.style.color = "";
+        lastHighlightedRef.current.style.fontWeight = "";
+      }
+
+      lineEl.classList.add("highlight-line");
+      lineEl.style.color = "red";
+      lineEl.style.fontWeight = "bold";
+      lastHighlightedRef.current = lineEl;
+    }
+
+    lastTimeRef.current = time;
+    setCurrentTime(time);
+  };
+  useEffect(() => {
+
+  }, [alignedLyrics]);
+
 
   const autoScrollRef = useRef(autoScroll);
     useEffect(() => {
@@ -43,8 +89,16 @@ export default function Projects({ section, forceHighlight }) {
 
   const currentLineRef = useRef(-1);
 
+  const handleProgress = (progress, portion) => {
+    handleTimeUpdate(progress);
+    scrollLyricsInstant(portion);
+  };
+
   const scrollLyricsInstant = (progress) => {
+
     if (!autoScrollRef.current) return; // skip scrolling if disabled
+
+
 
     const lyrics = lyricsPersistentRef.current;
     const container = lyricsRef.current;
@@ -67,7 +121,17 @@ export default function Projects({ section, forceHighlight }) {
     const containerTop = container.getBoundingClientRect().top;
     const lineTop = line.getBoundingClientRect().top;
     container.scrollTop += lineTop - containerTop;
+
+
   };
+  function clearHighlights() {
+    if (lastHighlightedRef.current) {
+      lastHighlightedRef.current.classList.remove("highlight-line");
+      lastHighlightedRef.current.style.color = "";
+      lastHighlightedRef.current.style.fontWeight = "";
+      lastHighlightedRef.current = null;
+    }
+  }
 
   useEffect(() => {
     currentLineRef.current = -1; // reset index
@@ -77,7 +141,7 @@ export default function Projects({ section, forceHighlight }) {
   const handleAudioLoad = () => {
     setLyricsArray([]);           // clear lyrics
     currentLineRef.current = -1;  // reset lyric index
-    setCurrentLyricsInfo({});     // optional: clear artist/song info
+    //setCurrentLyricsInfo({});     // optional: clear artist/song info
   };
 
   useEffect(() => {
@@ -98,6 +162,8 @@ export default function Projects({ section, forceHighlight }) {
 
   useEffect(() => {
     const fetchDefaultLyrics = async () => {
+      setArtist("*Luna");
+      setSong("ST/A#R");
       setSearching(true);
       setHasSearched(true);
       try {
@@ -167,13 +233,6 @@ export default function Projects({ section, forceHighlight }) {
         <h3>Audio Player and Lyrics Search</h3>
         {/* Description */}
         <ul style={{ maxWidth: '600px', lineHeight: '1.5' }}>
-          {/*
-          <li>This is a custom React audio player with a waveform visualizer and clickable seek. Songs can be uploaded from <a href="https://soundcloud.com/">Soundcloud</a> links. Loading audio should take less than a minute depending on file size and network.</li>
-          <li>The default song <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> is pre-loaded from storage to save functionality testing time and it is used according to the artist’s <a href="https://www.ast-luna.com/guideline">guideline</a> (non-commercial use, credit to *Luna given).</li>
-          <li>Audio files you load are temporarily stored in <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Storage</a> under names like <code>temp_audio_[uuid].mp3</code> and are automatically deleted after 15 minutes.</li>
-          <li>The backend running on <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a> handles fetching and streaming these audio files to your player.</li>
-          <li>Lyrics are fetched from three websites (<a href="https://www.lyrical-nonsense.com/" target="_blank" rel="noopener noreferrer">Lyrical Nonsense</a>, <a href="https://utaten.com/"> UtaTen </a> and <a href="https://lyricstranslate.com/" target="_blank" rel="noopener noreferrer">Lyricstranslate</a>), so some songs may not be found or may be incomplete. Lyrics are not saved anywhere.</li>
-          */}
           <li> This is an audio player with a waveform amplitude/frequency visualizer and clickable seek on the amplitude graph.</li>
           <li> The default song is <a href="https://www.youtube.com/watch?v=shBML8HGkRgis">*Luna - ST/A#R</a> (credit to *Luna). For faster testing purposes because
           loading audio can take up to a minute. Lyrics can be automatically translated. </li>
@@ -184,8 +243,9 @@ export default function Projects({ section, forceHighlight }) {
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
             <AudioPlayer
-              onProgress={scrollLyricsInstant}
-              onAudioLoad={handleAudioLoad} // <-- new prop
+              onProgress={handleProgress}
+              onAudioLoad={handleAudioLoad}
+              onAudioUrlChange={(url) => setCurrentAudioUrl(url)}
             />
 
 
@@ -207,26 +267,28 @@ export default function Projects({ section, forceHighlight }) {
               {/* Lyrics button */}
               <button
                 className="puzzle-button"
-                onClick={async () => {
-                  if (!artist || !song) return;
+                  onClick={async () => {
+                    if (!artist || !song) return;
 
-                  setSearching(true);
-                  setHasSearched(true);
+                    setSearching(true);
+                    setHasSearched(true);
+                    clearHighlights();
+                    setAlignedLyrics([]); // <-- reset synced lyrics
 
-                  try {
-                    const mode = lyricsMode;
-                    const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}`;
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    setLyricsArray(data.lines || []);
-                    setCurrentLyricsInfo({ artist, song });
-                  } catch (err) {
-                    setLyricsArray([]);
-                    setCurrentLyricsInfo({});
-                  } finally {
-                    setSearching(false);
-                  }
-                }}
+                    try {
+                      const mode = lyricsMode;
+                      const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}`;
+                      const res = await fetch(url);
+                      const data = await res.json();
+                      setLyricsArray(data.lines || []);
+                      setCurrentLyricsInfo({ artist, song });
+                    } catch (err) {
+                      setLyricsArray([]);
+                      setCurrentLyricsInfo({});
+                    } finally {
+                      setSearching(false);
+                    }
+                  }}
                 disabled={searching}
                 style={{ padding: '6px 12px', height: '36px' }}
               >
@@ -238,11 +300,94 @@ export default function Projects({ section, forceHighlight }) {
               >
                 {autoScroll ? 'Turn off lyric auto-scroll' : 'Turn on lyric auto-scroll'}
               </button>
+              <button
+                className="puzzle-button"
+                onClick={async () => {
+                  if (!artist || !song) return;
+                  setSyncing(true);
+
+                  try {
+                    const body = {
+                      lyrics_url: `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${lyricsMode}&site=${lyricsSite}`,
+                      audio_url: `https://expressproject-al0i.onrender.com/proxy-audio?url=${encodeURIComponent(currentAudioUrl)}`,
+                    };
+                    const res = await fetch("https://expressproject-al0i.onrender.com/align-song", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(body),
+                    });
+                    const data = await res.json();
+                    if (data && Array.isArray(data.fragments)) {
+                      setAlignedLyrics(
+                        data.fragments.map(f => ({
+                          start: f.start ?? f.begin ?? 0, // fallback if missing
+                          end: f.end ?? 0,
+                          text: Array.isArray(f.lines) && f.lines.length > 0 ? f.lines[0] : f.text || "",
+                        }))
+                      );
+                    } else {
+                      console.warn("Unexpected response format:", data);
+                    }
+                  } catch (err) {
+                    console.error(err);
+                  } finally {
+                    setSyncing(false);
+                  }
+                }}
+                disabled={syncing || alignedLyrics.length > 0} // <-- disable if already synced
+                style={{ padding: "6px 12px", height: "36px" }}
+              >
+                {alignedLyrics.length > 0 ? "Lyrics are aligned" : syncing ? "Syncing..." : "SYNC LYRICS TO SONG (English lyrics only)"}
+              </button>
+              <h6> Select lyrics site:</h6>
+              <select
+                value={lyricsSite}
+                onChange={async (e) => {
+                  const newSite = e.target.value;
+                  setLyricsSite(newSite);
+
+                  // automatically refetch lyrics when site changes
+                  if (!artist || !song) return;
+                  setSearching(true);
+                  setHasSearched(true);
+                  clearHighlights();
+                  setAlignedLyrics([]); // reset synced lyrics
+                  try {
+                    const mode = lyricsMode;
+                    const url = `https://expressproject-al0i.onrender.com/lyrics?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}&mode=${mode}&site=${encodeURIComponent(newSite)}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    setLyricsArray(data.lines || []);
+                    setCurrentLyricsInfo({ artist, song });
+                  } catch (err) {
+                    setLyricsArray([]);
+                    setCurrentLyricsInfo({});
+                  } finally {
+                    setSearching(false);
+                  }
+                }}
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: '6px',
+                  marginLeft: '8px',
+                  fontWeight: 'bold',
+                  backgroundColor: '#f8f8f8',
+                  border: '1px solid #ccc'
+                }}
+              >
+                <option value="LN">Lyrical Nonsense</option>
+                <option value="Utaten">UtaTen</option>
+                <option value="Letras">Letras</option>
+                <option value="LT">LyricsTranslate</option>
+              </select>
               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                 {["normal", "romaji", "translate"].map(mode => (
                   <button
                     key={mode}
-                    onClick={() => setLyricsMode(mode)}
+                    onClick={() => {
+                      setLyricsMode(mode);
+                      clearHighlights();
+                      setAlignedLyrics([]);}}
                     style={{
                       padding: '6px 12px',
                       borderRadius: '4px',
@@ -280,34 +425,41 @@ export default function Projects({ section, forceHighlight }) {
                 : 'Lyrics'}
             </h4>
             {lyricsArray.length > 0 ? (
-              <div
-                ref={lyricsRef} // <- move the ref here
-                style={{
-                  flex: 1,
-                  maxWidth: '700px',
-                  minWidth: '300px',
-                  maxHeight: '400px',
-                  overflowY: 'auto',
-                  border: '1px solid #ddd',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
-              >
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, lineHeight: '1.5' }}>
-                  {lyricsArray.map((line, index) => (
-                    <li key={index} id={`lyric-${index}`}>
-                      {line}
+              <div style={{
+                flex: 1,                // take remaining horizontal space
+                maxWidth: '700px',      // optional max width
+                minWidth: '300px',      // ensure it doesn't shrink too small
+                maxHeight: '400px',
+                overflowY: 'auto',
+                border: '1px solid #ddd',
+                padding: '10px',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+              }} ref={lyricsRef}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {(alignedLyrics.length > 0 ? alignedLyrics : lyricsArray).map((line, index) => (
+                    <li
+                      key={index}
+                      id={`lyric-${index}`} // unified ID name
+                      style={{
+                        textAlign: 'center',
+                        padding: '4px 0',
+                        transition: 'color 0.3s, transform 0.3s',
+                      }}
+                    >
+                      {alignedLyrics.length > 0 ? line.text : line}
                     </li>
                   ))}
                 </ul>
               </div>
-
             ) : (
-              hasSearched && !searching && (
-                <p style={{ color: 'red', margin: 0 }}>Lyrics not found. Please check the artist/song name or try again.</p>
+              hasSearched &&
+              !searching && (
+                <p style={{ color: 'red', margin: 0 }}>
+                  Lyrics not found. Please check the artist/song name or try again.
+                </p>
               )
             )}
           </div>
