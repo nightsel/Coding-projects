@@ -17,16 +17,27 @@ public:
         std::sort(tasks.begin(),tasks.end());
         std::sort(workers.begin(),workers.end(),std::greater<>());
         int workercount = 0;
+        int taskoffset = 0;
         for (int i = 0; i < workers.size() ; i++) {
-            if (i < tasks.size()) {
-                if (workers[i] >= tasks[i]) workercount++;
+            for (int j = taskoffset; j < tasks.size(); j++) {
+   //             cout << workers[i];
+    //            cout << tasks[i];
+                taskoffset++;
+                if (workers[i] >= tasks[tasks.size()-j-1]) {
+                    workercount++;
+                    break;
+                }
             }
         }
-        workers.resize(workercount+pills);
+    //    cout << workers.size();
+    //    cout << tasks.size();
+    //    cout << workercount;
+        workers.resize(std::min<size_t>(workercount + pills, workers.size()));
         if (workers.size() >= tasks.size()) workers.resize(tasks.size());
         else tasks.resize(workers.size());
 
         std::sort(tasks.begin(),tasks.end(),std::greater<>());
+      //  cout << "\n" << workers.size() << tasks.size();
 
         /*for (int i = 0 ; i < tasks.size() ; i++) {
             cout << "workers" << workers[i] << "\n";
@@ -34,18 +45,44 @@ public:
         }*/
 
         int tasksdone = 0;
+        int offset = 0;
+        int tasksdone2 = 0;
+        int incompleteoffset = 0;
         for (int i =0; i< tasks.size() ; i++) {
-
-            if (tasks[tasks.size()-1-i] <=workers[workers.size()-1-i]) {
+            //cout << tasks[tasks.size()-1-i];
+            //cout << workers[workers.size()-1-i-offset];
+            if (tasks[tasks.size()-1-i+incompleteoffset] <=workers[workers.size()-1-i-offset]) {
                 tasksdone++;
+             //   cout << "got here isntead";
             }
             else if (pills > 0) {
-                if((tasks[tasks.size()-1-i] <=workers[workers.size()-1-i]+strength)) {
-                    tasksdone++;
-                    pills--;
-                }
+               // cout << "got here";
+                int workeridx = workers.size()-1-i-offset;
+                usepill( tasks, workers, pills, strength, workeridx, tasksdone, i, offset, tasksdone2);
+            }
+            else {
+                incompleteoffset++;
+            }
+            cout << "\n";
+            cout << tasks[tasks.size()-1-i];
+            cout << "\n";
+            cout << workers[workers.size()-1-i-offset];
+            cout << tasksdone;
+        }
+        return tasksdone+tasksdone2;
+    }
+    void usepill(vector<int>& tasks, vector<int>& workers, int& pills, int strength, int workeridx, int& tasksdone, int& l, int& offset, int& tasksdone2) {
+        for (int i = 0; i < tasks.size()-tasksdone; i++) {
+            if (tasks[i] <= workers[workeridx] +strength) {
+
+                pills = pills-1;
+                auto remit = std::find(tasks.begin(),tasks.end(), tasks[i]);
+                tasks.erase(remit);
+                tasksdone2++;
+                l--;
+                offset++;
+                return;
             }
         }
-        return tasksdone;
     }
 };
