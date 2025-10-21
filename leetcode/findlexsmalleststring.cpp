@@ -1,208 +1,94 @@
 class Solution {
 public:
     string findLexSmallestString(string s, int a, int b) {
-        long long numbs = stol(s);
-        long long tempnumb;
-        string stringnumb;
-        string teststr;
 
-        long long smallestnumber = numbs;
-        // go through all the numbers.
-        long long testnumber = smallestnumber;
+        string teststr = s;
+
+        string tempstr = s;
+        string smalleststring = s;
+        string smalleststring2 = s;
+        string oddstring(teststr.length() / 2, ' ');
+        string oddstring2(teststr.length() / 2, ' ');
+        string evenstring(teststr.length() / 2, ' ');
+        string evensmallest(teststr.length() / 2, ' ');
+        string oddsmallest(teststr.length() / 2, ' ');
+        string oddsmallest2(teststr.length() / 2, ' ');
+        string origstring = teststr;
+        int looptimes = 1;
+        for (int i = 0; i < 10; i++) {
+            if ((looptimes*a)%10 == 0) break;
+            looptimes++;
+        }
         if (b % 2 == 0) {
-            cout << "hey";
-            for (int i = 1; i < 11; i++) {
+            for (int i = 0; i < looptimes; i++) {
                 for (int k = 0; k < s.length()/2; k++) {
-                    tempnumb = testnumber;
-                    testnumber = (testnumber + a*(pow(10,2*k)));
+                    tempstr = teststr;
+                    int i = s.size() - 1;
+                    teststr[i-k*2] = (teststr[i-k*2] - '0' + a) % 10 + '0';
+              //      cout << s[i-k*2];
+             //       cout << "\n";
             //        cout << testnumber;
         //            cout << "testll" << (testnumber % static_cast<int>(pow(10, 2*k+1))) << "\n";
         //           cout << "test" << tempnumb % static_cast<int>(pow(10, 2*k+1)) << "\n";
-                    if ((testnumber % static_cast<long long>(pow(10, 2*k+1))) < tempnumb % static_cast<long long>(pow(10, 2*k+1))) {
-                        testnumber = testnumber -pow(10,2*k+1);
-                    }
                 }
         //       cout << "tempnumb" << tempnumb << "\n";
-                cout << testnumber<< "\n";
-                string teststr = to_string(testnumber);
-                if (teststr.length() < s.length()) {
-                    teststr = string(s.length()-teststr.length(), '0')+ teststr;
-                }
+         //       cout << testnumber<< "\n";
+
                 for (int j = 0; j < s.length(); j++) {
                     teststr = teststr.substr(b) + teststr.substr(0, b);
-                    cout << smallestnumber <<"\n";
-                    cout << teststr;
-                    if (stol(teststr) < smallestnumber) {
-                        smallestnumber = stol(teststr);
+                    cout << teststr <<"\n";
+                    if (teststr < smalleststring) {
+                        smalleststring = teststr;
                     }
                 }
             }
-
         }
         else {
-            // if the number is not an even number.
-            for (int i = 1; i < 11; i++) {
-                // add all numbers to the numbers. check which result is the smallest.
+            // if the b number is not an even number.
+            for (int j = 0; j < s.length(); j++) {
+                origstring = origstring.substr(b) + origstring.substr(0, b);
 
-                for (int k = 0; k < s.length()/2; k++) {
-                    tempnumb = testnumber;
-                    testnumber = (testnumber + a*(pow(10,2*k)));
-                 //   cout << testnumber;
-        //            cout << "testll" << (testnumber % static_cast<int>(pow(10, 2*k+1))) << "\n";
-        //           cout << "test" << tempnumb % static_cast<int>(pow(10, 2*k+1)) << "\n";
-                    if ((testnumber % static_cast<long long>(pow(10, 2*k+1))) < tempnumb % static_cast<long long>(pow(10, 2*k+1))) {
-                        testnumber = testnumber -pow(10,2*k+1);
-                    }
+                teststr = origstring;
+                if (teststr < smalleststring) {
+                    smalleststring = teststr;
+                    cout << "smallestfound" << smalleststring <<"\n";
                 }
-        //       cout << "tempnumb" << tempnumb << "\n";
-          //      cout << testnumber<< "\n";
-                string teststr = to_string(testnumber);
-                for (int j = 0; j < s.length(); j++) {
+                cout << "teststr" << teststr << "\n";
+                for (int i = 1; i < looptimes; i++) {
+                    tempstr = teststr;
+                    for (int k = 0; k < s.length()/2; k++) {
+                        int r = s.size() - 1;
+                        teststr[r-k*2] = (teststr[r-k*2] - '0' + a*i) % 10 + '0';
+                    }
+                    cout << "teststring1" << teststr << "\n";
+                    if (teststr < smalleststring) {
+                        smalleststring = teststr;
+                        cout << "smallestfound" << smalleststring <<"\n";
+                    }
                     teststr = teststr.substr(b) + teststr.substr(0, b);
-                   cout << "here"<< "\n" << teststr <<"\n"<< stol(to_string(smallestnumber).substr(1)) << "\n" << teststr.substr(1) <<"\n";
-         //           cout << teststr;
-                    if (stol(teststr) < smallestnumber) {
-                        // count the numbers after first index since the first index changes later
-                        smallestnumber = stol(teststr);
+                    if (teststr < smalleststring) {
+                        smalleststring = teststr;
+                        cout << "smallestfound" << smalleststring <<"\n";
                     }
+                    for (int i = 0; i < looptimes; i++) {
+                        for (int k = 0; k < s.length()/2; k++) {
+                            int r = s.size() - 1;
+                            teststr[r-k*2] = (teststr[r-k*2] - '0' + a) % 10 + '0';
+                        }
+                        if (teststr < smalleststring) {
+                            smalleststring = teststr;
+                            cout << "smallestfound" << smalleststring <<"\n";
+                        }
+                        cout << "here"<< teststr <<"\n";
+                    }
+                    teststr = tempstr;
                 }
             }
-
-            stringnumb = to_string(numbs);
-            teststr = stringnumb;
-            if (teststr.length() < s.length()) {
-                teststr = string(s.length()-teststr.length(), '0')+ teststr;
-            }
-            teststr = teststr.substr(b) + teststr.substr(0, b);
-            testnumber = stol(teststr);
-
-            cout << "first phase testfake" << smallestnumber << "\n";
-
-            for (int i = 1; i < 11; i++) {
-
-                for (int k = 0; k < s.length()/2; k++) {
-                    tempnumb = testnumber;
-                    testnumber = (testnumber + a*(pow(10,2*k)));
-            //        cout << "good" <<testnumber<<"\n";
-            //        cout << testnumber;
-        //            cout << "testll" << (testnumber % static_cast<int>(pow(10, 2*k+1))) << "\n";
-        //           cout << "test" << tempnumb % static_cast<int>(pow(10, 2*k+1)) << "\n";
-                    if ((testnumber % static_cast<long long>(pow(10, 2*k+1))) < tempnumb % static_cast<long long>(pow(10, 2*k+1))) {
-                        testnumber = testnumber -pow(10,2*k+1);
-                    }
-                }
-                teststr = to_string(testnumber);
-                if (teststr.length() < s.length()) {
-                    teststr = string(s.length()-teststr.length(), '0')+ teststr;
-                }
-                for (int j = 0; j < s.length(); j++) {
-                    teststr = teststr.substr(b) + teststr.substr(0, b);
-                    cout << "here"<< smallestnumber <<"\n";
-                    cout << teststr;
-                    if (stol(teststr) < smallestnumber) {
-                        smallestnumber = stol(teststr);
-                    }
-                }
-
-        //       cout << "tempnumb" << tempnumb << "\n";
-           //     cout << testnumber<< "\n";
-          //      if (smallestnumber > testnumber) {
-          //         smallestnumber = testnumber;
-            //    }
-            }
-
-            stringnumb = to_string(smallestnumber);
-            string teststr = stringnumb;
-            if (teststr.length() < s.length()) {
-                teststr = string(s.length()-teststr.length(), '0')+ teststr;
-            }
-            //teststr = teststr.substr(b) + teststr.substr(0, b);
-            testnumber = stol(teststr);
-            cout << "first phase" << testnumber;
-            for (int i = 1; i < 11; i++) {
-                for (int k = 0; k < s.length()/2; k++) {
-                    tempnumb = testnumber;
-                    testnumber = (testnumber + a*(pow(10,2*k)));
-            //        cout << "good" <<testnumber<<"\n";
-            //        cout << testnumber;
-        //            cout << "testll" << (testnumber % static_cast<int>(pow(10, 2*k+1))) << "\n";
-        //           cout << "test" << tempnumb % static_cast<int>(pow(10, 2*k+1)) << "\n";
-                    if ((testnumber % static_cast<long long>(pow(10, 2*k+1))) < tempnumb % static_cast<long long>(pow(10, 2*k+1))) {
-                        testnumber = testnumber -pow(10,2*k+1);
-                    }
-                }
-                teststr = to_string(testnumber);
-                if (teststr.length() < s.length()) {
-                    teststr = string(s.length()-teststr.length(), '0')+ teststr;
-                }
-                for (int j = 0; j < s.length(); j++) {
-                    teststr = teststr.substr(b) + teststr.substr(0, b);
-                    cout << "here"<< smallestnumber <<"\n";
-                    cout << teststr;
-                    if (stol(teststr) < smallestnumber) {
-                        smallestnumber = stol(teststr);
-                    }
-                }
-
-        //       cout << "tempnumb" << tempnumb << "\n";
-           //     cout << testnumber<< "\n";
-          //      if (smallestnumber > testnumber) {
-          //         smallestnumber = testnumber;
-            //    }
-            }
-             stringnumb = to_string(smallestnumber);
-            teststr = stringnumb;
-            if (teststr.length() < s.length()) {
-                teststr = string(s.length()-teststr.length(), '0')+ teststr;
-            }
-            teststr = teststr.substr(b) + teststr.substr(0, b);
-            testnumber = stol(teststr);
-
-            cout << "first phase test" << smallestnumber << "\n";
-
-            for (int i = 1; i < 11; i++) {
-
-                for (int k = 0; k < s.length()/2; k++) {
-                    tempnumb = testnumber;
-                    testnumber = (testnumber + a*(pow(10,2*k)));
-            //        cout << "good" <<testnumber<<"\n";
-            //        cout << testnumber;
-        //            cout << "testll" << (testnumber % static_cast<int>(pow(10, 2*k+1))) << "\n";
-        //           cout << "test" << tempnumb % static_cast<int>(pow(10, 2*k+1)) << "\n";
-                    if ((testnumber % static_cast<long long>(pow(10, 2*k+1))) < tempnumb % static_cast<long long>(pow(10, 2*k+1))) {
-                        testnumber = testnumber -pow(10,2*k+1);
-                    }
-                }
-                teststr = to_string(testnumber);
-                if (teststr.length() < s.length()) {
-                    teststr = string(s.length()-teststr.length(), '0')+ teststr;
-                }
-                for (int j = 0; j < s.length(); j++) {
-                    teststr = teststr.substr(b) + teststr.substr(0, b);
-                    cout << "here"<< smallestnumber <<"\n";
-                    cout << teststr;
-                    if (stol(teststr) < smallestnumber) {
-                        smallestnumber = stol(teststr);
-                    }
-                }
-
-        //       cout << "tempnumb" << tempnumb << "\n";
-           //     cout << testnumber<< "\n";
-          //      if (smallestnumber > testnumber) {
-          //         smallestnumber = testnumber;
-            //    }
-            }
-
-            cout << "start \n";
-            stringnumb = to_string(smallestnumber);
-            teststr = stringnumb;
         }
 
-        cout << smallestnumber;
-        string smalleststring = to_string(smallestnumber);
-        if (smalleststring.length() < s.length()) {
-            smalleststring = string(s.length()-smalleststring.length(), '0')+ smalleststring;
-        }
+
+        //string smalleststring = to_string(smallestnumber);
+
         return smalleststring;
     }
 };
